@@ -1,0 +1,95 @@
+{% extends 'admin_temp/base.html' %}
+<!-- {% load crispy_forms_tags %} -->
+{% load static %}
+{% block content %}
+
+<style>
+    img {
+        border-radius: 50% 50% 50% 50%;
+        width: 50px;
+        height: 50px;
+    }
+</style>
+<div class="dashboard-content-one">
+    <!-- Breadcubs Area Start Here -->
+    <div class="breadcrumbs-area">
+        <h3>Brands</h3>
+        <ul>
+            <li>
+                <a href="{% url 'home:home' %}">Home</a>
+            </li>
+            <li>All Brand List</li>
+        </ul>
+    </div>
+    <a href="{% url 'products:brand_add' %}" class="btn-fill-lg bg-blue-dark text-center">Add Brand</a>
+    <!-- Student Table Area Start Here -->
+    <div class="card height-auto">
+        <div class="card-body">
+            <div class="heading-layout1">
+                <div class="item-title">
+                    <h3>All Brand Data</h3>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="myStaticDatatable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Brand.ID
+                            </th>
+
+                            <th>
+                                Admin
+                            </th>
+
+                            <th>
+                                Brand.Name
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Update
+                            </th>
+                            <th>
+                                Delete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for brand in object_list %}
+                        <tr>
+                            <td>
+                                {{brand.id}}
+                            </td>
+
+                            <td>
+                                {{user.username}}
+                            </td>
+                            <td>
+                                {{brand.brand_name}}
+                            </td>
+                            <td>
+                                {{brand.date}}
+                            </td>
+                            <td>
+                                <a href="{% url 'products:brand_update' brand.id %}">
+                                    <span class="fas fa-edit mr-2"></span>Edit
+                                </a>
+                            </td>
+                            <td>
+                                <a class="dropdown-item text-danger delete_item"
+                                    href="{% url 'products:brand_delete' brand.id %}">
+                                    <span class="fas fa-trash-alt mr-2"></span>Remove
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

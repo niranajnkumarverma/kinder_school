@@ -1,0 +1,40 @@
+{% extends 'admin_temp/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!-- Sidebar Area End Here -->
+<div class="dashboard-content-one">
+    <!-- Breadcubs Area Start Here -->
+    <div class="breadcrumbs-area">
+        <h3>Product</h3>
+        <ul>
+            <li>
+                <a href="{% url 'home:home' %}">Home</a>
+            </li>
+            <li>Product Add Form</li>
+        </ul>
+    </div>
+    <!-- Breadcubs Area End Here -->
+    <!-- Admit Form Area Start Here -->
+    <div class="card height-auto">
+        <div class="card-body">
+            <div class="heading-layout1">
+                <div class="item-title">
+                    <h3>Are You Delete Product</h3>
+                </div>
+
+            </div>
+            <form action="" method="post">{% csrf_token %}
+                <td class="py-1">
+                    <img src="{{product.product_image.url}}" height="200px" width="200px" alt="image" />
+                </td>
+                <br><br>
+                <h3>Are you sure you want to delete "{{ object }}"?</h3>
+
+                <button class="btn-fill-lg bg-blue-dark btn-hover-yellow" type="submit" class="btn-primary"
+                    value="Confirm">Yes </button>
+                <a href="{% url 'products:product_list' %}" class="btn-fill-lg bg-danger" class="btn-primary">No </a>
+            </form>
+        </div>
+    </div>
+    {% endblock %}

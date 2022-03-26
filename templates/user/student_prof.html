@@ -1,0 +1,154 @@
+{% extends 'user/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td,
+    th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>
+
+
+<section class="shop-page">
+    {% if messages %}
+	{% for msg in messages %}
+	<div class="alert alert-{{message.tags}}">
+		{{msg}}
+	</div>
+	{% endfor %}
+	{% endif %}
+
+    <div class="step-content">
+        <div class="container">
+            <div class="step-tab-panel active" id="steppanel1">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"> <a class="nav-link fw-600 active" data-toggle="tab"
+                            href="#general_info">General
+                            Information</a></li>
+
+                    <li class="nav-item"> <a class="nav-link fw-600" data-toggle="tab" href="#security_info">Change
+                            password</a>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link fw-600" data-toggle="tab"
+                            href="#settings_info">Settings</a>
+                    </li>
+
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="general_info">
+                        <form class="needs-validation general-sec p-2 " novalidate="false" action="" method=""
+                            enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <h3 class="text-light-black fw-700">General Information</h3>
+                            <hr>
+                            <div class="row ">
+                                <div class="col-lg-3 my-5">
+                                    <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'user_static/img/defo.png' %} {% endif %}"
+                                        class="rounded float-right" height="200px" width="200px">
+                                </div>
+                                <div class="col-lg-5"></div>
+                                {% for stu in address %}
+                                <div class="card o-hidden border-0 shadow-lg my-5 col-lg-5">
+                                    <div class="card-body">
+                                        <h2>{{user.first_name}} {{user.username}}</h2>
+                                        <p><strong>Email:- </strong> {{user.email}} </p>
+                                        <p><strong>Mobile:- </strong> {{stu.mobile}} </p>
+                                        <p><strong>Gender:- </strong> {{stu.gender}} </p>
+                                        <p><strong>Country:- </strong> {{stu.country}} </p>
+                                        <p><strong>State:- </strong> {{stu.state}} </p>
+                                        <p><strong>City:- </strong> {{stu.city}} </p>
+                                        <p><strong>Address:- </strong> {{stu.address}} </p>
+                                        <p><strong>Pincode: </strong> {{stu.pincode}} </p>
+
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group ">
+                                <a href="{% url 'student:profile_update' %}" class="btn btn-cr-bg">Update Profile</a>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane" id="security_info">
+                        <form class=" needs-validation contact-sec p-2" novalidate="false"
+                            action="{% url 'student:password_change' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% if form.errors %}
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <div id="form_errors">
+                                    {% for key, value in form.errors.items %}
+                                    <strong>{{ value }}</strong>
+                                    {% endfor %}
+                                </div>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% endif %}
+                            <h3 class="text-light-black fw-700">Change password</h3>
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label for="id_old_password">Old Password</label>
+                                    <input type="password" name="old_password" autocomplete="new-password"
+                                        class="form-control" required id="id_old_password"
+                                        placeholder="Enter Old Password" />
+                                    <span>
+                                    </span>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="id_new_password1">New Password</label>
+                                    <input type="password" name="new_password1" autocomplete="new-password"
+                                        class="form-control" required id="id_new_password1"
+                                        placeholder="Enter New Password" />
+                                    <span>
+                                    </span>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="id_new_password2">New Password Confirmation</label>
+                                    <input type="password" name="new_password2" autocomplete="new-password" required
+                                        id="id_new_password2" class="form-control" placeholder="Confirm New Password" />
+                                </div>
+                                <div class="form-group ">
+                                    <button class="btn btn-cr-bg" type="submit" name="submit">Change</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="settings_info">
+                        <form class=" needs-validation setting-sec p-2" novalidate="false" action="#" method="POST"
+                            enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <h3 class="text-light-black fw-700">Account Settings</h3>
+                            <div class="row">
+                                <BR>
+                                <div class="form-group col-md-6 mb-0">
+                                    <div class="custom-control custom-switch mt-4">
+                                        <input type="checkbox" class="custom-control-input" id="deactivate">
+                                        <label class="custom-control-label" for="deactivate">Deactivate my
+                                            account</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

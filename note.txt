@@ -1,0 +1,95 @@
+Status(21-02-2022)
+-R&D Crispy form using  UsercreationView in my demo project
+-Create data model Userprofile and setup url pattern 
+-Setup Userprofile image on nav bar in my deshboard
+-Load user data on profile page(Incomplete)
+
+
+Status(22-02-2022)
+-User image setup on nav bar in my deshboard(complete)
+-User profile template setup in my project 
+-User data load on my profile page 
+-Create clone project in my system and check all api view(DRF)
+
+
+Status(23-02-2022)
+-Setup user profile icon display without user upload  profile image
+-After User registration successfull message display using Sweet Alert2
+-R&D User change password (Active)
+
+
+Status(24-02-2022)
+-R&D User change password in my demo project
+-create Userprofileform view and setup url
+-Userprofile data post using Crispy form validation
+-Userprofile image not display on nav bar(Incomplete) 
+
+Status(26-02-2022)
+-User profile Update(done)
+-User upload image(done)
+-user change password(done)
+-User profile data load on profile page(done)
+-User profile data & Image  manage multiple user(done)
+
+
+Status[01-03-2022]
+-Admin product add admin side pannel and set all apps url
+-Admin product update and  setup  update view 
+-Product Delete during confirmation  admin select option  Yes Or No 
+-All product list display on Admin Dashboard 
+-All User List display on admin Dashboard 
+
+
+Status[02-03-2022]
+-Create model Cart and Setup CartView
+-User add to cart on product page
+-User cart display on order page and setup url 
+-User cart quantity Increase and Decrease and total add cart price(Active) 
+
+Sir I have done  User profile management completed and Next Task I can do work Shoping product
+
+Status(28-02-2022)
+-create Product model database and setup url 
+-create add product form and Productview page setup 
+-Load all productView in my shop page
+-Download Admin template and load static setup url
+-Display all user list on my admin site deshboard 
+
+
+Status[07-03-2022]
+-Create database model Brand  and connect with product model  and setup view
+-Setup  Admin add product  with select brand wise 
+-Setup load all brand data  on admin product page 
+-Create all crud operations on brand  list page(Admin Dashboard)
+-User product display  on  product page view with passing Queryset parameter 
+
+Status[09-03-2022]
+-Create database model Order and OrderItem
+-Setup order page view 
+-Create database model Transaction and setup view page
+-Display successfull message after items order
+-Orderitem display on admin dashboard with address for multiple user
+
+
+
+
+
+
+  # fields = '__all__'
+    # profile_form = ProfileForm  ################### This Field only use for user   createview (double createview in same page )
+    # fields = ['image','mobile','gender','address','country','state','city','pincode'] 
+
+
+
+Status[03-03-2022]    
+-Create database model cart and setup template view 
+-R&D Load  all cart_data on order page and quantity update onchange submit
+-All Cart data filter for multiple user and display cart data on order page 
+-User update quantity  and after multiply price with total price 
+-User cart data display on Admin Dashboard and setup template view 
+
+
+Status[21-03-2022]  
+-R&D Datatable in python
+-Create All crud operation on order table with Datatable
+-R&D order status color change after update status

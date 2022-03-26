@@ -1,0 +1,328 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+	<!-- Meta -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<!-- SITE TITLE -->
+	<title>ChildCare-Kindergarten & School </title>
+	<!-- Latest Bootstrap min CSS -->
+	<link rel="stylesheet" href="{% static '/user_static/bootstrap/css/bootstrap.min.css' %}">
+	<!-- Google Font -->
+	<link href="css?family=Poppins:300,400,500,600,700,800" rel="stylesheet">
+	<link href='../../../css-1?family=Dosis:400,300,600,700' rel='stylesheet' type='text/css'>
+	<link href="../../../css-2?family=Montserrat:300,300i,400,500,600,700" rel="stylesheet">
+	<!-- Font Awesome CSS -->
+	<link rel="stylesheet" href="{% static '/user_static/fonts/font-awesome.min.css' %}">
+	<!--- owl carousel Css-->
+	<link rel="stylesheet" href="{% static '/user_static/owlcarousel/css/owl.carousel.css' %}">
+	<link rel="stylesheet" href="{% static '/user_static/owlcarousel/css/owl.theme.css' %}">
+	<!-- magnific popup CSS -->
+	<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+	<!-- Style CSS -->
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/slider.css' %}">
+	<link rel="stylesheet" href="{% static '/admin_static/fonts/flaticon.css' %}">
+
+
+
+
+
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+
+
+
+</head>
+
+<body data-spy="scroll" data-offset="80">
+	<style>
+		.bg-custom-1 {
+			background-color: #85144b;
+		}
+
+		.bg-custom-2 {
+			background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
+		}
+	</style>
+	<!-- START PRELOADER -->
+
+	<!-- START COLOR -->
+
+	<!-- START HEADER -->
+	<header class="header_area">
+		<div class="container">
+			<div class="row">
+
+				<div tabindex="0" class="modal fade" id="projectModal">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+										aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title">Already have an account? login here - </h4>
+							</div>
+							<div class="modal-body">
+								<form method="post" action="{% url 'student:login' %}">
+
+
+
+									<div class="login">
+										{% csrf_token %}
+										{{ form|crispy }}
+										<div class="form-group col-md-12 text-center mb0">
+											<button class="btn btn-cr-bg" type="submit" name="submit">login</button>
+										</div>
+										<a href="{% url 'signup' %}">Create Account</a>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div><!-- /.modal -->
+				<!-- Overlay Modal  -->
+				<div tabindex="0" class="modal fade" id="projectModal2">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+										aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title">Create a new account </h4>
+							</div>
+							<div class="modal-body">
+								<form action="{% url 'signup' %}" method="POST">
+									<div class="alert alert-danger alert-dismissible" role="alert">
+										<div id="form_errors">
+											{% for key, value in form.errors.items %}
+											<strong>{{ value }}</strong>
+											{% endfor %}
+										</div>
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+
+									<div class="register">
+										<div class="form-group">
+											{% csrf_token %}
+											{{ form|crispy }}
+										</div>
+										<!-- {% for error in field.errors %}
+										<p style="color: red">{{ error }}</p>
+									    {% endfor %} -->
+										<div class="form-group col-md-12 text-center mb0">
+											<button class="btn btn-cr-bg" type="submit" name="submit">signup
+												now</button>
+											<a href="{% url 'student:login' %}">Login</a>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--- END ROW -->
+		</div>
+		<!--- END CONTAINER -->
+	</header>
+	<!-- START LOGO WITH CONTACT -->
+
+	<!-- START NAVBAR -->
+	<div class="navbar navbar-default menu-top menu_dropdown">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+
+			<div class="navbar-collapse collapse">
+
+				<nav>
+
+					<a href="index.html"><img src="{% static '/user_static/logo.png' %}" height="60px" width="230px"
+							alt=""></a>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a class="arrow-btn" href="{% url 'signup' %}">Home</a>
+						</li>
+						<li><a href="{% url 'aboutview' %}">About</a></li>
+						<li><a class="arrow-btn" href="{% url 'courseview' %}">Course</a>
+
+						</li>
+						<li><a href="{% url 'teacherview' %}">Teachers</a></li>
+						<li><a href="{% url 'eventview' %}">Event</a>
+
+						</li>
+						<li><a href="{% url 'galleryview' %}">Gallery</a></li>
+						<li><a href="{% url 'product:shopview' %}">Shop</a></li>
+						<!-- <li><a class="arrow-btn" href="blog.html">Blog</a>
+							<ul class="sub-menu">
+								<li><a href="blog-details.html">Blog details</a></li>
+							</ul>
+						</li> -->
+						<li><a href="{% url 'contactview' %}">Contact</a></li>
+
+						{% if request.user.is_authenticated %}
+						<li><a
+								href="{% if not user.is_authenticated %}{% url 'student:login' %}{% else %}{% url 'order:cartview' %}{% endif %}"><span
+									class="user-alert-cart">{% if cart_data %}[ {{cart_data.total_cart}} ] {% else %} [
+									0 ] {% endif %}</span><img alt="Logo" class="img-fluid py-3 logo"
+									src="{% static '/user_static/img/trolley.png' %}" height="30px" width="30px">
+							</a></li>
+
+
+
+
+
+
+						<li><a class="arrow-btn">{{user.username}}</a>
+							<ul class="sub-menu">
+							
+								<li><a href="{% url 'student:student_profile' %}"><i class="flaticon-user"></i> My Profile</a></li>
+										
+								<!-- <li><a href="#"><i class="flaticon-list"></i>Task</a></li> -->
+								<li><a href="#"><i
+											class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i> Message</a>
+								</li>
+								<li><a href="{% url 'logout' %}"><i class="flaticon-turn-off"></i> Logout</a></li>
+
+
+							</ul>
+						</li>
+
+						{% else %}
+						<li><a href="" data-toggle="modal" data-target="#projectModal">Login</a></li>
+						<li>or</li>
+						<li><a href="#" data-toggle="modal" data-target="#projectModal2">Register</a></li>
+						{% endif %}
+				</nav>
+			</div>
+		</div>
+	</div>
+	<!-- END NAVBAR -->
+	<!-- END HEADER -->
+
+
+
+	{% block content %}
+	{% endblock %}
+
+
+
+	<!-- START FOOTER -->
+	<section class="footer_area section-padding">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-3">
+					<div class="single_footer">
+						<img src="{% static '/user_static/img/logo2.png' %}" alt="logo">
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elitsed eiusmod tempor enim minim veniam
+							quis notru exercit ation Lorem ipsum dolor sit.</p>
+					</div>
+				</div><!-- END COL -->
+				<div class="col-xs-12 col-sm-6 col-md-3">
+					<div class="single_footer">
+						<h4>Information</h4>
+						<ul class="link_mright">
+							<li><a href="#">services</a></li>
+							<li><a href="#">class info</a></li>
+							<li><a href="#">teacher info</a></li>
+							<li><a href="#">Contact info</a></li>
+							<li><a href="#">Admin</a></li>
+						</ul>
+					</div>
+				</div><!-- END COL -->
+				<div class="col-xs-12 col-sm-6 col-md-3">
+					<div class="single_footer">
+						<h4>Pages</h4>
+						<ul>
+							<li><a href="#">services</a></li>
+							<li><a href="#">Coming Soon</a></li>
+							<li><a href="#">Faq</a></li>
+							<li><a href="#">Contact</a></li>
+							<li><a href="#">404 page</a></li>
+						</ul>
+					</div>
+				</div><!-- END COL -->
+				<div class="col-xs-12 col-sm-6 col-md-3">
+					<div class="single_footer">
+						<h4>Latest news</h4>
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elitsed eiusmod tempor enim minim</p>
+						<form action="#" class="subscribe">
+							<input type="text" class="subscribe__input" placeholder="Enter your Email Address">
+							<button type="button" class="subscribe__btn"><i class="fa fa-paper-plane-o"></i></button>
+						</form>
+					</div>
+				</div><!-- END COL -->
+			</div><!-- END ROW -->
+			<div class="row footer_bottom_mtop">
+				<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+					<p class="footer_copyright">ChildCare &copy; 2020 | All Rights Reserved.</p>
+				</div>
+				<!--- END COL -->
+			</div>
+			<!--- END ROW -->
+		</div>
+		<!--- END CONTAINER -->
+	</section>
+	<!-- END FOOTER -->
+
+
+	<!-- Latest jQuery -->
+	<script src="{% static '/user_static/js/jquery-1.12.4.min.js' %}"></script>
+	<!-- Latest compiled and minified Bootstrap -->
+	<script src="{% static '/user_static/bootstrap/js/bootstrap.min.js' %}"></script>
+	<!-- countTo js -->
+	<script src="{% static '/user_static/js/jquery.inview.min.js' %}"></script>
+	<!-- owl-carousel min js  -->
+	<script src="{% static '/user_static/owlcarousel/js/owl.carousel.min.js' %}"></script>
+	<!-- magnific-popup js -->
+	<script src="{% static '/user_static/js/jquery.magnific-popup.min.js' %}"></script>
+	<!-- jquery mixitup js -->
+	<script src="{% static '/user_static/js/jquery.mixitup.min.js' %}"></script>
+	<!-- paradise_slider_min js -->
+	<script src="{% static '/user_static/js/paradise_slider_min.js' %}"></script>
+	<!-- scrolltopcontrol js -->
+	<script src="{% static '/user_static/js/scrolltopcontrol.js' %}"></script>
+	<!-- scripts js -->
+	<script src="{% static '/user_static/js/scripts.js' %}"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+	<!-- <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css"> -->
+	<script>
+		{% for msg in messages %}
+		swal({
+			title: "Welcome!{{username}}",
+			text: "{{ msg }}",
+			icon: "success",
+			button: "OK!",
+		});
+		{% endfor %}
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			$('#bootstrapdatatable').DataTable({
+				"aLengthMenu": [[3, 5, 10, 25, -1], [3, 5, 10, 25, "All"]],
+				"iDisplayLength": 3
+			}
+			);
+		});
+	</script>
+</body>
+
+</html>

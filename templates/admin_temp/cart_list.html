@@ -1,0 +1,101 @@
+{% extends 'admin_temp/base.html' %}
+<!-- {% load crispy_forms_tags %} -->
+{% load static %}
+{% block content %}
+
+<style>
+    img {
+        border-radius: 50% 50% 50% 50%;
+        width: 50px;
+        height: 50px;
+    }
+</style>
+Sidebar Area End Here
+<div class="dashboard-content-one">
+    <!-- Breadcubs Area Start Here -->
+    <div class="breadcrumbs-area">
+        <h3>Students</h3>
+        <ul>
+            <li>
+                <a href="{% url 'home:home' %}">Home</a>
+            </li>
+            <li>All Cart List</li>
+        </ul>
+    </div>
+    <!-- Breadcubs Area End Here -->
+    <!-- Student Table Area Start Here -->
+    <div class="card height-auto">
+        <div class="card-body">
+            <div class="heading-layout1">
+                <div class="item-title">
+                    <h3>All Cart Data</h3>
+                </div>
+            </div>
+            <div class="table-responsive">
+                {% if object_list %}
+                <table class="table table-striped" id="myStaticDatatable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Cart.ID
+                            </th>
+                            <th>
+                                User.ID
+                            </th>
+                            <th>
+                                Username
+                            </th>
+                            <th>
+                                Product.Image
+                            </th>
+                            <th>
+                                Product.Name
+                            </th>
+                            <th>
+                                Product.price
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for Cart in object_list %}
+                        <tr>
+                            <td>
+                                {{Cart.id}}
+                            </td>
+                            <td>
+                                {{Cart.user.id}}
+                            </td>
+                            <td>
+                                {{Cart.user.username}}
+                            </td>
+                            <td class="py-1">
+                                <img src="{{Cart.product.product_image.url}}" height="25px" width="25px" alt="image" />
+                            </td>
+                            <td>
+                                {{Cart.product.product_name}}
+                            </td>
+
+                            <td>
+                                {{Cart.product.product_price}}
+                            </td>
+                            <td>
+                                {{Cart.date}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div>
+                    <h4 class="text-center">Your cart list data is empty </h4>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

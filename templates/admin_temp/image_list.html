@@ -1,0 +1,109 @@
+{% extends 'admin_temp/base.html' %}
+<!-- {% load crispy_forms_tags %} -->
+{% load static %}
+{% block content %}
+
+<style>
+    img {
+        border-radius: 50% 50% 50% 50%;
+        width: 50px;
+        height: 50px;
+    }
+</style>
+Sidebar Area End Here
+<div class="dashboard-content-one">
+    <!-- Breadcubs Area Start Here -->
+    <div class="breadcrumbs-area">
+        <h3>Students</h3>
+        <ul>
+            <li>
+                <a href="{% url 'home:home' %}">Home</a>
+            </li>
+            <li>All Image List</li>
+        </ul>
+    </div>
+    <a href="{% url 'home:image_add' %}" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Add Event Images</a>
+    <!-- Breadcubs Area End Here -->
+    <!-- Student Table Area Start Here -->
+    <div class="card height-auto">
+        <div class="card-body">
+            <div class="heading-layout1">
+                <div class="item-title">
+                    <h3>All Images List</h3>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="myStaticDatatable" class="table table-striped" border="2">
+                    <thead>
+                        <tr>
+                            <th>
+                                Image.ID
+                            </th>
+                            <th>
+                                User.ID
+                            </th>
+                            <th>
+                                Username
+                            </th>
+
+                            <th>
+                                Image.Name
+                            </th>
+                            <th>
+                                Image
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Update
+                            </th>
+                            <th>
+                                Delete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for image in object_list %}
+                        <tr>
+                            <td>
+                                {{image.id}}
+                            </td>
+                            <td>
+                                {{image.user.id}}
+                            </td>
+                            <td>
+                                {{image.user.username}}
+                            </td>
+
+                            <td>
+                                {{image.name}}
+                            </td>
+                            <td class="py-1">
+
+                                <img src="{{image.schoolimage.url}}" height="45px" width="45px" alt="" />
+                            </td>
+                            <td>
+                                {{image.date}}
+                            </td>
+                            <td>
+                                <a href="{% url 'home:image_update' image.id %}">
+                                    <span class="fas fa-edit mr-2"></span>Edit
+                                </a>
+                            </td>
+                            <td>
+                                <a class="dropdown-item text-danger delete_item"
+                                    href="{% url 'home:image_delete' image.id  %}">
+                                    <span class="fas fa-trash-alt mr-2"></span>Remove
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

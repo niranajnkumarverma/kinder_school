@@ -1,0 +1,100 @@
+{% extends 'admin_temp/base.html' %}
+<!-- {% load crispy_forms_tags %} -->
+{% load static %}
+{% block content %}
+
+<style>
+    img {
+        border-radius: 50% 50% 50% 50%;
+        width: 50px;
+        height: 50px;
+    }
+    </style>
+<div class="dashboard-content-one">
+    <!-- Breadcubs Area Start Here -->
+    <div class="breadcrumbs-area">
+        <ul>
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>Order Address Details</li>
+        </ul>
+    </div>
+    <!-- Breadcubs Area End Here -->
+    <!-- Student Details Area Start Here -->
+    <div class="card height-auto">
+        <div class="card-body">
+            <div class="heading-layout1">
+                <div class="item-title">
+                    <h3>Order Address</h3>
+                </div>
+               
+            </div>
+            <div class="single-info-details">
+                
+                <div class="item-content">
+                    <div class="header-inline item-header">
+                        <div class="header-elements">
+                            <ul>
+                                <li><a href="#"><i class="far fa-edit"></i></a></li>
+                                <li><a href="#"><i class="fas fa-print"></i></a></li>
+                                <li><a href="#"><i class="fas fa-download"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="info-table table-responsive">
+                        <table border="1" >
+                            <tbody>
+                                {% for add in order_address %}
+                                <tr>
+                                    <td>Name:</td>
+                                    <td>{{user.username}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Gender:</td>
+                                    <td class="font-medium text-dark-medium">{{add.gender}}</td>
+                                </tr>
+                              
+                                <tr>
+                                    <td>Address:</td>
+                                    <td class="font-medium text-dark-medium">{{add.address}}, {{add.city}}, {{add.pincode}},  {{add.state}}, {{add.country}}</td>
+                                </tr>
+                            
+                                <tr>
+                                    <td>Phone:</td>
+                                    <td class="font-medium text-dark-medium">{{add.mobile}}</td>
+                                </tr>
+                                <tr>
+                                    <td>E-mail:</td>
+                                    <td class="font-medium text-dark-medium">{{user.email}}</td>
+                                </tr>
+                                {% endfor %}
+                                {% for items in orderite %}
+                              
+                                <tr>
+                                    <td>Product Name:</td>
+                                    <td class="font-medium text-dark-medium">{{items.product.product_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Brand:</td>
+                                    <td class="font-medium text-dark-medium">{{items.product.brand_name}}</td>
+                                </tr>
+                                {% endfor %}
+                                {% for amount in order_amount %}
+                              
+                                <tr>
+                                    <td>Total:</td>
+                                    <td class="font-medium text-dark-medium">{{amount.total_price}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

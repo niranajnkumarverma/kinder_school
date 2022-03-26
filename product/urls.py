@@ -1,0 +1,10 @@
+from django.urls import path
+from product.views import ShopView 
+
+
+app_name = 'product'
+
+urlpatterns = [
+         path('shopview/',ShopView.as_view(), name='shopview'),
+       
+]

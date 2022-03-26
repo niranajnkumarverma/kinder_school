@@ -1,0 +1,84 @@
+﻿{% extends 'user/base.html' %}
+{% block content %}
+{% load static %}
+
+<!-- START TITLE TOP -->
+<section class="section-content"
+	style="background-image: url({% static '/user_static/img/bg/section-bg.jpg' %});  background-size:cover; background-position: center center;">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<h1 class="section-blog-title">Shop page</h1>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="promotion section-padding">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<div class="single_promo">
+					<h1>Welcome to <strong>ChildCare</strong> kindergarten School</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="shop-page">
+	<div class="container">
+		<div class="row">
+			<div class="section-title text-center">
+				<div class="section-title">
+					<h2>Some Books you can buy</h2>
+					<span></span>
+				</div>
+				<form class="mg-b-20">
+					<div class="row gutters-8">
+						<div class="btn-group">
+							<button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">
+								Choose Brand
+							</button>
+							<div class="dropdown-menu">
+
+								<li><a href="{% url 'product:shopview' %}">All Brand</a></li>
+								
+								{% for brand in brands %}
+								<li><a href="{% url 'product:shopview' %}?brand={{brand.id}}">{{brand.brand_name}}</a>
+								</li>
+								{% endfor %}
+								
+							</div>
+						</div>
+				</form>
+			</div>
+		</div>
+		{% for product in object_list %}
+		<div class="col-lg-3">
+			<div class="single_product">
+				<div class="product_image">
+					<img src="{{product.product_image.url}}" alt="">
+					<div class="new_badge">New</div>
+					<div class="box-content">
+						<a href="#"><i class="fa fa-heart-o"></i></a>
+
+						<a
+							href="{% if not user.is_authenticated %}{% url 'student:login' %} {% else %}{% url 'order:addtocart' pk=product.id %}{% endif %}"><i
+								class="fa fa-cart-plus"></i></a>
+						<a href="#"><i class="fa fa-search"></i></a>
+					</div>
+				</div>
+				<div class="product_btm_text">
+					<h4><a href="#">{{product.product_name}}</a></h4>
+					<div>
+						<span>{{product.brand_name}}</span>
+
+					</div>
+					<span class="price">{{product.product_price}}</span>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</section>
+{% endblock %}
