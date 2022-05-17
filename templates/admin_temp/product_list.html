@@ -1,58 +1,89 @@
 {% extends 'admin_temp/base.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
 
 <style>
-    img {
-        border-radius: 50% 50% 50% 50%;
-        width: 50px;
-        height: 50px;
-    }
+    .divMarquee {
+            width: relative;
+            display: inline-block;
+            position: relative; 
+            -webkit-animation: myfirst 5s infinite;
+            -webkit-animation-direction: alternate;
+            animation: myAni 5s infinite;
+            animation-direction: initial;
+        }
+
+     
+        /*If you want to change the direction just change the left values or make them right..*/
+        @keyframes myAni {
+            0% {left: -50%;top: 0px;}
+            100% {left: 110%;top: 0px;}
+        }
+        .modal-body {
+            overflow: hidden;
+        }
 </style>
+<style>
+    .Marquee{
+    font-size: 30px;
+    font-weight: 800;
+    color: #8ebf42;
+    font-family: sans-serif;
+    }
+  </style>
 <div class="dashboard-content-one">
-    <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>Products</h3>
+        <h3>Books</h3>
         <ul>
             <li>
                 <a href="{% url 'home:home' %}">Home</a>
             </li>
-            <li>All Products</li>
+            <li>All Books</li>
         </ul>
     </div>
-    <a href="{% url 'products:product_add' %}" class="btn-fill-lg bg-blue-dark text-center">Add Product
-        <span class="glyphicon glyphicon-plus"></span></a>
+
     <div class="card height-auto">
         <div class="card-body">
             <div class="heading-layout1">
                 <div class="item-title">
-                    <h3>All Product List</h3>
+                    <h3>All Books List</h3>
                 </div>
             </div>
             <div class="table-responsive">
-                <table id="myStaticDatatable" width="100%" class="table table-striped  stripe row-border order-column">
+                <table id="myStaticDatatable" width="100%" class="table table-striped">
                     <thead>
                         <tr>
                             <th>
-                                Product.ID
+                                S.NO
                             </th>
                             <th>
                                 Admin.Name
                             </th>
                             <th>
-                                Product.Image
+                                Book.Image
+                            </th>
+                           
+                            <th>
+                                Publisher.Name
                             </th>
                             <th>
-                                Product.Name
+                                Author.Name
                             </th>
                             <th>
-                                Brand.Name
+                                Book.Name
                             </th>
                             <th>
-                                Product.price
+                                Book.Description
                             </th>
                             <th>
-                                Date
+                                Book.price
+                            </th>
+                            <th>
+                                Created_at
+                            </th>
+                            <th>
+                                Updated_at
                             </th>
                             <th>
                                 Update
@@ -63,54 +94,231 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for prod in object_list %}
+                        {% for book in book_data %}
                         <tr>
                             <td>
-                                {{prod.id}}
+                                {{book.id}}
                             </td>
                             <td>
                                 {{user.username}}
                             </td>
                             <td>
-                                <img src="{{prod.product_image.url}}" height="25px" width="35px">
+                                <img src="{{book.book_image.url}}" height="25px" width="35px">
+                            </td>
+                           
+                            <td>
+                                {{book.publisher_name}}
                             </td>
                             <td>
-                                {{prod.product_name}}
+                                {{book.author_name}}
                             </td>
                             <td>
-                                {{prod.brand_name}}
+                                {{book.book_name}}
                             </td>
                             <td>
-                                {{prod.product_price}}
+                                {{book.book_description}}
                             </td>
                             <td>
-                                {{prod.date}}
+                                {{book.book_price}}
                             </td>
                             <td>
-                                <a href="{% url 'products:product_update' prod.id %}">
+                                {{book.created_at }}
+                            </td>
+                            <td>
+                                {{book.updated_at }}
+                            </td>
+                            <td>
+                                <a href="{% url 'products:product_update' book.id %}" >
                                     <span class="fas fa-edit mr-2"></span>Edit
                                 </a>
                             </td>
                             <td>
-                                <a class="dropdown-item text-danger delete_item"
-                                    href="{% url 'products:product_delete' prod.id %}">
+                                <a class="dropdown-item text-danger delete_item" href="#"
+                                    onclick="product_delete({{ book.id }})">
                                     <span class="fas fa-trash-alt mr-2"></span>Remove
                                 </a>
                             </td>
                         </tr>
+                       
+                    </div>
                         {% endfor %}
-
                     </tbody>
-                    <div class="modal fade" id="modal-product">
-                        <div class="modal-dialog">
+            
+                    <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal"
+                        data-target="#addproductModal" data-whatever="@mdo">Add Books <span
+                            class="glyphicon glyphicon-plus"></span></button>
+                    <br><br>
+                    <div class="modal fade" id="addproductModal" tabindex="-1" role="dialog"
+                        aria-labelledby="addproductModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
                             <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="modal-body">
+                                        <div class="divMarquee">
+                                            <h5 class="modal-title"><img src="{% static '/user_static/img/logo2.png' %}"></h5>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form enctype="multipart/form-data" id="addproduct-form"
+                                        action="#" method="POST"
+                                        class="new-added-form">
+                                        
+                                        <div class="form-group">
+                                            {% csrf_token %}
+                                            {{ form|crispy }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger"
+                                                data-dismiss="modal">Close</button>
 
+                                            <button type="submit"  class="btn btn-primary">Add Book</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </table>
+                <!-- {% for pro in product_data %} -->
+                <div class="modal fade" id="updateproductModal" tabindex="-1" role="dialog"
+                aria-labelledby="updateproductModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="updateproductModalModalLabel">Update ({{ book.book_name }})</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            
+                            <form enctype="multipart/form-data"
+                                action="" method="post"
+                                class="modal-content edit_product_form">
+                                <div class="form-group">
+                                    {% csrf_token %}
+                                    {{ form|crispy }}
+                                   
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger"
+                                        data-dismiss="modal">Close</button>
+
+                                    <button type="submit"  class="btn btn-primary">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- {% endfor %} -->
             </div>
         </div>
     </div>
 </div>
+<!-- <script>
+    $("#addproduct-form").submit(function (e) {
+        e.preventDefault();
+        var serializedData = $(this).serialize();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'products:add_product_ajax' %}",
+            data: serializedData,
+            'user': '{{request.user.id}}',
+            success: function (response) {
+                swal.fire({
+                    title: "Success!",
+                    text: "Product has been added successfully!!",
+                    icon: "success",
+                    button: "OK!",
+                });
+                $("#addproduct-form").trigger('reset');
+                $("#id_publisher_name").focus();
+
+
+                var instance = JSON.parse(response["instance"]);
+                var fields = instance[0]["fields"];
+                var id = instance[0]["pk"];
+
+
+                $("#my_books tbody").append(
+                    `<tr>
+                    <td>${id || ""}</td>
+                    <td>{{user.username}}</td>
+                    <td>${fields["author_name"] || ""}</td>
+                    <td>${fields["publisher_name"] || ""}</td>
+                    <td>${fields["book_name"] || ""}</td>
+                    <td>${fields["book_description"] || ""}</td>
+                    <td>${fields["book_price"] || ""}</td>
+                    <td>${fields["book_image"] || ""}</td>
+                    <td>${fields["created_at"] || ""}</td>
+                    <td>${fields["updated_at"] || ""}</td>                 
+                    <td>
+                        <a href="" 
+                               >
+                                    <span class="fas fa-edit mr-2"></span>Edit
+                                </a>
+                            </td>
+                            <td>
+                                <a class="dropdown-item text-danger delete_item" href="#"
+                                    onclick="product_delete(${id})">
+                                    <span class="fas fa-trash-alt mr-2"></span>Remove
+                                </a>
+
+                            </td>                                                              
+                    </tr>`
+                )
+            },
+            error: function (response) {
+                alert(response["responseJSON"]["error"]);
+            }
+        })
+    })
+</script> -->
+
+<!-- <script>
+    $(document).ready(function () {
+        $('#addproduct-form').submit(function (e) {
+            // alert("hey hello")
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'products:add_product_ajax' %}",
+                data: $('#addproduct-form').serialize(formData),
+                // data:  formData,
+                type: 'POST',
+                cache: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function (response) {
+                    swal.fire({
+                        title: "Success!",
+                        text: "Product added successfully!!",
+                        icon: "success",
+                        button: "OK!",
+                    });
+                    $("#addproduct-form")[0].reset();
+                    // document.location = "/admin/products/add_product_ajax/"
+                    // alert('data saved')          
+                },
+                error: function (response) {
+                    swal.fire({
+                        title: "warning!",
+                        text: "Ohhh!!!",
+                        icon: "warning",
+                        button: "OK!",
+                    });
+                    // alert("failure data")
+                    // console.log(response)
+                }
+
+            })
+
+        })
+    })
+
+</script> -->
 {% endblock %}

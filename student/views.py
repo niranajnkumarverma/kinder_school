@@ -1,4 +1,3 @@
-from urllib import request
 from django.shortcuts import redirect
 from django.views.generic.list import ListView
 from django.views.generic import View
@@ -7,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from student.forms import LoginForm, ProfileForm
+from student.forms import ProfileForm
 from django.contrib.auth.views import LoginView  
 from home.models import User
 from order.models import Cart
@@ -20,14 +19,6 @@ from django.contrib import messages
 from django.contrib.auth.views import PasswordChangeView
 
 
-class UserLogin(LoginView):
-    from_class = LoginForm
-    success_url = reverse_lazy('student:student_profile')
-    template_name = 'user/index.html' 
-
-    def form_valid(self,form):
-        messages.success(self.request,"You are Login succesfully")
-        return super().form_valid(form)
 
 
 class ProfileView(LoginRequiredMixin,TemplateView):
@@ -35,8 +26,9 @@ class ProfileView(LoginRequiredMixin,TemplateView):
    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        prof = Profile.objects.filter(user=self.request.user)
-        context['address']=prof
+        profile = Profile.objects.filter(user=self.request.user)
+        cart = Cart.objects.filter(user=self.request.user)[::-1]       
+        context = {'profile':profile,'cart_data':{'total_cart': len(cart)}}
         return context
  
            
@@ -48,7 +40,6 @@ class StudentUpdateProfile(LoginRequiredMixin,TemplateView):
     def post(self, request):
         post_data = request.POST or None
         file_data = request.FILES or None
-        # user_form = MyUserCreationForm(post_data, instance=request.user)
         profile_form = Profile.objects.get_or_create(user=self.request.user)
         profile_form = ProfileForm(post_data, file_data, instance=request.user.profile)
        
@@ -78,32 +69,5 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-# class ChangePassword(LoginRequiredMixin,TemplateView):
-
-#     def get(self, request, *args, **kwargs):
-#         form_class = MyPasswordChangeForm
-#         form = self.form_class(self.request.user)
-#         return render(request, 'password.html',{'form': form,})
-
-#     def post(self, request, *args, **kwargs):
-#         form = self.form_class(request.user, request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             update_session_auth_hash(request, user)  # Important!
-#             return render(request, 'password.html', {'form': form, 'password_changed': True})
-#         else:
-#             return render(request, 'password.html', {'form': form, 'password_changed': False})
 
   

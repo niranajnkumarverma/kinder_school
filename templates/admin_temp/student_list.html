@@ -76,6 +76,9 @@
                                 Last.Login
                             </th>
                             <th>
+                                Status
+                            </th>
+                            <th>
                                 Action
                             </th>
                         </tr>
@@ -121,14 +124,14 @@
                                 {{use.user.last_login}}
                             </td>
                             <td>
+                                {{use.user.is_active}}
+                            </td>
+                            <td>
                                 <a class="dropdown-item text-danger delete_item"
                                     href="{% url 'students:user_delete' pk=use.id %}">
                                     <span class="fas fa-trash-alt mr-2"></span>Remove
                                 </a>
                             </td>
-                           
-
-
                         </tr>
                         {% endfor %}
 

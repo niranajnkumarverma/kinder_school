@@ -58,7 +58,21 @@ Version: 1.0
 /*=======================================================================
 [01] TYPOGRAPHY
 =========================================================================*/
+
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900);
+
+
+
+
+
+ /* This is image size and sweet alert2 message popup size */
+
+.swal2-popup {
+  font-size: 1.6rem !important;
+  font-family: Georgia, serif;
+}
+
+
 html {
   height: 100%;
   font-size: 62.5%;
@@ -88,7 +102,7 @@ h5,
 h6 {
   font-weight: 400;
   font-family: 'Roboto', sans-serif;
-  margin: 0 0 20px 0;
+  margin: 0 0 3px 0;
   color: #111111;
 }
 h1,
@@ -753,8 +767,11 @@ h6 {
 }
 /*=============== 2.7 Modal ==================*/
 .modal .modal-dialog .modal-content {
-  border: none;
+  border:none;
+  border-bottom: 1px solid #262727;
+  background-color: rgb(219, 175, 175);
 }
+
 .modal .modal-dialog .modal-content .modal-header {
   padding: 15px 20px;
   align-items: center;
@@ -769,7 +786,7 @@ h6 {
   outline: none;
 }
 .modal .modal-dialog .modal-content .modal-body {
-  padding: 20px;
+  padding: 7px;
 }
 .modal .modal-dialog .modal-content .modal-footer {
   padding: 15px 20px;
@@ -1437,7 +1454,7 @@ a:focus {
 }
 img {
   max-width: 100%;
-  height: auto;
+  height: 48px;
 }
 ul {
   list-style: outside none none;
@@ -1493,7 +1510,7 @@ ul {
   box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.1);
 }
 .nav-bar-header-one {
-  background: linear-gradient(to right, #ff9d01, #ffaa01);
+  background: linear-gradient(to right, #131212, #ff1201);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1520,7 +1537,7 @@ ul {
 }
 .nav-bar-header-one .header-logo a {
   display: block;
-  padding: 10px 0;
+  padding: 11px 0;
 }
 @media only screen and (max-width: 767px) {
   .nav-bar-header-one .toggle-button {
@@ -1625,9 +1642,9 @@ ul {
     align-items: center;
   }
 }
-.header-main-menu .navbar-nav .navbar-item:last-child {
+/* .header-main-menu .navbar-nav .navbar-item:last-child {
   margin-right: 0;
-}
+} */
 @media only screen and (max-width: 991px) {
   .header-main-menu .navbar-nav .header-search-bar {
     display: none;

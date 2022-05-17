@@ -1,0 +1,242 @@
+{% extends 'admin_temp/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+
+<div class="dashboard-content-one">
+    <!-- Breadcubs Area Start Here -->
+    <div class="breadcrumbs-area">
+        <h3>Publisher</h3>
+        <ul>
+            <li>
+                <a href="{% url 'home:home' %}">Home</a>
+            </li>
+            <li>All Publisher List</li>
+        </ul>
+    </div>
+
+    <!-- Student Table Area Start Here -->
+    <div class="card height-auto">
+        <div class="card-body">
+            <div class="heading-layout1">
+                <div class="item-title">
+                    <h3>All Publisher Data</h3>
+                </div>
+            </div>
+            <!-- id="myStaticDatatable" -->
+            <div class="table-responsive">
+                <table id="my_publishers" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Publisher ID
+                            </th>
+
+                            <th>
+                                Admin
+                            </th>
+
+                            <th>
+                                Publisher.Name
+                            </th>
+                            <th>
+                                Created_at
+                            </th>
+                            <th>
+                                updated_at
+                            </th>
+                            <th>
+                                Update
+                            </th>
+                            <th>
+                                Delete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pub in publishers %}
+                        <tr>
+                            <td>
+                                {{pub.id}}
+                            </td>
+
+                            <td>
+                                {{user.username}}
+                            </td>
+                            <td>
+                                {{pub.publisher_name}}
+                            </td>
+                            <td>
+                                {{pub.created_at}}
+                            </td>
+                            <td>
+                                {{pub.updated_at}}
+                            </td>
+                            <td>
+
+
+                                <a href="{% url 'products:publisher_update' pub.id %}" data-toggle="modal"
+                                    data-target="#update_publisherModal" data-whatever="@mdo">
+                                    <span class="fas fa-edit mr-2"></span>Edit
+                                </a>
+                            </td>
+                            <td>
+
+
+                                <a class="dropdown-item text-danger delete_item" href="#"
+                                    onclick="publisher_delete({{ pub.id }})">
+                                    <span class="fas fa-trash-alt mr-2"></span>Remove
+                                </a>
+
+                            </td>
+                        </tr>
+                        <div class="modal fade" id="update_publisherModal" tabindex="-1" role="dialog"
+                            aria-labelledby="update_publisherLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="update_publisherModal">Update Publisher</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form enctype="multipart/form-data"
+                                            action="{% url 'products:publisher_update' pub.id %}" method="POST"
+                                            class="new-added-form">
+                                            <div class="form-group">
+                                                {% csrf_token %}
+                                                {{ update_form|crispy }}
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                    data-dismiss="modal">Close</button>
+
+                                                <button type="submit" class="btn btn-primary">Update Publisher</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                    <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal"
+                        data-target="#publisherModal" data-whatever="@mdo">Add Publisher <span
+                            class="glyphicon glyphicon-plus"></span></button>
+                    <br><br>
+                    <div class="modal fade" id="publisherModal" tabindex="-1" role="dialog"
+                        aria-labelledby="publisherModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="publisherModalLabel">Add New Publisher</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form enctype="multipart/form-data" id="publisher-form" action="#" method="POST"
+                                        class="new-added-form">
+                                        <!-- <div class="alert alert-danger alert-dismissible" role="alert">
+                                            <div id="form_errors">
+                                                {% for key, value in form.errors.items %}
+                                                <strong>{{ value }}</strong>
+                                                {% endfor %}
+                                            </div>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div> -->
+                                        <div class="form-group">
+                                            {% csrf_token %}
+                                            {{ publisher_form|crispy }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger"
+                                                data-dismiss="modal">Close</button>
+
+                                            <button type="submit" class="btn btn-primary">Add Publisher</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $("#publisher-form").submit(function (e) {
+        e.preventDefault();
+        var serializedData = $(this).serialize();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'products:add_publisher' %}",
+            data: serializedData,
+            'user': '{{request.user.id}}',
+            success: function (response) {
+                swal.fire({
+                    title: "Success!",
+                    text: "Publisher has been added successfully!!",
+                    icon: "success",
+                    button: "OK!",
+                });
+                $("#publisher-form").trigger('reset');
+                $("#id_publisher_name").focus();
+
+
+                var instance = JSON.parse(response["instance"]);
+                var fields = instance[0]["fields"];
+                var id = instance[0]["pk"];
+
+
+                $("#my_publishers tbody").append(
+                    `<tr>
+                    <td>${id || ""}</td>
+                    <td>{{user.username}}</td>
+                    <td>${fields["publisher_name"] || ""}</td>
+                    <td>${fields["created_at"] || ""}</td>
+                    <td>${fields["updated_at"] || ""}</td>                 
+                    <td>
+                        <a href="" 
+                               >
+                                    <span class="fas fa-edit mr-2"></span>Edit
+                                </a>
+                            </td>
+                            <td>
+                                <a class="dropdown-item text-danger delete_item" href="#"
+                                    onclick="publisher_delete(${id})">
+                                    <span class="fas fa-trash-alt mr-2"></span>Remove
+                                </a>
+
+                            </td>                                                              
+                    </tr>`
+                )
+            },
+            error: function (response) {
+                alert(response["responseJSON"]["error"]);
+            }
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $('#my_publishers').dataTable({
+        });
+    });
+</script>
+
+<!-- <script>
+    $(document).ready(function(){
+        $("#publisherModal").modal('show');
+    });
+</script> -->
+{% endblock %}

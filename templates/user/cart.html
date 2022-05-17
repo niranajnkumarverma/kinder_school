@@ -1,32 +1,6 @@
 {% extends 'user/base.html' %}
 {% block content %}
 {% load static %}
-<style>
-    table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    td,
-    th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
-
-    tr:nth-child(even) {
-        background-color: #dddddd;
-    }
-</style>
-<style>
-    #circle {
-        border-radius: 50% 50% 50% 50%;
-        width: 50px;
-        height: 50px;
-    }
-</style>
-
 <br></br>
 <div class="container">
     {% if cart_data.cart %}
@@ -38,7 +12,7 @@
                 <table class="table" border="1">
                     <thead class="thead-dark">
                         <tr>
-                            <th>Product</th>
+                            <th>Book</th>
                             <th>Price</th>
                             <th>Qunantity</th>
                             <th>Total</th>
@@ -50,15 +24,15 @@
                         <tr>
                             <td data-title="Product">
                                 <div class="cart-product">
-                                    <img id="circle" src="{{cart.product.product_image.url}}">
+                                    <img id="circle" src="{{cart.book.book_image.url}}">
                                     <div class="cart-product-body">
-                                        <h6> <a href="#">{{cart.product.product_name}}</a></h6>
+                                        <h6> <a href="#">{{cart.book.book_name}}</a></h6>
 
                                     </div>
                                 </div>
                             </td>
-                            <td data-title="Price"> <strong><i class="fa fa-rupee-sign"></i>
-                                    {{cart.product.product_price}}</strong> </td>
+                            <td data-title="Price"> <strong><i  class="fa fa-inr" style="font-size:14px"></i>
+                                    {{cart.book.book_price}}</strong> </td>
                             <td class="quantity" data-title="quantity">
                                 <form method="POST" action="{% url 'order:updatecart' pk=cart.pk %}"
                                     onchange="this.submit();">
@@ -68,11 +42,11 @@
                                 </form>
                             </td>
                             <td data-title="Total">
-                                <strong><i class="fa fa-rupee-sign"></i> {{cart.total}}</strong>
+                                <strong><i  class="fa fa-inr" style="font-size:14px"></i> {{cart.total}}</strong>
                             </td>
 
                             <td>
-                                <p class="center" title="Delete"><a href="{% url 'order:deletecart' pk=cart.pk %}"
+                                <p class="center" title="Delete"><a href="#" onclick="card_delete({{ cart.id }})"
                                         class="btn btn-danger btn-xs" data-title="Delete"><span
                                             class="glyphicon glyphicon-trash"></span></a></p>
                             </td>
@@ -90,16 +64,16 @@
                         <tbody>
                             <tr>
                                 <th>Subtotal</th>
-                                <td><i class="fa fa-rupee-sign"></i> {{cart_data.total_cart_amount}}</td>
+                                <td><i class="fa fa-inr" style="font-size:14px"></i> {{cart_data.total_cart_amount}}</td>
                             </tr>
                             <tr>
-                                <th>Tax</th>
-                                <td><i class="fa fa-rupee-sign"></i> {{cart_data.tax}} (18%)</i>
+                                <th>GST</th>
+                                <td><i  class="fa fa-inr" style="font-size:14px"></i> {{cart_data.tax}} (18%)</i>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Total</th>
-                                <td> <b><i class="fa fa-rupee-sign"></i> {{cart_data.final_amount}}</b> </td>
+                                <td> <b><i  class="fa fa-inr" style="font-size:14px"></i> {{cart_data.final_amount}}</b> </td>
                             </tr>
                         </tbody>
                     </table>
@@ -116,13 +90,14 @@
 
                             <!-- <button type="submit" class="btn btn-primary">Pay with Paytm
                                 {{cart_data.final_amount}}</button> -->
-                            <input type="submit" value="Pay Pyatm INR  {{cart_data.final_amount}}" class="btn btn-primary py-3 px-4">
+                            <input type="submit" value="Pay Pyatm INR {{cart_data.final_amount}}"
+                                class="btn btn-primary fa fa-inr">
                         </div>
                     </form>
                     <form action="{% url 'order:create-checkout-session' %}" method="POST">
                         {% csrf_token %}
-                        
-                        <button type="submit" class="btn btn-danger">Pay with Card
+
+                        <button type="submit" class="btn btn-danger fa fa-inr">Pay with Card
                             {{cart_data.final_amount}}</button>
 
                         <!-- <div class="form-group">
@@ -136,7 +111,7 @@
 
                         </div> -->
                     </form>
-                   
+
                 </div>
             </div>
         </div>
@@ -145,11 +120,12 @@
     <div class="col-md-12 ftco-animate">
         <div class="text-center">
             <span class="icon-remove_shopping_cart" style="font-size: 5rem"></span>
+            <i class="fa fa-shopping-cart fa-5x"></i>
             <h2 class="mt-3">Your cart is empty!!!!.</h2>
         </div>
     </div>
     {% endif %}
-    
+
 </div>
 <br>
 {% endblock %}

@@ -33,12 +33,13 @@
 
 
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-    <link href="maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+
 
     <!-- Modernize js -->
     <script src="{% static '/admin_static/js/modernizr-3.6.0.min.js' %}"></script>
 
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
@@ -48,6 +49,7 @@
 </head>
 
 <body>
+
     <!-- Preloader Start Here -->
     <div id="preloader"></div>
     <!-- Preloader End Here -->
@@ -93,36 +95,7 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
-                    <li class="navbar-item dropdown header-admin">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <div class="admin-title">
-                                <h5 class="item-title">Stevne Zone</h5>
-                                <span>Admin</span>
-                            </div>
-                            <div class="admin-img">
-                                <img src="{% static '/admin_static/img/figure/admin.jpg' %}" alt="Admin">
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title">Steven Zone</h6>
-                            </div>
-                            <div class="item-content">
-                                <ul class="settings-list">
-                                    <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
-                                    <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
-                                    <li><a href="#"><i
-                                                class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
-                                    </li>
-                                    <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                    <li><a href="{% url 'home:admin_login' %}"><i
-                                                class="flaticon-turn-off"></i>Login</a></li>
-
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
+                 
                     <li class="navbar-item dropdown header-message">
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                             aria-expanded="false">
@@ -242,7 +215,9 @@
                             </div>
                         </div>
                     </li>
-                    <li class="navbar-item dropdown header-language">
+                
+                
+                    <!-- <li class="navbar-item dropdown header-language">
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                             aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -250,6 +225,36 @@
                             <a class="dropdown-item" href="#">Spanish</a>
                             <a class="dropdown-item" href="#">Franchis</a>
                             <a class="dropdown-item" href="#">Chiness</a>
+                        </div>
+                    </li> -->
+                    <li class="navbar-item dropdown header-admin">
+                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                            aria-expanded="false">
+                            <div class="admin-title">
+                                <h5 class="item-title">{{ user.username }}</h5>
+                              
+                            </div>
+                            <div class="admin-img">
+                                <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static '/admin_static/img/figure/admin.jpg' %} {% endif %}"
+                                class="rounded-circle" height="50px" width="50px" alt="Admin">
+                                <!-- <img src="{% static '/admin_static/img/figure/admin.jpg' %}" alt="Admin"> -->
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            
+                            <div class="item-content">
+                                <ul class="settings-list">
+                                    <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
+                                    <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
+                                    <li><a href="#"><i
+                                                class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
+                                    </li>
+                                    <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                    <li><a href="{% url 'home:admin_logout' %}"><i
+                                                class="flaticon-turn-off"></i>Logout</a></li>
+
+                                </ul>
+                            </div>
                         </div>
                     </li>
                 </ul>
@@ -268,15 +273,16 @@
                 <div class="sidebar-menu-content">
                     <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                            <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Admin
+                                    Dashboard</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
                                     <a href="{% url 'home:video_list' %}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Admin</a>
+                                            class="fas fa-angle-right"></i>Cultural Video</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{% url 'home:image_list' %}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Image Add</a>
+                                    <a href="{% url 'home:image_add' %}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Event Images</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="index3.html" class="nav-link"><i
@@ -313,8 +319,8 @@
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Shoping
-                                    Product</span></a>
+                            <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Shopping
+                                    Books</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
                                     <a href="{% url 'students:students' %}" class="nav-link"><i
@@ -322,14 +328,19 @@
                                         Users List</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{% url 'products:brand_list' %}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Brand List</a>
+                                    <a href="{% url 'products:publisher_list' %}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Publisher List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'products:add_author_ajax' %}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Author List</a>
                                 </li>
 
 
+
                                 <li class="nav-item">
-                                    <a href="{% url 'products:product_list' %}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Product List</a>
+                                    <a href="{% url 'products:add_product_ajax' %}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Books List</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{% url 'orders:cart_list' %}" class="nav-link"><i
@@ -355,7 +366,7 @@
                                             class="fas fa-angle-right"></i>Teacher Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    <a href="{% url 'teachers:add_teachers' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add
                                         Teacher</a>
                                 </li>
                                 <li class="nav-item">
@@ -376,7 +387,7 @@
                                             class="fas fa-angle-right"></i>Parents Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    <a href="" class="nav-link"><i class="fas fa-angle-right"></i>Add
                                         Parent</a>
                                 </li>
                             </ul>
@@ -509,13 +520,7 @@
             {% block content %}
             {% endblock %}
 
-            {% if messages %}
-            {% for msg in messages %}
-            <div class="alert alert-{{message.tags}}">
-                {{msg}}
-            </div>
-            {% endfor %}
-            {% endif %}
+
 
             <!-- jquery-->
             <script src="{% static '/admin_static/js/jquery-3.3.1.min.js' %}"></script>
@@ -540,26 +545,50 @@
             <!-- Custom Js -->
             <script src="{% static '/admin_static/js/main.js' %}"></script>
 
-            <!-- ### Sweet Alert message #### -->
-            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-            <!-- ### Datatable query ################# -->
-            <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+            <!-- ### SweetAlert2 CDN -------------#### -->
+            <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.1/dist/sweetalert2.all.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            
+                       <!-- ### ,,,,,,,,Load js file in Python datatable , sweetalert- meassge scripts  ### -->
+            <script src="{% static '/admin_static/js/sweetalert2_message.js' %}"></script>
+            <script src="{% static '/admin_static/js/ajax_add_product.js' %}"></script>
+            <script src="{% static '/admin_static/js/alldatatable.js' %}"></script>
 
-            <!-- ###    Order list datatable ### -->
-            <script src="{% static '/admin_static/js/order.js' %}"></script>
+            <!--  Ajax CDN ----------------------------------->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+           
+
+            <!-- ### Datatable query CDN ################# -->
+            <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+         
+            <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
+
+
+           
+            {% if messages %}
+            {% for msg in messages %}
             <script>
-                {% for msg in messages %}
-
-                swal({
-                    title: "Welcome!{{username}}",
+                swal.fire({
+                    title: "Success!",
                     text: "{{ msg }}",
                     icon: "success",
                     button: "OK!",
+
                 });
 
-
-                {% endfor %}
             </script>
+
+
+            {% endfor %}
+            {% endif %}
+
+            {% block js %}
+            {% endblock %}
         </div>
+
+        
 </body>
+
 </html>

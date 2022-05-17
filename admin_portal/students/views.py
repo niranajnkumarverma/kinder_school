@@ -17,7 +17,7 @@ class StudentsView(ListView):
 
 class AddUserView(CreateView):
     from_class = AddUserForm
-    fields = ['brand_name','product_name', 'product_price','product_image',]
+    fields = ['publisher_name','book_name', 'book_price','book_image',]
     queryset = User.objects.all()
   
     success_url = reverse_lazy('products:product_add')

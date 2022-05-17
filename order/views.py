@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from datetime import date, datetime
 from django.views.generic import ListView, CreateView
@@ -8,7 +9,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from order.models import Cart, Order, OrderItem, Transaction
-from product.models import Brand, Product
+from product.models import Publisher,Book
 from student.models import Profile
 from django.views.generic.base import View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -36,15 +37,15 @@ class AddToCartView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user = request.user
         # profile = Profile.objects.get(user=self.request.user)
-        product = Product.objects.get(pk=self.kwargs['pk'])
-        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,", product)
-        cart = Cart.objects.filter(product=product, user=user).first()
+        book = Book.objects.get(pk=self.kwargs['pk'])
+        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,", book)
+        cart = Cart.objects.filter(book=book, user=user).first()
         quantity = 1
         if cart:
             messages.warning(request, 'already exists in the cart')
         else:
-            cart = Cart(product=product, quantity=quantity,
-                        price=product.product_price, total=product.product_price, user=user)
+            cart = Cart(book=book, quantity=quantity,
+                        price=book.book_price, total=book.book_price, user=user)
             print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>,", cart)
             cart.save()
             messages.success(request, 'Product has been added to your cart!')
@@ -68,7 +69,6 @@ class CartView(LoginRequiredMixin, TemplateView):
             final_amount = total_cart_amount + tax
             context['cart_data'] = {'cart': cart, 'tax': tax, 'final_amount': final_amount,
                                     'total_cart_amount': total_cart_amount, 'total_cart': len(cart)}
-            # context['key'] =  settings.STRIPE_PUBLISHABLE_KEY
         return context
 
 
@@ -89,8 +89,8 @@ class CartUpdate(LoginRequiredMixin, TemplateView):
         cart.quantity = int(request.POST['qty'])
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
               type(cart.quantity), cart.quantity)
-        print(">>>>>>>>>>>>>>>>>>>>>", cart.product.product_price)
-        cart.total = cart.quantity * cart.product.product_price
+        print(">>>>>>>>>>>>>>>>>>>>>", cart.book.book_price)
+        cart.total = cart.quantity * cart.book.book_price
         cart.save()
         messages.success(request, 'Your Quanity has been Updated!')
         return redirect('order:cartview')
@@ -121,7 +121,7 @@ class OrderView(LoginRequiredMixin, CreateView):
         for car in cart:
             item = OrderItem.objects.create(
                 order=neworder,
-                product=car.product,
+                book=car.book,
                 price=car.price,
                 quantity=car.quantity,
                 total=car.total)
@@ -132,21 +132,17 @@ class OrderView(LoginRequiredMixin, CreateView):
 
         for c in cart:
             total_cart_amount = total_cart_amount + \
-                (c.product.product_price) * int(c.quantity)
+                (c.book.book_price) * int(c.quantity)
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>.", type(
             total_cart_amount), (total_cart_amount / 100) * 18)
         tax = (total_cart_amount / 100) * 18
         neworder.total_price = total_cart_amount+tax
         print(">>>>>>>>>>>>>>>>>>price total>", neworder.total_price)
-
         trackno = 'verma'+str(random.randint(1111111, 9999999))
         while Order.objects.filter(tracking_no=trackno) is None:
             trackno = 'verma'+str(random.randint(1111111, 9999999))
-
         neworder.tracking_no = trackno
-
         neworder.save()
-
         return redirect('product:shopview')
 
 
@@ -157,20 +153,15 @@ class OrderView(LoginRequiredMixin, CreateView):
 
 def initiate_payment(request):
     try:
-
         amount = float(request.POST['amount'])
-        # amount = 10
         print('final_amount', request.POST['amount'], type(
             request.POST['amount']))
     except Exception as e:
         print(e)
         return render(request, 'user/cart.html')
-
     transaction = Transaction.objects.create(amount=amount)
-
     transaction.save()
     merchant_key = settings.PAYTM_SECRET_KEY
-
     params = (
         ('MID', settings.PAYTM_MERCHANT_ID),
         ('ORDER_ID', str(transaction.order_id)),
@@ -186,13 +177,10 @@ def initiate_payment(request):
     )
 
     print('params ', params)
-
     paytm_params = dict(params)
     checksum = generate_checksum(paytm_params, merchant_key)
-
     transaction.checksum = checksum
     transaction.save()
-
     paytm_params['CHECKSUMHASH'] = checksum
     print('SENT: ', checksum)
     return render(request, 'user/redirect.html', context=paytm_params)
@@ -226,27 +214,22 @@ def callback(request):
 
 ###...............................STRIPE INTEGRATIONS ........................................##
 ######################## Stripe View ##########################################################
+
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
-
-
 class CreateCheckoutSessionView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         host = self.request.get_host()
         user = request.user
         neworder = Order()
         profile = Profile.objects.filter(user=self.request.user).first()
-
         neworder = Order.objects.create(
             user=self.request.user, profile=profile)
-
         cart = Cart.objects.filter(user=self.request.user)
-
         total_cart_amount = 0.00
-
         for c in cart:
             total_cart_amount = total_cart_amount + \
-                (c.product.product_price) * int(c.quantity)
-
+                (c.book.book_price) * int(c.quantity)
         tax = (total_cart_amount / 100) * 18
         neworder.total_price = total_cart_amount+tax
         checkout_session = stripe.checkout.Session.create(
@@ -257,25 +240,23 @@ class CreateCheckoutSessionView(LoginRequiredMixin, View):
                         'currency': 'inr',
                         'unit_amount': int(neworder.total_price * 100),
                         'product_data': {
-                            'name': 'school',
+                            'name': 'School Library Book online payment',
                             # 'images': ['https://i.imgur.com/EHyR2nP.png'],
                         },
                     },
-                    'quantity': 1,
+                    'quantity':1,
                 },
             ],
-
             mode='payment',
             success_url="http://{}{}".format(host,
                                              reverse('order:payment-success')),
             cancel_url="http://{}{}".format(host,
                                             reverse('order:payment-cancel')),
         )
-
         for car in cart:
             item = OrderItem.objects.create(
                 order=neworder,
-                product=car.product,
+                book=car.book,
                 price=car.price,
                 quantity=car.quantity,
                 total=car.total)
@@ -283,11 +264,8 @@ class CreateCheckoutSessionView(LoginRequiredMixin, View):
         trackno = 'verma'+str(random.randint(1111111, 9999999))
         while Order.objects.filter(tracking_no=trackno) is None:
             trackno = 'verma'+str(random.randint(1111111, 9999999))
-
         neworder.tracking_no = trackno
-
         neworder.save()
-
         # messages.success(request, 'Your order has been placed Succesfully!')
         return redirect(checkout_session.url, code=303)
 
@@ -356,13 +334,13 @@ def stripe_webhook(request):
             fulfill_order(order_id)
 
         customer_email = session["customer_details"]["email"]
-        product_id = session["metadata"]["product_id"]
+        book_id = session["metadata"]["book_id"]
 
-        product = Product.objects.get(id=product_id)
+        book = Book.objects.get(id=book_id)
 
         send_mail(
             subject="Here is your product",
-            message=f"Thanks for your purchase. Here is the product you ordered. The URL is {product.url}",
+            message=f"Thanks for your purchase. Here is the product you ordered. The URL is {book.url}",
             recipient_list=[customer_email],
             from_email="matt@test.com"
         )
@@ -374,13 +352,13 @@ def stripe_webhook(request):
         stripe_customer = stripe.Customer.retrieve(stripe_customer_id)
 
         customer_email = stripe_customer['email']
-        product_id = intent["metadata"]["product_id"]
+        book_id = intent["metadata"]["product_id"]
 
-        product = Product.objects.get(id=product_id)
+        book = Book.objects.get(id=book_id)
 
         send_mail(
             subject="Here is your product",
-            message=f"Thanks for your purchase. Here is the product you ordered. The URL is {product.url}",
+            message=f"Thanks for your purchase. Here is the product you ordered. The URL is {book.url}",
             recipient_list=[customer_email],
             from_email="matt@test.com"
         )
@@ -395,9 +373,9 @@ def fulfill_order(order_id):
     order.save()
 
     for item in order.items.all():
-        product_var = ProductVarification.objects.get(id=item.product.id)
-        product_var.stock = item.quantity
-        product_var.save()
+        book_var = BookVarification.objects.get(id=item.book.id)
+        book_var.stock = item.quantity
+        book_var.save()
 
     pass
 

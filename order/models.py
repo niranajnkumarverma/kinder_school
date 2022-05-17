@@ -2,13 +2,13 @@ from django.db import models
 from student.models import Profile
 from django.db import models
 from home.models import User
-from product.models import Product
+from product.models import Book
 
 # Create your models here.
 
 
 class Cart(models.Model):
-    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+    book=models.ForeignKey(Book,on_delete=models.CASCADE)
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     date=models.DateTimeField(auto_now_add=True)
     quantity=models.CharField(max_length=10, default="1")
@@ -21,7 +21,7 @@ class Cart(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.user.username}- {self.product.product_name} -- {self.product.product_price}"  
+        return f"{self.user.username}- {self.book.book_name} -- {self.book.book_price}"  
 
 
 orderstatus = (
@@ -45,7 +45,7 @@ class Order(models.Model):
     
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
     price = models.CharField(max_length=10, default="0")
     total = models.CharField(max_length=10, default="0")

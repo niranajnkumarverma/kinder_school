@@ -1,3 +1,360 @@
+  <!-- <div class="form-group">
+                                            <div class="row"> -->
+                                            
+                                                <!-- <div class="col-md-4">
+                                                    {% csrf_token %}
+                                                    {{ teacher_form.first_name|as_crispy_field  }}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {{ teacher_form.last_name|as_crispy_field  }}
+                                                </div>
+                                                 <div class="col-md-4">
+                                                     
+                                                    {{ teacher_form.dob|as_crispy_field  }}
+                                                    
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {{ teacher_form.gender|as_crispy_field  }}
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {{ teacher_form.section|as_crispy_field  }}
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {{ teacher_form.classe|as_crispy_field  }}
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {{ teacher_form.religion|as_crispy_field  }}
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {{ teacher_form.blood_group|as_crispy_field  }}
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {{ teacher_form.mobile|as_crispy_field  }}
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {{ teacher_form.country|as_crispy_field  }}
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {{ teacher_form.state|as_crispy_field  }}
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {{ teacher_form.city|as_crispy_field  }}
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {{ teacher_form.address|as_crispy_field  }}
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {{ teacher_form.pincode|as_crispy_field  }}
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    
+                                                    {{ teacher_form.image|as_crispy_field }}
+
+                                                </div> -->
+
+                                            <!-- </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from django.shortcuts import render
+from .forms import StudentForm,TeacherForm
+from django.views.generic.list import ListView
+from django.urls import reverse
+
+from multi_form_view import MultiModelFormView
+# Create your views here.
+class SchoolData(MultiModelFormView):
+   form_classes = {
+      'student_form' : StudentForm,
+      'teacher_form' : TeacherForm,
+   }
+   template_name = 'home.html'
+   def get_success_url(self):
+      return reverse('home')
+   def forms_valid(self, forms):
+      student = forms['student_form'].save(commit=False)
+      teacher=forms['teacher_form'].save(commit=False)
+      return super(SchoolData, self).forms_valid(forms)
+
+
+
+
+
+
+ROLES = (
+    (1, 'student'),
+    (2, 'creator'),
+    (3, 'mentor')
+)
+
+class User(AbstractUser):
+    role = models.PositiveSmallIntegerField(choices=ROLES, default=1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+#  api get and filter in drf django def get(self, request, pk=None, format=None):
+    #     if pk:
+    #         data = Question.objects.filter(pk=pk)
+    #     else:
+    #         data = Question.objects.all()
+    #     serializer = QuestionSerializer(data, many=True)
+    #     return Response(serializer.data)
+link_url_DRF= https://iq.opengenus.org/crud-application-with-django/
+
+
+|date:"SHORT_DATETIME_FORMAT"
+
+   # def save(self, commit=True):
+        #     user = super().save(commit=False)
+        #     user.is_superuser = True
+        #     if commit:
+        #         user.save()
+        #     return user
+
+
+### this is javascript and ajax part of add author with Ajax<!-- <script>
+    $(document).ready(function () {
+        $('#addgauthor-form').submit(function (e) {
+            // alert("hey hello")
+            e.preventDefault();          
+            $.ajax({
+                url: "{% url 'products:add_author_ajax' %}",
+                data: $('#addauther-form').serialize(),
+                // data:  formData,
+                type: 'POST',
+                cache: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function (response) {
+                    swal.fire({
+                        title: "Success!",
+                        text: "Author has been added successfully!!",
+                        icon: "success",
+                        button: "OK!",
+                    });
+                    $("#addauther-form")[0].reset();
+                    // document.location = "/admin/products/add_product_ajax/"
+                    // alert('data saved')          
+                },
+                error: function (response) {
+                    swal.fire({
+                        title: "warning!",
+                        text: "Ohhh!!!",
+                        icon: "warning",
+                        button: "OK!",
+                    });
+                    // alert("failure data")
+                    // console.log(response)
+                }
+
+            })
+
+        })
+    })
+
+</script> -->
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $("#create-book").modalForm({
+        formURL: "{% url 'create_book' %}"
+    });
+
+});
+</script>
+
+thisn is used for book create using javascript
+
+
+
+<!-- <script>
+    $(document).ready(function () {
+        $('#addbrand1-form').submit(function (e) {
+            // alert("hey hello")
+            e.preventDefault();          
+            $.ajax({
+                url: "{% url 'products:add_publisher_ajax' %}",
+                data: $('#addbrand-form').serialize(),
+                // data:  formData,
+                type: 'POST',
+                cache: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function (response) {
+                    swal.fire({
+                        title: "Success!",
+                        text: "Brand has been added successfully!!",
+                        icon: "success",
+                        button: "OK!",
+                    });
+                    $("#addbrand-form")[0].reset();
+                    // document.location = "/admin/products/add_publisher_ajax/"
+                    // alert('data saved')          
+                },
+                error: function (response) {
+                    swal.fire({
+                        title: "warning!",
+                        text: "Ohhh!!!",
+                        icon: "warning",
+                        button: "OK!",
+                    });
+                    // alert("failure data")
+                    // console.log(response)
+                }
+
+            })
+
+        })
+    })
+
+</script> -->
+
+
+
+
+
+
+
+
+
+
+
+{% for msg in messages %}
+									{% if msg.tags == 'error' %}
+									<p style="color: #85144b;">{{msg}}</p>
+									{% elif msg.tags == 'info' %}
+									<script>
+										window.onload = function () {
+											alert('{{msg}}')
+										}
+					
+									</script>
+									{% endif %}
+									{% endfor %}
+
+
+<!-- <script>
+   $(document).ready(function () {
+       $("#btnalertMessage").click(function() {
+    swal({
+  title: "Are you sure?",
+  text: "{{m}}",
+  icon: "warning",
+  showCancelButton: true,
+  cancelButtonText:"No cancel",
+  confirmButtonColor: "#DD6B55",
+  confirmButtonText: "Yes, Please it!",
+  closeOnConfirm: false,
+  closeOnCancel: false
+    },
+    function() {
+        swal("Delete", "Data has been successsfully delete", "Success");
+    });
+});
+   });
+
+
+    
+</script> -->
+
+ {% for falsemsg in messages %}
+                 alertify.set('notifier','position','top-right');
+                 alertify.success('good job');
+                // swal({
+
+
+
+
+{% for field in form %}
+      <div class="form-group{% if field.errors %} has-error{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {% render_field field class="form-control" %}
+        {% for error in field.errors %}
+          <p class="help-block">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endfor %}
+
+
+
+ <div>
+                        {% if error %}
+                            <div class="mar-btm alert alert-danger" style="border-left: none;"> {{ error }}</div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% if success %}
+                            <div class="mar-btm alert alert-primary" style="border-left: none;"> {{ success }}</div>
+                        {% endif %}
+                    </div>
+
+
+class UserRegister(CreateView):
+    signup_form = MyUserCreationForm   
+    queryset = User.objects.all()
+    fields = ['username', 'email','password', ]
+    success_url = reverse_lazy('/')
+    template_name = 'user/index.html' 
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(UserRegister, self).get_context_data(**kwargs)
+       
+    #     signup_form = MyUserCreationForm()  
+       
+      
+    #     context['register_form'] =signup_form
+    #     return context
+
+    def form_valid(self, form):
+        messages.success(self.request,f"Account create succesfully")
+
+
+
+                  
 Status(21-02-2022)
 -R&D Crispy form using  UsercreationView in my demo project
 -Create data model Userprofile and setup url pattern 
@@ -93,3 +450,30 @@ Status[21-03-2022]
 -R&D Datatable in python
 -Create All crud operation on order table with Datatable
 -R&D order status color change after update status
+
+
+Status[08-04-2022]  
+-R&D sweetify alert message using javascripts in my demo project[Done]
+-Sweet alert message display on clear screen[Done]
+-Change pading size in my admin Dashboard[Done]
+-Add fields in product model like book auther and subscriptions[Done]
+-R&D form data submit using Ajax and javascripts[Incomplete]
+
+
+Status[09-04-2022]  
+-R&D sweetalert2 message display on screen manage for CRUD multiple message[Done]
+-R&D manage multiple sweetalert message using javascipt with product,brand and order[Done]
+-Create addproduct form data submit using Ajax[Active]
+
+Good Night
+
+
+
+Status[12-04-2022]  
+-Add new bootstrap Popup model windows for admin add new product[Done]
+-add product form data and post form data with ajax[Done]
+-Add Success message display on screen using sweetalert2[Done] 
+-Add form reset function after form data submit[Done]
+-Load all product on productlistpage with ajax producttable[Active]
+
+Good Night

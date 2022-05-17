@@ -21,11 +21,14 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('djadmin/', admin.site.urls),
     path('',include('home.urls')),
+    path('', include('social_django.urls', namespace='social')),
     path('admin/',include('admin_portal.urls')),
     path('account/',include('student.urls' , namespace='student')),
     path('product/',include('product.urls' , namespace='product')),
     path('order/',include('order.urls' , namespace='order')),
-
+    path('chatbot/',include('chatbot.urls' , namespace='chatbot')),
+    path('chat/',include('chat.urls' , namespace='chat')),
+  
     
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
 if settings.DEBUG:

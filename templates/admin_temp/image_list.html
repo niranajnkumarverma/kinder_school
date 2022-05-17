@@ -1,20 +1,14 @@
 {% extends 'admin_temp/base.html' %}
-<!-- {% load crispy_forms_tags %} -->
+{% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
 
-<style>
-    img {
-        border-radius: 50% 50% 50% 50%;
-        width: 50px;
-        height: 50px;
-    }
-</style>
-Sidebar Area End Here
+
+
 <div class="dashboard-content-one">
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>Students</h3>
+        <h3>Images</h3>
         <ul>
             <li>
                 <a href="{% url 'home:home' %}">Home</a>
@@ -22,7 +16,7 @@ Sidebar Area End Here
             <li>All Image List</li>
         </ul>
     </div>
-    <a href="{% url 'home:image_add' %}" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Add Event Images</a>
+
     <!-- Breadcubs Area End Here -->
     <!-- Student Table Area Start Here -->
     <div class="card height-auto">
@@ -33,15 +27,13 @@ Sidebar Area End Here
                 </div>
             </div>
             <div class="table-responsive">
-                <table id="myStaticDatatable" class="table table-striped" border="2">
+                <table id="myStaticDatatable" class="table table-striped">
                     <thead>
                         <tr>
                             <th>
-                                Image.ID
+                                S.NO
                             </th>
-                            <th>
-                                User.ID
-                            </th>
+
                             <th>
                                 Username
                             </th>
@@ -53,7 +45,10 @@ Sidebar Area End Here
                                 Image
                             </th>
                             <th>
-                                Date
+                                Created_at
+                            </th>
+                            <th>
+                                Updated_at
                             </th>
                             <th>
                                 Update
@@ -64,13 +59,10 @@ Sidebar Area End Here
                         </tr>
                     </thead>
                     <tbody>
-                        {% for image in object_list %}
+                        {% for image in images %}
                         <tr>
                             <td>
                                 {{image.id}}
-                            </td>
-                            <td>
-                                {{image.user.id}}
                             </td>
                             <td>
                                 {{image.user.username}}
@@ -81,29 +73,99 @@ Sidebar Area End Here
                             </td>
                             <td class="py-1">
 
-                                <img src="{{image.schoolimage.url}}" height="45px" width="45px" alt="" />
+                                <img src="{{image.school_image.url}}" height="150px" width="80px" alt="">
                             </td>
                             <td>
-                                {{image.date}}
+                                {{image.created_at}}
                             </td>
                             <td>
-                                <a href="{% url 'home:image_update' image.id %}">
+                                {{image.updated_at}}
+                            </td>
+                            <td>
+                                <!-- <a href="{% url 'home:image_update' image.id %}" data-toggle="modal" data-target="#updateimageModal"
+                                data-whatever="@mdo">
+                                    <span class="fas fa-edit mr-2"></span>Edit
+                                </a> -->
+                                <a href="{% url 'home:image_update' image.id %}" data-toggle="modal"
+                                    data-target="#updateimageModal" data-whatever="@mdo">
                                     <span class="fas fa-edit mr-2"></span>Edit
                                 </a>
                             </td>
                             <td>
-                                <a class="dropdown-item text-danger delete_item"
-                                    href="{% url 'home:image_delete' image.id  %}">
+                                <a class="dropdown-item text-danger delete_item" href="#"
+                                    onclick="cultural_image_delete({{ image.id }})">
                                     <span class="fas fa-trash-alt mr-2"></span>Remove
                                 </a>
                             </td>
                         </tr>
+
+                        <div class="modal fade" id="updateimageModal" tabindex="-1" role="dialog"
+                            aria-labelledby="updateimageModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateimageModal">Update Image</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form enctype="multipart/form-data" action="" method="POST"
+                                            class="new-added-form">
+                                            <div class="form-group">
+                                                {% csrf_token %}
+                                                {{ image_form.name }}
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                    data-dismiss="modal">Close</button>
+
+                                                <button type="submit" class="btn btn-primary">Update Image</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         {% endfor %}
+
                     </tbody>
+                    <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal" data-target="#imageModal"
+                        data-whatever="@mdo">Add Image <span class="glyphicon glyphicon-plus"></span></button>
+                    <br><br>
+                    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog"
+                        aria-labelledby="imageModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="imageModalLabel">Add New Image</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form enctype="multipart/form-data" method="POST" class="new-added-form">
+                                        <div class="form-group">
+                                            {% csrf_token %}
+                                            {{ form|crispy }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger"
+                                                data-dismiss="modal">Close</button>
+
+                                            <button type="submit" class="btn btn-primary">Add Image</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
 
 {% endblock %}

@@ -20,16 +20,14 @@
         background-color: #dddddd;
     }
 </style>
-
-
 <section class="shop-page">
-    {% if messages %}
+    <!-- {% if messages %}
 	{% for msg in messages %}
 	<div class="alert alert-{{message.tags}}">
 		{{msg}}
 	</div>
 	{% endfor %}
-	{% endif %}
+	{% endif %} -->
 
     <div class="step-content">
         <div class="container">
@@ -60,18 +58,18 @@
                                         class="rounded float-right" height="200px" width="200px">
                                 </div>
                                 <div class="col-lg-5"></div>
-                                {% for stu in address %}
+                                {% for stu in profile %}
                                 <div class="card o-hidden border-0 shadow-lg my-5 col-lg-5">
-                                    <div class="card-body">
+                                    <div  class="card-body">
                                         <h2>{{user.first_name}} {{user.username}}</h2>
-                                        <p><strong>Email:- </strong> {{user.email}} </p>
-                                        <p><strong>Mobile:- </strong> {{stu.mobile}} </p>
-                                        <p><strong>Gender:- </strong> {{stu.gender}} </p>
-                                        <p><strong>Country:- </strong> {{stu.country}} </p>
-                                        <p><strong>State:- </strong> {{stu.state}} </p>
-                                        <p><strong>City:- </strong> {{stu.city}} </p>
-                                        <p><strong>Address:- </strong> {{stu.address}} </p>
-                                        <p><strong>Pincode: </strong> {{stu.pincode}} </p>
+                                        <p><strong>Email   :- </strong> {{user.email}} </p>
+                                        <p><strong>Mobile  :- </strong> {{stu.mobile}} </p>
+                                        <p><strong>Gender  :- </strong> {{stu.gender}} </p>
+                                        <p><strong>Country :- </strong> {{stu.country}} </p>
+                                        <p><strong>State   :- </strong> {{stu.state}} </p>
+                                        <p><strong>City    :- </strong> {{stu.city}} </p>
+                                        <p><strong>Address :- </strong> {{stu.address}} </p>
+                                        <p><strong>Pincode :- </strong> {{stu.pincode}} </p>
 
                                     </div>
                                 </div>
@@ -90,13 +88,14 @@
                             {% if form.errors %}
                             <div class="alert alert-danger alert-dismissible" role="alert">
                                 <div id="form_errors">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                     {% for key, value in form.errors.items %}
                                     <strong>{{ value }}</strong>
                                     {% endfor %}
+
                                 </div>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
                             </div>
                             {% endif %}
                             <h3 class="text-light-black fw-700">Change password</h3>

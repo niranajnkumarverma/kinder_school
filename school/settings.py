@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from email.message import Message
 from pathlib import Path
 import os
 
@@ -29,7 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,17 +40,37 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'chat.apps.ChatConfig'
     'home',
     'student',
     'product',
     'order',
     'admin_portal',
     'crispy_forms',
-    'widget_tweaks'
-    
+    'social_django',
+    'chatbot',
+    'channels',
+    'chat.apps.ChatConfig',
+         
 ]
+
+
+
+
+CHANNEL_LAYERS = {
+    'default': {
+        # "BACKEND": "channels.layers.InMemoryChannelLayer",
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        'CONFIG': {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
+
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -57,7 +78,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    ## This middleware is used for user login with google account 
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+
+   
 ]
+SESSION_EXPIRE_SECONDS = 30
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 
 ROOT_URLCONF = 'school.urls'
 
@@ -72,6 +99,12 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',   
+                'social_django.context_processors.login_redirect',
+             
+
+              
             ],
         },
     },
@@ -79,6 +112,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'school.wsgi.application'
 
+ASGI_APPLICATION = 'school.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -139,6 +173,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+################# This parts is used for cant login django admin pannel side
+
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.RemoteUserBackend',
+# )
+################ end @#######################
+
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
@@ -173,3 +215,26 @@ PAYTM_SECRET_KEY = 'gv_OgI5hgd6v3lUS'
 PAYTM_WEBSITE = 'WEBSTAGING'
 PAYTM_CHANNEL_ID = 'WEB'
 PAYTM_INDUSTRY_TYPE_ID = 'Retail'
+
+
+######## GOOGLE RECAPTCHA ###############
+GOOGLE_RECAPTCHA_SECRET_KEY = '6LdwBYUfAAAAAEaq-UYQSumqsWpEKy0p5wA32tLp'
+RECAPTCHA_PRIVATE_KEY = '6LdwBYUfAAAAAG7M5PkjrVmUG70bcZ6oBS6DJBxh'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.google.GoogleOAuth2',
+     
+)
+########## GOOGLE  ######################
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '679759899689-dbnqgfo5srstp4eev2rj0pfc8j9b4kkm.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+########### FACEBOOK #######################
+SOCIAL_AUTH_FACEBOOK_KEY = '985292215170699'
+SOCIAL_AUTH_FACEBOOK_SECRET = '7b8483ff422109a7c17b3f7a03966bbf'
+###########  TWITTER #######################
+SOCIAL_AUTH_TWITTER_KEY = '9TD8f5fhasdsbf4w61GSM9' 
+SOCIAL_AUTH_TWITTER_SECRET = 'mwtdcUe4uOvvjDk2Ausb45gsasdasdasashw65454TNSx'
+

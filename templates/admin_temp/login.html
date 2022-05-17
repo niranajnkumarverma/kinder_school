@@ -1,101 +1,284 @@
-{% load static %}
-<!doctype html>
-<html class="no-js" lang="">
-
-
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 28 Feb 2022 06:03:39 GMT -->
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>AKKHOR | Login</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{% static '/admin_static/img/favicon.png' %}">
-    <!-- Normalize CSS -->
-    <link rel="stylesheet" href="{% static '/admin_static/normalize.css' %}">
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="{% static '/admin_static/main.css' %}">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static '/admin_static/bootstrap.min.css' %}">
-    <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="{% static '/admin_static/all.min.css' %}">
-    <!-- Flaticon CSS -->
-    <link rel="stylesheet" href="{% static '/admin_static/fonts/flaticon.css' %}">
-    <!-- Animate CSS -->
-    <link rel="stylesheet" href="{% static '/admin_static/animate.min.css' %}">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static '/admin_static/style.css' %}">
-    <!-- Modernize js -->
-   
+    <title>ChildCare-Kindergarten Admin Login Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+    <style>
+        body {
+
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: url(https://www.hmablogs.com/wp-content/uploads/2021/09/background.jpg);
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .bg-img {
+            background: url('bg.jpg');
+            height: 97vh;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-img:after {
+            position: absolute;
+            content: '';
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 999;
+            text-align: center;
+            padding: 60px 35px;
+            width: 375px;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow: -1px 4px 28px 0px rgba(155, 135, 135, 0.75);
+        }
+
+        .content header {
+            color: white;
+            font-size: 33px;
+            font-weight: 600;
+            margin: 0 0 35px 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .field {
+            position: relative;
+            height: 45px;
+            width: 100%;
+            display: flex;
+            background: rgba(255, 255, 255, 0.94);
+        }
+
+        .field span {
+            color: #222;
+            width: 40px;
+            line-height: 45px;
+        }
+
+        .field input {
+            height: 100%;
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #222;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .space {
+            margin-top: 16px;
+        }
+
+        .show {
+            position: absolute;
+            right: 13px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #222;
+            display: none;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .pass-key:valid~.show {
+            display: block;
+        }
+
+        .pass {
+            text-align: left;
+            margin: 10px 0;
+        }
+
+        .pass a {
+            color: white;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .pass:hover a {
+            text-decoration: underline;
+        }
+
+        .field input[type="submit"] {
+            background: #3498db;
+            border: 1px solid #2691d9;
+            color: white;
+            font-size: 18px;
+            letter-spacing: 1px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .field input[type="submit"]:hover {
+            background: #2691d9;
+        }
+
+        .login {
+            color: white;
+            margin: 20px 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .links {
+            display: flex;
+            cursor: pointer;
+            color: white;
+            margin: 0 0 20px 0;
+        }
+
+        .facebook,
+        .instagram,
+        .google {
+            width: 100%;
+            height: 45px;
+            line-height: 45px;
+            margin-left: 10px;
+        }
+
+        .facebook {
+            margin-left: 0;
+            background: #4267B2;
+            border: 1px solid #3e61a8;
+        }
+
+        .instagram {
+            background: #E1306C;
+            border: 1px solid #df2060;
+        }
+
+        .facebook:hover {
+            background: #3e61a8;
+        }
+
+        .instagram:hover {
+            background: #df2060;
+        }
+
+        .google {
+            background: #eca40a;
+            border: 1px solid #df2060;
+        }
+
+        .google:hover {
+            background: #fc8bb0;
+        }
+
+        .links i {
+            font-size: 17px;
+        }
+
+        i span {
+            margin-left: 8px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .signup {
+            font-size: 15px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .signup a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .signup a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Preloader Start Here -->
-    <div id="preloader"></div>
-    <!-- Preloader End Here -->
-    <!-- Login Page Start Here -->
-    <div class="login-page-wrap">
-        <div class="login-page-content">
-            <div class="login-box">
-                <div class="item-logo">
-                    <img src="{% static '/admin_static/img/logo2.png' %}" alt="logo">
+
+    <div class="bg-img">
+        <div class="content">
+            <header>Admin Login</header>
+            <form action="{% url 'home:admin_login' %}" method="POST">
+                {% csrf_token %}
+                {% if admin_login_form.errors %}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <div id="admin_login_form_errors">
+                        <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+                        {% for key, value in admin_login_form.errors.items %}
+                        <strong>{{ value }}</strong>
+                        {% endfor %}
+                    </div>
                 </div>
-                <form action=""
-                    class="login-form">
-                    <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" placeholder="Enter usrename" class="form-control">
-                        <i class="far fa-envelope"></i>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="text" placeholder="Enter password" class="form-control">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    <div class="form-group d-flex align-items-center justify-content-between">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="remember-me">
-                            <label for="remember-me" class="form-check-label">Remember Me</label>
-                        </div>
-                        <a href="#" class="forgot-btn">Forgot Password?</a>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="login-btn">Login</button>
-                    </div>
-                </form>
-                <div class="login-social">
-                    <p>or sign in with</p>
-                    <ul>
-                        <li><a href="#" class="bg-fb"><i class="fab fa-facebook-f"></i></a></li>
-                        <li><a href="#" class="bg-twitter"><i class="fab fa-twitter"></i></a></li>
-                        <li><a href="#" class="bg-gplus"><i class="fab fa-google-plus-g"></i></a></li>
-                        <li><a href="#" class="bg-git"><i class="fab fa-github"></i></a></li>
-                    </ul>
+                {% endif %}
+                <div class="field">
+                    <span class="fa fa-user"></span>
+                    {{ admin_login_form.username }}
+                </div>
+                <div class="field space">
+                    <span class="fa fa-lock"></span>
+                    {{ admin_login_form.password }}
+                </div>
+                <div class="pass">
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <div class="field">
+                    <input type="submit" value="LOGIN">
+                </div>
+            </form>
+            <div class="login">
+                Or login with
+            </div>
+            <div class="links">
+                <div class="facebook">
+                    <a href="{% url 'social:begin' 'facebook' %}">
+                        <i class="fab fa-facebook-f"><span>Facebook</span></i></a>
+                </div>
+                <div class="instagram">
+                    <i class="fab fa-instagram"><span>Instagram</span></i>
+                </div>
+                <div class="google">
+                    <a href="{% url 'social:begin' 'google-oauth2' %}">
+                        <i class="fab fa-google"> <span>Google</span></i></a>
                 </div>
             </div>
-            <div class="sign-up">Don't have an account ? <a href="#">Signup now!</a></div>
+            <div class="signup">
+                Don't have account?
+                <a href="#">Signup Now</a>
+            </div>
         </div>
     </div>
-    <!-- Login Page End Here -->
-    <!-- jquery-->
-    <script src="{% static '/admin_static/js/jquery-3.3.1.min.js' %}"></script>
-    <!-- Plugins js -->
-    <script src="{% static '/admin_static/js/plugins.js' %}"></script>
-    <!-- Popper js -->
-    <script src="{% static '/admin_static/js/popper.min.js' %}"></script>
-    <!-- Bootstrap js -->
-    <script src="{% static '/admin_static/js/bootstrap.min.js' %}"></script>
-    <!-- Scroll Up Js -->
-    <script src="{% static '/admin_static/js/jquery.scrollUp.min.js' %}"></script>
-    <!-- Custom Js -->
-    <script src="{% static '/admin_static/js/main.js' %}"></script>
-    <script src="{% static '/admin_static/js/modernizr-3.6.0.min.js' %}"></script>
-
+    <script src="jQuery.js"></script>
+    <script>
+        const pass_field = document.querySelector('.pass-key');
+        const showBtn = document.querySelector('.show');
+        showBtn.addEventListener('click', function () {
+            if (pass_field.type === "password") {
+                pass_field.type = "text";
+                showBtn.textContent = "HIDE";
+                showBtn.style.color = "#3498db";
+            } else {
+                pass_field.type = "password";
+                showBtn.textContent = "SHOW";
+                showBtn.style.color = "#222";
+            }
+        });
+    </script>
 </body>
-
-
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 28 Feb 2022 06:03:40 GMT -->
 
 </html>

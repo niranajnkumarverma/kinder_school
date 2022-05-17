@@ -1,17 +1,10 @@
 from django.contrib import admin
+from home.models import User, Admin, Principal, Staff, Student, Teacher
 
-from django.contrib.auth.admin import UserAdmin
-from home.forms import UserCreationForm
-from home.models import User,Video,Image
-
-class MyUserAdmin(UserAdmin):
-    add_form = UserCreationForm
-    model = User
-    list_display = ['username', 'email']
- 
-
-
-admin.site.register(User, MyUserAdmin)
-admin.site.register(Video)
-admin.site.register(Image)
-
+# Register your models here.
+admin.site.register(User)
+admin.site.register(Student)
+admin.site.register(Teacher)
+admin.site.register(Principal)
+admin.site.register(Staff)
+admin.site.register(Admin)

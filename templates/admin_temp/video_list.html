@@ -3,14 +3,6 @@
 {% load static %}
 {% block content %}
 
-<style>
-    img {
-        border-radius: 50% 50% 50% 50%;
-        width: 50px;
-        height: 50px;
-    }
-</style>
-Sidebar Area End Here
 <div class="dashboard-content-one">
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
@@ -94,8 +86,8 @@ Sidebar Area End Here
                                 </a>
                             </td>
                             <td>
-                                <a class="dropdown-item text-danger delete_item"
-                                    href="{% url 'home:video_delete' video.id %}">
+                                <a class="dropdown-item text-danger delete_item" href="#"
+                                    onclick="video_delete({{ video.id }})">
                                     <span class="fas fa-trash-alt mr-2"></span>Remove
                                 </a>
                             </td>

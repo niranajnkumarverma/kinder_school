@@ -1,5 +1,5 @@
 {% extends 'admin_temp/base.html' %}
-{% load crispy_forms_tags %}
+<!-- {% load crispy_forms_tags %} -->
 {% load static %}
 {% block content %}
 <!-- Sidebar Area End Here -->
@@ -11,7 +11,7 @@
             <li>
                 <a href="{% url 'home:home' %}">Home</a>
             </li>
-            <li>Product Add Form</li>
+            <li>Product Delete</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
@@ -34,7 +34,10 @@
                 <button class="btn-fill-lg bg-blue-dark btn-hover-yellow" type="submit" class="btn-primary"
                     value="Confirm">Yes </button>
                 <a href="{% url 'products:product_list' %}" class="btn-fill-lg bg-danger" class="btn-primary">No </a>
+
             </form>
         </div>
     </div>
+   
+   
     {% endblock %}

@@ -1,5 +1,6 @@
 {% load static %}
 {% load crispy_forms_tags %}
+
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -28,41 +29,70 @@
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<link rel="stylesheet" href="{% static 'css/slider.css' %}">
 	<link rel="stylesheet" href="{% static '/admin_static/fonts/flaticon.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+	<style>
+		.field {
+			position: relative;
+			height: 45px;
+			width: 100%;
+			display: flex;
+
+			background: rgba(253, 250, 250, 0.993);
+		}
+
+		.field span {
+			color: #222;
+			width: 40px;
+			line-height: 45px;
+		}
 
 
 
+		.field input[type="submit"] {
+			background: #3498db;
+			border: 1px solid #2691d9;
+			color: white;
+			height: 100%;
+			width: 100%;
+			font-size: 18px;
+			letter-spacing: 1px;
+			font-weight: 600;
+			cursor: pointer;
+			font-family: 'Montserrat', sans-serif;
+		}
 
+		.field input[type="submit"]:hover {
+			background: #2691d9;
+		}
 
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-
-	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
-
-
-
-
+		.divMarquee {
+				width: relative;
+				display: inline-block;
+				position: relative; 
+				-webkit-animation: myfirst 5s infinite;
+				-webkit-animation-direction: alternate;
+				animation: myAni 5s infinite;
+				animation-direction: initial;
+			}
+	
+		 
+			/*If you want to change the direction just change the left values or make them right..*/
+			@keyframes myAni {
+				0% {left: -50%;top: 0px;}
+				100% {left: 110%;top: 0px;}
+			}
+			.modal-body {
+				overflow: hidden;
+			}
+	</style>
 </head>
 
-<body data-spy="scroll" data-offset="80">
-	<style>
-		.bg-custom-1 {
-			background-color: #85144b;
-		}
-
-		.bg-custom-2 {
-			background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
-		}
-	</style>
-	<!-- START PRELOADER -->
-
-	<!-- START COLOR -->
-
+<body>
 	<!-- START HEADER -->
 	<header class="header_area">
 		<div class="container">
 			<div class="row">
-
 				<div tabindex="0" class="modal fade" id="projectModal">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -72,17 +102,65 @@
 								<h4 class="modal-title">Already have an account? login here - </h4>
 							</div>
 							<div class="modal-body">
-								<form method="post" action="{% url 'student:login' %}">
-
-
-
+								<form method="POST" action="{% url 'login' %}" enctype="multipart/form-data">
+									{% if login_form.errors %}
+									<div class="alert alert-danger alert-dismissible" role="alert">
+										<div id="login_form_errors">
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											{% for key, value in login_form.errors.items %}
+											<strong>{{ value }}</strong>
+											{% endfor %}
+										</div>
+									</div>
+									{% endif %}
 									<div class="login">
 										{% csrf_token %}
-										{{ form|crispy }}
-										<div class="form-group col-md-12 text-center mb0">
-											<button class="btn btn-cr-bg" type="submit" name="submit">login</button>
+										<!-- {{ login_form|crispy }} -->
+										<h4>{{login_form.username.label}}</h4>
+										<div class="field">
+											<span class="fa fa-user"></span>
+											{{ login_form.username }}
 										</div>
-										<a href="{% url 'signup' %}">Create Account</a>
+										<h4>{{login_form.password.label}}</h4>
+										<div class="field space">
+											<span class="fa fa-lock"></span>
+											{{ login_form.password }}
+										</div>
+
+										<br>
+										<div class="g-recaptcha mb-2"
+											data-sitekey="6LdwBYUfAAAAAEaq-UYQSumqsWpEKy0p5wA32tLp"
+											style="transform:scale(1.1);-webkit-transform:scale(1.1);transform-origin:0 0;-webkit-transform-origin:0 0;">
+										</div>
+										<br>
+										<button type="submit"
+											class="btn btn-primary btn-sm btn-block text-uppercase shadow-4 mb-4">
+											Login<i class="fa fa-sign-in" aria-hidden="true"></i>
+										</button>
+
+										<h5><span class="line-center">OR</span></h5>
+										<div>
+											<a href="{% url 'social:begin' 'google-oauth2' %}"
+												class="btn btn-primary btn-sm  btn-block text-uppercase shadow-4 mb-4">
+												<i class="fa fa-google fa-fw"></i> Login with Google+
+											</a>
+											<a href="{% url 'social:begin' 'facebook' %}"
+												class="btn btn-danger btn-sm btn-block text-uppercase shadow-4 mb-4">
+												<i class="fa fa-facebook fa-fw"></i> Login with Facebook
+											</a>
+											<a href="{% url 'social:begin' 'twitter' %}"
+												class="btn btn-primary btn-sm btn-block text-uppercase shadow-4 mb-4">
+												<i class="fa fa-twitter fa-fw"></i> Login with Twitter
+											</a>
+										</div>
+										<p class="container">
+											<a class="btn btn-link" href="{% url 'signup' %}">Don't have an account?
+												click here</button>
+												<span><a class="btn btn-link" href="#">Forgot user and
+														password?</a></span>
+										</p>
 									</div>
 								</form>
 							</div>
@@ -96,34 +174,60 @@
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 										aria-hidden="true">&times;</span></button>
-								<h4 class="modal-title">Create a new account </h4>
+										<div class="modal-body">
+											<div class="divMarquee">
+												<h4 class="modal-title">Create a new account </h4>
+											</div>
+										</div>				
 							</div>
 							<div class="modal-body">
-								<form action="{% url 'signup' %}" method="POST">
+								<form action="{% url 'signup' %}" method="POST" enctype="multipart/form-data">
+									{% if signup_form.errors %}
 									<div class="alert alert-danger alert-dismissible" role="alert">
-										<div id="form_errors">
-											{% for key, value in form.errors.items %}
+										<div id="signup_form_errors">
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											{% for key, value in signup_form.errors.items %}
 											<strong>{{ value }}</strong>
 											{% endfor %}
+
 										</div>
-										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
 									</div>
+									{% endif %}
 
 									<div class="register">
 										<div class="form-group">
 											{% csrf_token %}
-											{{ form|crispy }}
+
+											<h4>{{signup_form.username.label}}</h4>
+											<div class="field">
+												<span class="fa fa-user"></span>
+												{{ signup_form.username }}
+											</div>
+											<h4>{{signup_form.email.label}}</h4>
+											<div class="field">
+												<span class="fa fa-envelope"></span>
+												{{ signup_form.email }}
+											</div>
+											<h4>{{signup_form.password1.label}}</h4>
+											<div class="field space">
+												<span class="fa fa-lock"></span>
+												{{ signup_form.password1 }}
+											</div>
+											<h4>{{signup_form.password2.label}}</h4>
+											<div class="field space">
+												<span class="fa fa-lock"></span>
+												{{ signup_form.password2 }}
+											</div>
 										</div>
-										<!-- {% for error in field.errors %}
-										<p style="color: red">{{ error }}</p>
-									    {% endfor %} -->
-										<div class="form-group col-md-12 text-center mb0">
-											<button class="btn btn-cr-bg" type="submit" name="submit">signup
+										<div class="field">
+											<input type="submit" value="Signup now">
+										</div>
+										<!-- <div class="form-group  text-center mb0">
+											<button class="btn btn-cr-bg" type="submit">signup
 												now</button>
-											<a href="{% url 'student:login' %}">Login</a>
-										</div>
+										</div> -->
 									</div>
 								</form>
 							</div>
@@ -148,18 +252,14 @@
 					<span class="icon-bar"></span>
 				</button>
 			</div>
-
 			<div class="navbar-collapse collapse">
-
 				<nav>
-
-					<a href="index.html"><img src="{% static '/user_static/logo.png' %}" height="60px" width="230px"
-							alt=""></a>
+					<a href=""><img src="{% static '/user_static/logo.png' %}" height="60px" width="230px" alt=""></a>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a class="arrow-btn" href="{% url 'signup' %}">Home</a>
+						<li><a href="{% url 'index' %}">Home</a>
 						</li>
 						<li><a href="{% url 'aboutview' %}">About</a></li>
-						<li><a class="arrow-btn" href="{% url 'courseview' %}">Course</a>
+						<li><a href="{% url 'courseview' %}">Course</a>
 
 						</li>
 						<li><a href="{% url 'teacherview' %}">Teachers</a></li>
@@ -177,34 +277,27 @@
 
 						{% if request.user.is_authenticated %}
 						<li><a
-								href="{% if not user.is_authenticated %}{% url 'student:login' %}{% else %}{% url 'order:cartview' %}{% endif %}"><span
+								href="{% if not user.is_authenticated %}{% url 'login' %}{% else %}{% url 'order:cartview' %}{% endif %}"><span
 									class="user-alert-cart">{% if cart_data %}[ {{cart_data.total_cart}} ] {% else %} [
 									0 ] {% endif %}</span><img alt="Logo" class="img-fluid py-3 logo"
 									src="{% static '/user_static/img/trolley.png' %}" height="30px" width="30px">
 							</a></li>
-
-
-
-
-
-
 						<li><a class="arrow-btn">{{user.username}}</a>
 							<ul class="sub-menu">
-							
-								<li><a href="{% url 'student:student_profile' %}"><i class="flaticon-user"></i> My Profile</a></li>
-										
+
+								<li><a href="{% url 'student:student_profile' %}"><i class="flaticon-user"></i> My
+										Profile</a></li>
+
 								<!-- <li><a href="#"><i class="flaticon-list"></i>Task</a></li> -->
-								<li><a href="#"><i
-											class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i> Message</a>
+								<li><a href="{% url 'chat:chat' %}"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>
+										Message</a>
 								</li>
 								<li><a href="{% url 'logout' %}"><i class="flaticon-turn-off"></i> Logout</a></li>
-
-
 							</ul>
 						</li>
 
 						{% else %}
-						<li><a href="" data-toggle="modal" data-target="#projectModal">Login</a></li>
+						<li><a href="#" data-toggle="modal" data-target="#projectModal">Login</a></li>
 						<li>or</li>
 						<li><a href="#" data-toggle="modal" data-target="#projectModal2">Register</a></li>
 						{% endif %}
@@ -241,7 +334,7 @@
 							<li><a href="#">class info</a></li>
 							<li><a href="#">teacher info</a></li>
 							<li><a href="#">Contact info</a></li>
-							<li><a href="#">Admin</a></li>
+							<li><a href="{% url 'home:admin_login' %}">Admin Login</a></li>
 						</ul>
 					</div>
 				</div><!-- END COL -->
@@ -290,7 +383,7 @@
 	<!-- owl-carousel min js  -->
 	<script src="{% static '/user_static/owlcarousel/js/owl.carousel.min.js' %}"></script>
 	<!-- magnific-popup js -->
-	<script src="{% static '/user_static/js/jquery.magnific-popup.min.js' %}"></script>
+	<script src='https://www.google.com/recaptcha/api.js'></script>
 	<!-- jquery mixitup js -->
 	<script src="{% static '/user_static/js/jquery.mixitup.min.js' %}"></script>
 	<!-- paradise_slider_min js -->
@@ -299,30 +392,69 @@
 	<script src="{% static '/user_static/js/scrolltopcontrol.js' %}"></script>
 	<!-- scripts js -->
 	<script src="{% static '/user_static/js/scripts.js' %}"></script>
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="{% static '/user_static/js/sweetalert2.js' %}"></script>
 
-	<!-- <script src="sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="sweetalert2.min.css"> -->
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.1/dist/sweetalert2.all.min.js"></script>
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+
+	<script type="text/javascript">
+		(function(d, m){
+			var kommunicateSettings = 
+				{"appId":"2ce4e4b3d3d0d03794deebd1069eaeeef","popupWidget":true,"automaticChatOpenOnNavigation":true};
+			var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+			s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+			var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+			window.kommunicate = m; m._globals = kommunicateSettings;
+		})(document, window.kommunicate || {});
+	/* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+	</script>
+
+	{% if messages %}
+	{% for msg in messages %}
 	<script>
-		{% for msg in messages %}
-		swal({
-			title: "Welcome!{{username}}",
+		swal.fire({
+			title: "Success!!",
 			text: "{{ msg }}",
 			icon: "success",
 			button: "OK!",
+
+
 		});
-		{% endfor %}
+	</script>
+	{% endfor %}
+	{% endif %}
+	<script>
+		//global grecaptcha
+		grecaptcha.ready(function () {
+			grecaptcha.execute('{{recaptcha_site_key}}', { action: "/login/" }).then(function (token) {
+				document.getElementById('g-recaptcha-response').value = token;
+			});
+		});
 	</script>
 
+
+	{% block js %}
+	{% endblock %}
+
+
+	{% if not user.is_authenticated %}
 	<script>
 		$(document).ready(function () {
-			$('#bootstrapdatatable').DataTable({
-				"aLengthMenu": [[3, 5, 10, 25, -1], [3, 5, 10, 25, "All"]],
-				"iDisplayLength": 3
-			}
-			);
+			$("#projectModal").modal('show');
+
 		});
 	</script>
+	{% endif %}
+
+	<!-- <script>
+		$(document).ready(function () {
+			$("#projectModal2").modal('show');
+		});
+	</script> -->
+	
+
+
 </body>
 
 </html>
