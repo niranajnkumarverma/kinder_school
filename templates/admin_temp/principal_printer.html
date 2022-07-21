@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body class="back">
+    <style>
+        .back{
+            background-color: aquamarine;
+        }
+    </style>
+    <div class="container bootstrap snippet">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="text-center">
+
+                    <img src="static/user_static/logo.png" width="400px" height="100px">
+                    <hr>
+                    {% if principal.prof_image %}
+                    <img
+                    src="{{ principal.prof_image.path }}"
+                    class="rounded-circle img-fluid" style="width: 150px;">
+                    {% else %} 
+                    <img
+                    src="static/user_static/default.png"
+                    class="rounded-circle img-fluid" style="width: 150px;">
+
+                    {% endif %}
+                  <h2>{{principal.user.username}} </h2>
+              
+                </div>
+            </div>
+            <hr>
+            <div class="col-sm-9">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="tab-content">                  
+                    <div class="table-responsive">
+                        <h2>Principal General Information:</h2>
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        S.No
+                                    </th>
+
+                                    <th>
+                                        Email
+                                    </th>
+                                    <th>
+                                        Father Name
+                                    </th>
+                                    <th>
+                                        Mother Name
+                                    </th>
+
+                                  
+                                    <th>
+                                        Blood Group
+                                    </th>
+
+                                    <th>
+                                        Religion
+                                    </th>
+                                  
+                                   
+                                    <th>
+                                        DOB
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        {{principal.user.id}}
+                                    </td>
+                                    <td>
+                                        {{principal.user.email}}
+                                    </td>
+                                    <td>
+                                        {{principal.father_name}}
+                                    </td>
+                                    <td>
+                                        {{principal.mother_name}}
+                                    </td>
+
+                                  
+                                    <td>
+                                        {{principal.blood_group}}
+                                    </td>
+                                    <td>
+                                        {{principal.religion}}
+                                    </td>
+                                   
+                                   
+                                    <td>
+                                        {{principal.dob}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h2> Principal Contact Details:</h2>
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Mobile
+                                    </th>
+                                    <th>
+                                        Gender
+                                    </th>
+                                    <th>
+                                        Address
+                                    </th>
+                                    <th>
+                                        Country
+                                    </th>
+                                    <th>
+                                        State
+                                    </th>
+                                    <th>
+                                        City
+                                    </th>
+                                    <th>
+                                        Pincode
+                                    </th>
+                                    <th>
+                                        Created
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                   <td>
+                                        {{principal.mobile}}
+                                    </td>
+                                    <td>
+                                        {{principal.gender}}
+                                    </td>
+                                    <td>
+                                        {{principal.address}}
+                                    </td>
+                                    <td>
+                                        {{principal.country}}
+                                    </td>
+                                    <td>
+                                        {{principal.state}}
+                                    </td>
+                                    <td>
+                                        {{principal.city}}
+                                    </td>
+                                    <td>
+                                        {{principal.pincode}}
+                                    </td>
+                                    <td>
+                                        {{principal.created_at}}
+                                    </td>
+                               </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

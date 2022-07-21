@@ -1,0 +1,232 @@
+{% extends 'admin_temp/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent List</title>
+</head>
+
+<body>
+    <div class="dashboard-content-one">
+        <!-- Breadcubs Area Start Here -->
+        <div class="breadcrumbs-area">
+            <h3>PARENTS</h3>
+            <ul>
+                <li>
+                    <a href="{% url 'home:home' %}">Home</a>
+                </li>
+                <li>All Parents List</li>
+            </ul>
+        </div>
+        <!-- Breadcubs Area End Here -->
+        <!-- Student Table Area Start Here -->
+        <div class="card height-auto">
+            <div class="card-body">
+                <div class="heading-layout1">
+                    <div class="item-title">
+                        <h3>All Parents Data</h3>
+                    </div>
+
+                </div>
+                <div class="table-responsive">
+                    <table id="myStaticDatatable" width="100%" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    S.No
+                                </th>
+                                <th>
+                                    Image
+                                </th>
+                                <th>
+                                    Username
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Mobile
+                                </th>
+                                <th>
+                                    Father.Name
+                                </th>
+                                <th>
+                                    Mother.Name
+                                </th>
+                                <th>
+                                    Occupation
+                                </th>
+
+                                <th>
+                                    Blood.Group
+                                </th>
+
+                                <th>
+                                    DOB
+                                </th>
+
+                                <th>
+                                    Gender
+                                </th>
+
+                                <th>
+                                    Last.Login
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for parent in parents %}
+                            <tr>
+                                <td>
+                                    {{parent.user_id}}
+                                </td>
+                                <td>
+                                    <img src="{% if parent.prof_image %}{{ parent.prof_image.url }}{% else %}{% static 'user_static/default.png' %} {% endif %}"
+                                        class="avatar img-circle img-thumbnail" alt="avatar">
+                                </td>
+                                <td>
+                                    {{parent.user.username}}
+                                </td>
+
+                                <td>
+                                    {{parent.user.email}}
+                                </td>
+                                <td>
+                                    {{parent.mobile}}
+                                </td>
+                                <td>
+                                    {{parent.father_name}}
+                                </td>
+                                <td>
+                                    {{parent.mother_name}}
+                                </td>
+
+                                <td>
+                                    {{parent.occupation}}
+                                </td>
+                                <td>
+                                    {{parent.blood_group}}
+                                </td>
+
+
+                                <td>
+                                    {{parent.dob}}
+                                </td>
+
+                                <td>
+                                    {{parent.gender}}
+                                </td>
+
+                                <td>
+                                    {{parent.user.last_login}}
+                                </td>
+                                <td>
+                                    {{parent.user.is_active}}
+                                </td>
+                                <td>
+                                    <div>
+                                        <a href="" class="fa fa-eye" style="font-size:20px"></i> </a>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                        <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal"
+                            data-target="#parentModal" data-whatever="@mdo">Add Parents <span
+                                class="glyphicon glyphicon-plus"></span></button>
+                        <br><br>
+                        <div class="modal fade" id="parentModal" tabindex="-1" role="dialog"
+                            aria-labelledby="parentModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="parentModalLabel">Add New Parents</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form enctype="multipart/form-data" method="POST" class="new-added-form">
+                                            {% if parent_form.errors %}
+                                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div id="parent_form_errors">
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    {% for key, value in parent_form.errors.items %}
+                                                    <strong>{{ value }}</strong>
+                                                    {% endfor %}
+
+                                                </div>
+                                            </div>
+                                            {% endif %}
+
+                                            <div class="register">
+                                                <div class="form-group">
+                                                    {% csrf_token %}
+                                                    <h4>{{parent_form.username.label}}</h4>
+                                                    <div class="field">
+                                                        <span class="fa fa-user"></span>
+                                                        {{ parent_form.username }}
+                                                    </div>
+                                                    <h4>{{parent_form.email.label}}</h4>
+                                                    <div class="field">
+                                                        <span class="fa fa-envelope"></span>
+                                                        {{ parent_form.email }}
+                                                    </div>
+                                                    <h4>{{parent_form.password1.label}}</h4>
+                                                    <div class="field space">
+                                                        <span class="fa fa-lock"></span>
+                                                        {{ parent_form.password1 }}
+                                                    </div>
+                                                    <h4>{{parent_form.password2.label}}</h4>
+                                                    <div class="field space">
+                                                        <span class="fa fa-lock"></span>
+                                                        {{ parent_form.password2 }}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                    data-dismiss="modal">Close</button>
+
+                                                <button type="submit" class="btn btn-primary">Add Parent</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
+
+{% endblock %}

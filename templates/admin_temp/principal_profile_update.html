@@ -1,0 +1,139 @@
+{% extends 'admin_temp/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal Update Profile</title>
+</head>
+
+<body>
+
+    <div class="container rounded bg-white mt-5 mb-5">
+        <form method="POST" id="StudentForm" data-state-url="{% url 'principals:ajax_load_state' %}"
+            data-cities-url="{% url 'principals:ajax_load_cities' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+
+                {% if principal_profile_form.errors %}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <div id="principal_profile_form_errors">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {% for key, value in principal_profile_form.errors.items %}
+                        <strong>{{ value }}</strong>
+                        {% endfor %}
+
+                    </div>
+                </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-sm-3">
+                        <!--left col-->
+                        <div class="text-center">
+
+                            <img src="{% if user.principal.prof_image %}{{ user.principal.prof_image.url }}{% else %}{% static 'user_static/default.png' %} {% endif %}"
+                                class="avatar img-circle img-thumbnail" alt="avatar">
+
+                            {{ principal_profile_form.prof_image|as_crispy_field }}
+                        </div>
+
+                        <ul class="list-group">
+                            <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
+                            <li class="list-group-item text-right"><span
+                                    class="pull-left"><strong>Shares</strong></span> 125</li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span>
+                                13</li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span>
+                                37</li>
+                            <li class="list-group-item text-right"><span
+                                    class="pull-left"><strong>Followers</strong></span> 78</li>
+                        </ul>
+
+                    </div>
+
+                    <div class="col-md-5 border-right">
+                        <div class="p-3 py-5">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="text-right">Profile Settings</h4>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    {{ principal_profile_form.father_name|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ principal_profile_form.mother_name|as_crispy_field }}
+                                </div>
+
+                                <div class="col-md-6">
+                                    {{ principal_profile_form.dob|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ principal_profile_form.blood_group|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ principal_profile_form.religion|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ principal_profile_form.mobile|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ principal_profile_form.gender|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ principal_profile_form.address|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ principal_profile_form.country|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ principal_profile_form.state|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ principal_profile_form.city|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ principal_profile_form.pincode|as_crispy_field }}
+                                </div>
+
+                            </div>
+
+                            <div class="mt-5 text-center">
+                                <a href="{% url 'principals:principal_profile' %}"><button type="button"
+                                        class="btn btn-primary">Back</button> </a>
+                                <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i>
+                                    Reset</button>
+
+                                <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="p-3 py-5">
+                            <div class="d-flex justify-content-between align-items-center experience"><span>Edit
+                                    Experience</span><span class="border px-3 p-1 add-experience"><i
+                                        class="fa fa-plus"></i>&nbsp;Experience</span></div><br>
+                            <div class="col-md-12"><label class="labels">Experience in Designing</label><input
+                                    type="text" class="form-control" placeholder="experience" value=""></div> <br>
+                            <div class="col-md-12"><label class="labels">Additional Details</label><input type="text"
+                                    class="form-control" placeholder="additional details" value=""></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
+{% endblock %}

@@ -1,5 +1,118 @@
+function header_delete(id) {
+  swal.fire({
+    title: 'warning!',
+    icon: 'warning',
+    text: 'do you want to delete Header Color?',
+    showCancelButton: true,
+    showConfirmButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    cancelButtonText: 'No',
+    confirmButtonText: 'Yes',
+    reverseButtons: true
+  })
+    .then(function (result) {
+      if (result.value) {
+        window.location.href = "/admin/header_delete/" + id
+       
+      }
+    
+    })
+}
 
-function teacher_delete(id) {
+function footer_delete(id) {
+  swal.fire({
+    title: 'warning!',
+    icon: 'warning',
+    text: 'do you want to delete Footer Color?',
+    showCancelButton: true,
+    showConfirmButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    cancelButtonText: 'No',
+    confirmButtonText: 'Yes',
+    reverseButtons: true
+  })
+    .then(function (result) {
+      if (result.value) {
+        window.location.href = "/admin/footer_delete/" + id
+       
+      }
+    
+    })
+}
+
+function address_delete(id) {
+  swal.fire({
+    title: 'warning!',
+    icon: 'warning',
+    text: 'do you want to delete Address?',
+    showCancelButton: true,
+    showConfirmButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    cancelButtonText: 'No',
+    confirmButtonText: 'Yes',
+    reverseButtons: true
+  })
+    .then(function (result) {
+      if (result.value) {
+        window.location.href = "/admin/address_delete/" + id
+       
+      }
+    
+    })
+}
+
+
+
+function logo_delete(id) {
+  swal.fire({
+    title: 'warning!',
+    icon: 'warning',
+    text: 'do you want to delete Logo?',
+    showCancelButton: true,
+    showConfirmButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    cancelButtonText: 'No',
+    confirmButtonText: 'Yes',
+    reverseButtons: true
+  })
+    .then(function (result) {
+      if (result.value) {
+        window.location.href = "/admin/logo_delete/" + id
+       
+      }
+    
+    })
+}
+function title_delete(id) {
+  swal.fire({
+    title: 'warning!',
+    icon: 'warning',
+    text: 'do you want to delete Title?',
+    showCancelButton: true,
+    showConfirmButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    cancelButtonText: 'No',
+    confirmButtonText: 'Yes',
+    reverseButtons: true
+  })
+    .then(function (result) {
+      if (result.value) {
+        window.location.href = "/admin/title_delete/" + id
+       
+      }
+    
+    })
+}
+
+
+
+
+function delete_teacher(id) {
   swal.fire({
     title: 'warning!',
     icon: 'warning',
@@ -22,6 +135,8 @@ function teacher_delete(id) {
 }
 
 
+
+
 function product_delete(id) {
     // console.log(id)
     // }
@@ -39,7 +154,7 @@ function product_delete(id) {
     })
       .then(function (result) {
         if (result.value) {
-          window.location.href = "/admin/products/product_delete/" + id
+          window.location.href = "/admin/products/book_delete/" + id
           // swal.fire('Deleted', 'You successfully deleted this file', 'success')
           // http://127.0.0.1:8000/admin/products/brand_delete/7/
           //   console.log('The Ok Button was clicked.');

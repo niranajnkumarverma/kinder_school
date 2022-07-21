@@ -477,3 +477,22 @@ Status[12-04-2022]
 -Load all product on productlistpage with ajax producttable[Active]
 
 Good Night
+
+
+1--Create TestNotisfications form for push notify message 
+Create notisfications view page 
+and import firebase admin 
+2..setup firebase server_key_id in django project setting
+
+Add message object_data pass which title,body,icon url and project url 
+and filter FCMDevice for register user
+
+3...create  firebaseconfig javascripts files in noisfications application
+and send token to server (current token ) using active user registration_id
+
+4...Add notisfications windows granted permission javascipt 
+and import firebase script for intializeApp
+error solve default credential from google service Account 
+
+
+

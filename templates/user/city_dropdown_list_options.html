@@ -1,0 +1,16 @@
+
+{% if state %}
+<option  value="">Select State</option>
+{% for stat in state %}
+<option value="{{ stat.pk }}">{{ stat.name }}</option>
+{% endfor %}
+{% endif %}
+
+
+
+{% if cities %}
+<option value="">Select City</option>
+{% for city in cities %}
+<option value="{{ city.pk }}">{{ city.name }}</option>
+{% endfor %}
+{% endif %}

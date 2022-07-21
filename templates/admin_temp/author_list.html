@@ -1,0 +1,217 @@
+{% extends 'admin_temp/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+
+<div class="dashboard-content-one">
+    <!-- Breadcubs Area Start Here -->
+    <div class="breadcrumbs-area">
+        <h3>AUTHORS</h3>
+        <ul>
+            <li>
+                <a href="{% url 'home:home' %}">Home</a>
+            </li>
+            <li>All Author List</li>
+        </ul>
+    </div>
+
+    <!-- Student Table Area Start Here -->
+    <div class="card height-auto">
+        <div class="card-body">
+            <div class="heading-layout1">
+                <div class="item-title">
+                    <h3>All Author Data</h3>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="myStaticDatatable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Author.ID
+                            </th>
+
+                            <th>
+                                Admin
+                            </th>
+
+                            <th>
+                                Author.Name
+                            </th>
+                            <th>
+                                Created_at
+                            </th>
+                            <th>
+                                Update_at
+                            </th>
+                            <th>
+                                Edit
+                            </th>
+                            <th>
+                                Delete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for author in author_data %}
+                        <tr>
+                            <td>
+                                {{author.id}}
+                            </td>
+
+                            <td>
+                                {{user.username}}
+                            </td>
+                            <td>
+                                {{author.author_name}}
+                            </td>
+                            <td>
+                                {{author.created_at}}
+                            </td>
+                            <td>
+                                {{author.updated_at}}
+                            </td>
+                            <td>
+                                 
+                                <a href="{% url 'products:author_update' author.id %}" >
+                                    <span class="fas fa-edit mr-2"></span>Edit
+                                </a>
+                            </td>
+                            <td>
+                               
+
+                                <a class="dropdown-item text-danger delete_item" href="#"
+                                    onclick="author_delete({{ author.id }})">
+                                    <span class="fas fa-trash-alt mr-2"></span>Remove
+                                </a>
+
+                            </td>
+                        </tr>
+                        <div class="modal fade" id="updateautherModal" tabindex="-1" role="dialog"
+                        aria-labelledby="updateautherModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateautherModal">Update Author</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form enctype="multipart/form-data"  action="{% url 'products:author_update' author.id %}" method="POST"
+                                        class="new-added-form">
+                                        <div class="form-group">
+                                            {% csrf_token %}
+                                            {{ form|crispy }}
+                                    
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger"
+                                                data-dismiss="modal">Close</button>
+
+                                            <button type="submit" class="btn btn-primary">Update Author</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        {% endfor %}
+                    </tbody>
+                    <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal" data-target="#authorModal"
+                        data-whatever="@mdo">Add Author <span class="glyphicon glyphicon-plus"></span></button>
+                    <br><br>
+                    <div class="modal fade" id="authorModal" tabindex="-1" role="dialog"
+                        aria-labelledby="authorModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="authorModalLabel">Add New Author</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form enctype="multipart/form-data"  action="#" method="POST"
+                                        class="new-added-form">
+                                        <!-- <div class="alert alert-danger alert-dismissible" role="alert">
+                                            <div id="form_errors">
+                                                {% for key, value in form.errors.items %}
+                                                <strong>{{ value }}</strong>
+                                                {% endfor %}
+                                            </div>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div> -->
+                                        <div class="form-group">
+                                            {% csrf_token %}
+                                            {{ form|crispy }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger"
+                                                data-dismiss="modal">Close</button>
+
+                                            <button type="submit" class="btn btn-primary">Add Author</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $("#authorModal").modal('show');
+    });
+</script>
+
+
+<!-- <script>
+    $(document).ready(function () {
+        $('#addgauthor-form').submit(function (e) {
+            // alert("hey hello")
+            e.preventDefault();          
+            $.ajax({
+                url: "{% url 'products:author_list' %}",
+                data: $('#addauther-form').serialize(),
+                // data:  formData,
+                type: 'POST',
+                cache: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function (response) {
+                    swal.fire({
+                        title: "Success!",
+                        text: "Author has been added successfully!!",
+                        icon: "success",
+                        button: "OK!",
+                    });
+                    $("#addauther-form")[0].reset();
+                    // document.location = "/admin/products/add_product_ajax/"
+                    // alert('data saved')          
+                },
+                error: function (response) {
+                    swal.fire({
+                        title: "warning!",
+                        text: "Ohhh!!!",
+                        icon: "warning",
+                        button: "OK!",
+                    });
+                    // alert("failure data")
+                    // console.log(response)
+                }
+
+            })
+
+        })
+    })
+
+</script> -->
+{% endblock %}

@@ -1,0 +1,359 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+	<!-- Meta -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<!-- SITE TITLE -->
+	{% if site_title %}
+	{% for title in site_title %}
+	<title>{{title.site_title}}</title>
+	{% endfor %}
+	{% else %}
+	<title>ChildCare-Kindergarten & School </title>
+	{% endif %}
+	<!-- Latest Bootstrap min CSS -->
+	<link rel="stylesheet" href="{% static '/user_static/bootstrap/css/bootstrap.min.css' %}">
+	<!-- Google Font -->
+	<!-- <link href="css?family=Poppins:300,400,500,600,700,800" rel="stylesheet">
+	<link href='../../../css-1?family=Dosis:400,300,600,700' rel='stylesheet' type='text/css'>
+	<link href="../../../css-2?family=Montserrat:300,300i,400,500,600,700" rel="stylesheet"> -->
+	<!-- Font Awesome CSS -->
+	<link rel="stylesheet" href="{% static '/user_static/fonts/font-awesome.min.css' %}">
+	<!--- owl carousel Css-->
+	<link rel="stylesheet" href="{% static '/user_static/owlcarousel/css/owl.carousel.css' %}">
+	<link rel="stylesheet" href="{% static '/user_static/owlcarousel/css/owl.theme.css' %}">
+	<!-- magnific popup CSS -->
+	<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+	<!-- Style CSS -->
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/slider.css' %}">
+	<link rel="stylesheet" href="{% static '/admin_static/fonts/flaticon.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+</head>
+
+<body class="body">
+
+<style>
+	{% for i in header %}
+	.body{
+		background-color:{{i.color}};
+	}
+	{% endfor %}
+</style>
+
+
+
+	<!-- START PRELOADER -->
+	<div class="preloader">
+		<div class="status">
+			<div class="status-mes"></div>
+		</div>
+	</div>
+	<!-- END PRELOADER -->
+	<!-- START HEADER -->
+
+
+	<header>
+		<div class="container">
+			<div class="row">
+				<div tabindex="0" class="modal fade" id="projectModal">
+					<div class="modal-dialog">
+						<div class="modal-content">
+
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+										aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title">Already have an account? login here - </h4>
+							</div>
+							<div class="modal-body">
+								<form method="POST" action="{% url 'login' %}" enctype="multipart/form-data" class="was-validated">
+									{% if login_form.errors %}
+									<div class="alert alert-danger alert-dismissible" role="alert">
+										<div id="login_form_errors">
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											{% for key, value in login_form.errors.items %}
+											<strong>{{ value }}</strong>
+											{% endfor %}
+										</div>
+									</div>
+									{% endif %}
+									<div class="login">
+										{% csrf_token %}
+										<!-- {{ login_form|crispy }} -->
+										<h4>{{login_form.username.label}}</h4>
+										<div class="field">
+											<span class="fa fa-user"></span>
+											{{ login_form.username }}
+										</div>
+										<h4>{{login_form.password.label}}</h4>
+										<div class="field space">
+											<span class="fa fa-lock"></span>
+											{{ login_form.password }}
+										</div>
+
+										<br>
+										<!-- <script src='https://www.google.com/recaptcha/api.js'></script> -->
+										<div class="g-recaptcha"
+											data-sitekey="6LcxoBAgAAAAAPjizzpVRoeUJOXJqUIQJGLb5zmx">
+
+										</div>
+
+										<br>
+										<button type="submit"
+											class="btn btn-primary btn-sm btn-block text-uppercase shadow-4 mb-4">
+											Login<i class="fa fa-sign-in" aria-hidden="true"></i>
+										</button>
+
+										<h5><span class="line-center">OR</span></h5>
+										<div>
+											<a href="{% url 'social:begin' 'google-oauth2' %}"
+												class="btn btn-primary btn-sm  btn-block text-uppercase shadow-4 mb-4">
+												<i class="fa fa-google fa-fw"></i> Login with Google+
+											</a>
+											<a href="{% url 'social:begin' 'facebook' %}"
+												class="btn btn-danger btn-sm btn-block text-uppercase shadow-4 mb-4">
+												<i class="fa fa-facebook fa-fw"></i> Login with Facebook
+											</a>
+											<a href="{% url 'social:begin' 'twitter' %}"
+												class="btn btn-primary btn-sm btn-block text-uppercase shadow-4 mb-4">
+												<i class="fa fa-twitter fa-fw"></i> Login with Twitter
+											</a>
+										</div>
+										<p class="container">
+											<a class="btn btn-link" href="{% url 'signup' %}">Don't have an account?
+												click here</button>
+												<span><a class="btn btn-link" href="{% url 'student:password_reset' %}">Forgot
+														user and
+														password?</a></span>
+										</p>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div><!-- /.modal -->
+				<!-- Overlay Modal  -->
+				<div tabindex="0" class="modal fade" id="projectModal2">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+										aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title">Create a new account </h4>
+							</div>
+							<div class="modal-body">
+								<form action="{% url 'signup' %}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+									{% if signup_form.errors %}
+									<div class="alert alert-danger alert-dismissible" role="alert">
+										<div id="signup_form_errors">
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											{% for key, value in signup_form.errors.items %}
+											<strong>{{ value }}</strong>
+											{% endfor %}
+
+										</div>
+									</div>
+									{% endif %}
+
+									<div class="register">
+										<div class="form-group">
+											{% csrf_token %}
+
+											<h4>{{signup_form.username.label}}</h4>
+											<div class="field">
+												<span class="fa fa-user"></span>
+												{{ signup_form.username }}
+											</div>
+											<h4>{{signup_form.email.label}}</h4>
+											<div class="field">
+												<span class="fa fa-envelope"></span>
+												{{ signup_form.email }}
+											</div>
+											<h4>{{signup_form.password1.label}}</h4>
+											<div class="field space">
+												<span class="fa fa-lock"></span>
+												{{ signup_form.password1 }}
+											</div>
+											<h4>{{signup_form.password2.label}}</h4>
+											<div class="field space">
+												<span class="fa fa-lock"></span>
+												{{ signup_form.password2 }}
+											</div>
+										</div>
+										<div class="field">
+											<input type="submit" value="Signup now">
+										</div>
+										<!-- <div class="form-group  text-center mb0">
+											<button class="btn btn-cr-bg" type="submit">signup
+												now</button>
+										</div> -->
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--- END ROW -->
+		</div>
+		<!--- END CONTAINER -->
+	</header>
+	<!-- START LOGO WITH CONTACT -->
+
+	<!-- START NAVBAR -->
+	<div class="body">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse">
+				<nav>
+					{% if site_logo %}
+					{% for logo in site_logo %}
+                                                              
+					<a href=""><img src="{{ logo.site_logo.url }}" height="60px" width="230px" alt=""></a>
+					{% endfor %}
+					{% else %}
+					<a href=""><img src="{% static '/user_static/logo.png' %} " height="60px" width="230px" alt=""></a>
+					{% endif %}
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="{% url 'index' %}">Home</a>
+						</li>
+						<li><a href="{% url 'aboutview' %}">About</a></li>
+						<li><a href="{% url 'courseview' %}">Course</a>
+
+						</li>
+						<li><a href="{% url 'teacherview' %}">Teachers</a></li>
+						<li><a href="{% url 'eventview' %}">Event</a>
+
+						</li>
+						<li><a href="{% url 'galleryview' %}">Gallery</a></li>
+
+
+						<li><a href="{% url 'contactview' %}">Contact</a></li>
+
+						{% if request.user.is_authenticated %}
+						<li><a href="{% url 'product:shopview' %}">Books</a></li>
+						<li><a
+								href="{% if not user.is_authenticated %}{% url 'login' %}{% else %}{% url 'order:cartview' %}{% endif %}"><span
+									class="user-alert-cart">{% if cart_data %}[ {{cart_data.total_cart}} ] {% else %} [
+									0 ] {% endif %}</span><img alt="Logo" class="img-fluid py-3 logo"
+									src="{% static '/user_static/img/trolley.png' %}" height="30px" width="30px">
+							</a></li>
+						<li><a class="arrow-btn">{{user.username}}</a>
+							<ul class="sub-menu">
+
+								<li><a href="{% url 'student:student_profile' %}"><i class="flaticon-user"></i> My
+										Profile</a></li>
+
+								<!-- <li><a href="#"><i class="flaticon-list"></i>Task</a></li> -->
+								<li><a href="{% url 'chatbot:chat_index' %}"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>
+										Message</a>
+								</li>
+								<li><a href="{% url 'logout' %}"><i class="flaticon-turn-off"></i> Logout</a></li>
+							</ul>
+						</li>
+
+						{% else %}
+						<li><a href="#" data-toggle="modal" data-target="#projectModal">Login</a></li>
+						<li>or</li>
+						<li><a href="#" data-toggle="modal" data-target="#projectModal2">Register</a></li>
+						{% endif %}
+						
+				</nav>
+			</div>
+		</div>
+	</div>
+	<!-- END NAVBAR -->
+	<!-- END HEADER -->
+
+
+
+
+	<!-- Latest jQuery -->
+	<script src="{% static '/user_static/js/jquery-1.12.4.min.js' %}"></script>
+	<!-- Latest compiled and minified Bootstrap -->
+	<script src="{% static '/user_static/bootstrap/js/bootstrap.min.js' %}"></script>
+	<!-- countTo js -->
+	<script src="{% static '/user_static/js/jquery.inview.min.js' %}"></script>
+	<!-- owl-carousel min js  -->
+	<script src="{% static '/user_static/owlcarousel/js/owl.carousel.min.js' %}"></script>
+	<!-- magnific-popup js -->
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<!-- jquery mixitup js -->
+	<script src="{% static '/user_static/js/jquery.mixitup.min.js' %}"></script>
+	<!-- paradise_slider_min js -->
+	<script src="{% static '/user_static/js/paradise_slider_min.js' %}"></script>
+	<!-- scrolltopcontrol js -->
+	<script src="{% static '/user_static/js/scrolltopcontrol.js' %}"></script>
+	<!-- scripts js -->
+	<script src="{% static '/user_static/js/scripts.js' %}"></script>
+	<script src="{% static '/user_static/js/sweetalert2.js' %}"></script>
+
+
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.1/dist/sweetalert2.all.min.js"></script>
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+
+
+
+
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9447144877911860"
+     crossorigin="anonymous"></script>
+
+
+     <script>
+        const [form] = document.forms;
+
+        const changeBackgroundColor = elements => {
+            elements.forEach(element => {
+                element.addEventListener('change', e => {
+                    document.body.className = `bg-${e.target.value}`;
+                });
+            });
+        }
+
+        changeBackgroundColor(form.radioItems);
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            // Do something...
+        });
+    </script>
+    
+    <script>
+        function changeColor() {
+        var radio = document.documentElement["sp"];
+        for (var i = 0; i < radio.length; i++) {
+            if (radio[i].checked == true) {
+    
+                var newColor = radio[i].value;
+                document.getElementById("changeColor").style.backgroundColor = newColor;
+            return false;
+            }
+        }
+    }
+    </script>
+
+
+
+</body>
+</html>

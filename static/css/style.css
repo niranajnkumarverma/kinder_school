@@ -53,7 +53,7 @@ h5:after{
     top:50%;
     left:0;
     right:0;
-    border-top:solid 1px rgb(20, 19, 19);
+    /* border-top:solid 1px rgb(20, 19, 19); */
     z-index:-1;
 }
 
@@ -118,15 +118,7 @@ tr:nth-child(even) {
 
 
 
-body {
-	color: #767676;
-	font-family: 'Poppins', sans-serif;
-	font-size: 16px;
-	line-height: 26px;
-	font-weight: 400;
-	background: #fff;
-	overflow-x: hidden;
-}
+
 
 html,
 body {
@@ -428,7 +420,12 @@ strong {
 	border-radius: 0;
 	margin-top: 40px;
 	padding: 10px 30px;
-}
+}  
+.modal-header {
+    padding: 15px;
+    background-color: skyblue;
+    border-bottom: 1px solid #c47e7e;
+}  
 
 .modal-header .close {
 	margin-top: 0px;
@@ -622,7 +619,7 @@ strong {
 .navbar-default .navbar-nav>.active>a,
 .navbar-default .navbar-nav>.active>a:hover,
 .navbar-default .navbar-nav>.active>a:focus {
-	color: #0e70c7 !important;
+	
 	background-color: transparent;
 }
 
@@ -1588,6 +1585,8 @@ video {
 }
 
 .course-slide .course-img {
+	/* width: 343px;
+    height: 260px; */
 	position: relative;
 	overflow: hidden;
 }

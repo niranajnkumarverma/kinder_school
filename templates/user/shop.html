@@ -2,7 +2,7 @@
 {% block content %}
 {% load static %}
 
-<section class="promotion section-padding">
+<!-- <section class="promotion section-padding">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12 text-center">
@@ -14,8 +14,8 @@
 			</div>
 		</div>
 		
-</section>
-<div class="container">
+</section> -->
+<!-- <div class="container">
 	<div class="btn-group">
 		<button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-toggle="dropdown"
 			aria-haspopup="true" aria-expanded="false">
@@ -32,10 +32,11 @@
 	
 		</div>
 	</div>
-</div>
+</div> -->
 
 <section class="shop-page">
 	<div class="container">
+		{% if books %}
 		{% for book in books %}
 		<div class="col-lg-3">
 			<div class="single_product">
@@ -62,7 +63,18 @@
 				</div>
 			</div>
 		</div>
+		
 		{% endfor %}
+		{% else %}
+		<div class="col-md-12 ftco-animate">
+			<div class="text-center">
+				<span class="icon-remove_shopping_cart" style="font-size: 5rem"></span>
+				<i class="fa fa-shopping-cart fa-5x"></i>
+				<h2 class="mt-3">Your Product is empty!!</h2>
+			</div>
+		</div>
+		{% endif %}
 	</div>
 </section>
 {% endblock %}
+

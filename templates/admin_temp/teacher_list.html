@@ -1,0 +1,177 @@
+{% extends 'admin_temp/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher List</title>
+</head>
+
+<body>
+
+    <div class="dashboard-content-one">
+        <div class="breadcrumbs-area">
+            <h3>TEACHERS</h3>
+            <ul>
+                <li>
+                    <a href="{% url 'home:home' %}">Home</a>
+                </li>
+                <li>All Teachers</li>
+            </ul>
+        </div>
+
+        <div class="card height-auto">
+            <div class="card-body">
+                <div class="heading-layout1">
+                    <div class="item-title">
+                        <h3>All Teachers List</h3>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="myStaticDatatable" width="100%" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    S.No
+                                </th>
+                                <th>Image</th>
+                                <th>E.mail</th>
+                                <th>Class</th>
+                                <th>Section</th>
+                                <th>DOB</th>
+                                <th>Blood.Group</th>
+                                <th>Religion</th>
+                                <th>Phone</th>
+                                <th>Gender</th>
+                                <th>Address</th>
+                                <th>Country</th>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Pincode</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            {% for teach in teachers %}
+                            <tr>
+                                <td>
+                                    {{user.id}}
+                                </td>
+                                <td>
+                                    <img src="{% if teach.prof_image %}{{ teach.prof_image.url }}{% else %}{% static 'user_static/default.png' %} {% endif %}"
+                                        class="avatar img-circle img-thumbnail" alt="avatar">
+                                </td>
+
+                                <td>{{teach.user.email}}</td>
+                                <td>{{teach.classe}}</td>
+                                <td>{{teach.section}}</td>
+                                <td>{{teach.dob|date:"SHORT_DATETIME_FORMAT"}}</td>
+                                <td>{{teach.blood_group}} </td>
+                                <td> {{teach.religion}}</td>
+                                <td>{{teach.mobile}}</td>
+                                <td>{{teach.gender}}</td>
+                                <td>{{teach.address}}</td>
+                                <td>{{teach.country}}</td>
+                                <td>{{teach.state}}</td>
+                                <td>{{teach.city}}</td>
+                                <td>{{teach.pincode}}</td>
+                                <td>{{user.is_active}}</td>
+                                <td>
+                                    <div>
+                                        <a href="" class="fa fa-eye" style="font-size:20px"></i> </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal"
+                            data-target="#teacherModal" data-whatever="@mdo">Add Teacher <span
+                                class="glyphicon glyphicon-plus"></span></button>
+                        <br><br>
+                        <div class="modal fade" id="teacherModal" tabindex="-1" role="dialog"
+                            aria-labelledby="teacherModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="teacherModalLabel">Add New Teacher</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'teachers:teachers_list' %}" enctype="multipart/form-data"
+                                            method="POST" class="new-added-form">
+                                            {% if teacher_form.errors %}
+                                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div id="signup_form_errors">
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    {% for key, value in teacher_form.errors.items %}
+                                                    <strong>{{ value }}</strong>
+                                                    {% endfor %}
+
+                                                </div>
+                                            </div>
+                                            {% endif %}
+
+                                            <div class="register">
+                                                <div class="form-group">
+                                                    {% csrf_token %}
+                                                    <h4>{{teacher_form.username.label}}</h4>
+                                                    <div class="field">
+                                                        <span class="fa fa-user"></span>
+                                                        {{ teacher_form.username }}
+                                                    </div>
+                                                    <h4>{{teacher_form.email.label}}</h4>
+                                                    <div class="field">
+                                                        <span class="fa fa-envelope"></span>
+                                                        {{ teacher_form.email }}
+                                                    </div>
+                                                    <h4>{{teacher_form.password1.label}}</h4>
+                                                    <div class="field space">
+                                                        <span class="fa fa-lock"></span>
+                                                        {{ teacher_form.password1 }}
+                                                    </div>
+                                                    <h4>{{teacher_form.password2.label}}</h4>
+                                                    <div class="field space">
+                                                        <span class="fa fa-lock"></span>
+                                                        {{ teacher_form.password2 }}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                    data-dismiss="modal">Close</button>
+
+                                                <button type="submit" class="btn btn-primary">Add Teacher</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+{% endblock %}

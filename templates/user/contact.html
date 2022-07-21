@@ -1,103 +1,390 @@
-﻿{% extends 'user/base.html' %}
-{% block content %}
+﻿{% load crispy_forms_filters %}
 {% load static %}
 
-		<!-- START TITLE TOP -->
-		<section class="section-content" style="background-image: url({% static '/user_static/img/bg/section-bg.jpg' %});  background-size:cover; background-position: center center;">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12 text-center">
-						<h1 class="section-blog-title">Contact us</h1>
+
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+	<!-- Meta -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<!-- SITE TITLE -->
+	{% if site_title %}
+
+	<title>{{site_title.site_title}}</title>
+	
+	{% else %}
+	<title>ChildCare-Kindergarten & School </title>
+	{% endif %}
+	<!-- Latest Bootstrap min CSS -->
+	<link rel="stylesheet" href="{% static '/user_static/bootstrap/css/bootstrap.min.css' %}">
+	<!-- Google Font -->
+	<!-- <link href="css?family=Poppins:300,400,500,600,700,800" rel="stylesheet">
+	<link href='../../../css-1?family=Dosis:400,300,600,700' rel='stylesheet' type='text/css'>
+	<link href="../../../css-2?family=Montserrat:300,300i,400,500,600,700" rel="stylesheet"> -->
+	<!-- Font Awesome CSS -->
+	<link rel="stylesheet" href="{% static '/user_static/fonts/font-awesome.min.css' %}">
+	<!--- owl carousel Css-->
+	<link rel="stylesheet" href="{% static '/user_static/owlcarousel/css/owl.carousel.css' %}">
+	<link rel="stylesheet" href="{% static '/user_static/owlcarousel/css/owl.theme.css' %}">
+	<!-- magnific popup CSS -->
+	<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+	<!-- Style CSS -->
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/slider.css' %}">
+	<link rel="stylesheet" href="{% static '/admin_static/fonts/flaticon.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+</head>
+
+<body data-spy="scroll" data-offset="80">
+	<!-- START PRELOADER -->
+	<div class="preloader">
+		<div class="status">
+			<div class="status-mes"></div>
+		</div>
+	</div>
+
+	<style>
+		{% if header %}
+		.header{
+			background-color:{{header.color}};
+		}
+	
+	
+		.menu_dropdown li ul.sub-menu,
+		.menu_dropdown ul li ul.sub-menu li ul.sub-menu {	
+		left: 10px;
+		opacity: 0;
+		filter: alpha(opacity=0);
+		position: absolute;
+		top: 125%;
+		-webkit-transition: all 0.3s ease 0s;
+		transition: all 0.3s ease 0s;
+		visibility: hidden;
+		width: 180px;
+		text-align: left;
+		z-index: -99;
+		margin-top: 15px;
+		border-radius: 3px;
+		background: {{header.color}};
+		{% endif %}
+		
+	}
+	{% if footer %}
+	.footer{
+		background-color:{{footer.color}};
+	}
+	{% endif %}
+</style>
+	
+	<!-- END PRELOADER -->
+	<div class="navbar navbar-default menu-top menu_dropdown header">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse">
+				<nav>
+					{% if site_logo %}                                                              
+					<a href="{% url 'index' %}"><img src="{{ site_logo.site_logo.url }}" height="60px" width="230px" alt=""></a>				
+					{% else %}
+					<a href="{% url 'index' %}"><img src="{% static '/user_static/logo.png' %} " height="60px" width="230px" alt=""></a>
+					{% endif %}
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="{% url 'index' %}">Home</a>
+						</li>
+						<li><a href="{% url 'aboutview' %}">About</a></li>
+						<li><a href="{% url 'courseview' %}">Course</a>
+
+						</li>
+						<li><a href="{% url 'teacherview' %}">Teachers</a></li>
+						<li><a href="{% url 'eventview' %}">Event</a>
+
+						</li>
+						<li><a href="{% url 'galleryview' %}">Gallery</a></li>
+						<li><a href="{% url 'contactview' %}">Contact</a></li>
+
+						{% if request.user.is_authenticated %}
+						<li><a href="{% url 'product:shopview' %}">Books</a></li>
+						<li><a
+								href="{% if not user.is_authenticated %}{% url 'login' %}{% else %}{% url 'order:cartview' %}{% endif %}"><span
+									class="user-alert-cart">{% if cart_data %}[ {{cart_data.total_cart}} ] {% else %} [
+									0 ] {% endif %}</span><img alt="Logo" class="img-fluid py-3 logo"
+									src="{% static '/user_static/img/trolley.png' %}" height="30px" width="30px">
+							</a></li>
+						<li><a class="arrow-btn">{{user.username}}</a>
+							<ul class="sub-menu">
+
+								<li><a href="{% url 'student:student_profile' %}"><i class="flaticon-user"></i> My
+										Profile</a></li>
+
+								<!-- <li><a href="#"><i class="flaticon-list"></i>Task</a></li> -->
+								<li><a href="{% url 'chatbot:chat_index' %}"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>
+										Message</a>
+								</li>
+								<li><a href="{% url 'logout' %}"><i class="flaticon-turn-off"></i> Logout</a></li>
+							</ul>
+						</li>
+
+						{% else %}
+						<li><a href="#" data-toggle="modal" data-target="#projectModal">Login</a></li>
+						<li>or</li>
+						<li><a href="#" data-toggle="modal" data-target="#projectModal2">Register</a></li>
+						{% endif %}
+						
+				</nav>
+			</div>
+		</div>
+	</div>
+
+	<!-- START TITLE TOP -->
+	<section class="section-content"
+		style="background-image: url({% static '/user_static/img/bg/section-bg.jpg' %});  background-size:cover; background-position: center center;">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<h1 class="section-blog-title">Contact us</h1>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- END TITLE TOP -->
+
+	<!-- START CONTACT FORM -->
+	<section id="contact" class="contact_form section-padding">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="section-title text-center">
+						<h2>Contact us</h2>
+						<span></span>
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elitsed eiusmod tempor enim minim veniam
+							quis notru exercit ation Lorem ipsum dolor sit amet.Veniam quis notru exercit.</p>
 					</div>
 				</div>
 			</div>
-		</section>
-		<!-- END TITLE TOP -->
-		
-		<!-- START CONTACT FORM -->
-		<section id="contact" class="contact_form section-padding">
-			<div class="container">			
-				<div class="row">
-					<div class="col-md-12">
-						<div class="section-title text-center">
-							<h2>Contact us</h2>
-							<span></span>
-							<p>Lorem ipsum dolor sit amet consectetur adipisicing elitsed eiusmod tempor enim minim veniam quis notru  exercit ation Lorem ipsum dolor sit amet.Veniam quis notru exercit.</p>
-						</div>
-					</div>
-				</div>						
-				<div class="row">
-					<div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-						<div class="contact">
-							<form id="contact-form" method="post" enctype="multipart/form-data">
-								<div class="row">
-									<div class="form-group col-md-6">
-										<input type="text" name="name" class="form-control" id="first-name" placeholder="Name" required="required">
-									</div>
-									<div class="form-group col-md-6">
-										<input type="email" name="email" class="form-control" id="email" placeholder="Email" required="required">
-									</div>
-									<div class="form-group col-md-12">
-										<input type="text" name="subject" class="form-control" id="subject" placeholder="Subject" required="required">
-									</div>
-									<div class="form-group col-md-12">
-										<textarea rows="6" name="message" class="form-control" id="description" placeholder="Your Message" required="required"></textarea>
-									</div>
-									<div class="col-md-12 text-center">
-										<div class="actions">
-											<input type="submit" value="Send message" name="submit" id="submitButton" class="btn btn-lg btn-contact-bg" title="Submit Your Message!">
-										</div>
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+					<div class="contact">
+						<form  method="post" enctype="multipart/form-data">
+							{% csrf_token %}
+							<div class="row">
+								<div class="form-group col-md-6">
+									{{ contact_form.fullname|as_crispy_field }}
+								</div>
+								<div class="form-group col-md-6">
+									{{ contact_form.email|as_crispy_field }}
+								</div>
+								<div class="form-group col-md-12">
+									{{ contact_form.subject|as_crispy_field }}
+								</div>
+								<div class="form-group col-md-12">
+									{{ contact_form.message|as_crispy_field }}
+								</div>
+								<div class="col-md-12 text-center">
+									<div class="actions">
+										<input type="submit" value="Send message" name="submit" id="submitButton"
+											class="btn btn-lg btn-contact-bg" title="Submit Your Message!">
 									</div>
 								</div>
-							</form>
-						</div>						
-					</div><!-- END COL  -->			
-				</div><!--END  ROW  -->
-			</div><!--- END CONTAINER -->
-		</section>
-		<!-- END CONTACT FORM -->		
-		
-		<!-- START ADDRESS -->
-		<section class="address-book">
-			<div class="container-fluid">			
-				<div class="row text-center">				
-					<div class="col-lg-3 col-sm-6 col-xs-12 no-padding">
-						<div class="single-address">
-							<i class="fa fa-rocket"></i>
-							<h4>Postal Address</h4>
-							<p>3481 Melrose Place, Beverly Hills CA 90210</p>
-						</div>
-					</div><!-- END COL  -->	
-					<div class="col-lg-3 col-sm-6 col-xs-12 no-padding">
-						<div class="single-address">
-							<i class="fa fa-phone"></i>
-							<h4>Call us on</h4>
-							<p>(+1) 517 397 7100 <br> (+1) 617 497 8200</p>
-						</div>
-					</div><!-- END COL  -->	
-					<div class="col-lg-3 col-sm-6 col-xs-12 no-padding">
-						<div class="single-address">
-							<i class="fa fa-envelope"></i>
-							<h4>Send your message</h4>
-							<p>Info@example.com.<br>admin@example.com</p>
-						</div>
-					</div><!-- END COL  -->	
-					<div class="col-lg-3 col-sm-6 col-xs-12 no-padding">
-						<div class="single-address">
-							<i class="fa fa-clock-o"></i>
-							<h4>Business Hours</h4>
-							<p>Mon - Fri: 08.00 - 16.00.<br>Sat: 10.00 - 14.00</p>
-						</div>
-					</div><!-- END COL  -->					
-				</div><!--END  ROW  -->
-			</div><!--- END CONTAINER -->
-		</section>
-		<!-- END ADDRESS -->
-		
-		<!-- START MAP -->
-			<div class="map">
-				<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d14620.542142695871!2d90.95897566977537!3d23.635316700000004!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sbn!2sbd!4v1532862940157" height="400" style="border:0" allowfullscreen=""></iframe>
+							</div>
+						</form>
+					</div>
+				</div><!-- END COL  -->
 			</div>
-		<!-- END MAP -->
-		
-	{% endblock %}
+			<!--END  ROW  -->
+		</div>
+		<!--- END CONTAINER -->
+	</section>
+	<!-- END CONTACT FORM -->
+
+<!-- START ADDRESS -->
+<section class="address-book">
+	<div class="container-fluid">
+		<div class="row text-center">
+			<div class="col-lg-3 col-sm-6 col-xs-12 no-padding">
+				<div class="single-address">
+					<i class="fa fa-rocket"></i>
+					<h4>Postal Address</h4>
+						
+				
+					
+					{% if  site_address %}  
+					<p>{{site_address.floor_no}} {{site_address.apartment_name}} ,{{site_address.site_address}}, {{site_address.pincode}}</p>
+					{% endif %}
+				</div>
+			</div><!-- END COL  -->
+			<div class="col-lg-3 col-sm-6 col-xs-12 no-padding">
+				<div class="single-address">
+					<i class="fa fa-phone"></i>
+					<h4>Call us on</h4>
+					{% if  site_address %}    
+					<p>(+91) {{site_address.toll_free_no}} <br> (+91){{site_address.alt_toll_free_no}}</p>
+					{% endif %}
+				</div>
+			</div><!-- END COL  -->
+			<div class="col-lg-3 col-sm-6 col-xs-12 no-padding">
+				<div class="single-address">
+					<i class="fa fa-envelope"></i>
+					<h4>Send your message</h4>
+					{% if  site_address %}  
+					<!-- <p>Info@example.com.<br>{{site_address.site_email}}</p> -->
+					<p>{{site_address.site_email}}</p>
+					{% endif %}
+				</div>
+			</div><!-- END COL  -->
+			<div class="col-lg-3 col-sm-6 col-xs-12 no-padding">
+				<div class="single-address">
+					<i class="fa fa-clock-o"></i>
+					<h4>Business Hours</h4>
+					{% if  site_address %}  
+					<!-- <p>Mon - Fri: 08.00 - 16.00.<br>Sat: 10.00 - 14.00</p> -->
+					<p>{{site_address.weekday}} - Fri: {{site_address.from_hour}} - {{site_address.to_hour}}.</p>
+					{% endif %}
+				</div>
+			</div><!-- END COL  -->
+		</div>
+		<!--END  ROW  -->
+	</div>
+	<!--- END CONTAINER -->
+</section>
+<!-- END ADDRESS -->
+
+	<!-- START MAP -->
+	<div class="map">
+		<iframe
+			src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d14620.542142695871!2d90.95897566977537!3d23.635316700000004!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sbn!2sbd!4v1532862940157"
+			height="400" style="border:0" allowfullscreen=""></iframe>
+	</div>
+	<!-- END MAP -->
+	<!-- START FOOTER -->
+	<section class="navbar navbar-default menu-top menu_dropdown footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-3">
+					<div class="single_footer">
+						{% if site_logo %}
+						
+																  
+						<img src="{{ site_logo.site_logo.url }}" height="60px" width="230px" alt=""></a>
+					
+						{% else %}
+						<img src="{% static '/user_static/logo.png' %} " height="60px" width="230px" alt=""></a>
+						{% endif %}
+
+						
+						{% if site_address %}    
+						<p>{{site_address.floor_no}}--{{site_address.apartment_name}}</p>
+						<p>{{site_address.site_address}}</p>
+						<p> <span class="glyphicon glyphicon-earphone"></span> Toll Free---{{site_address.toll_free_no}}</p>
+						<p> <span class="glyphicon glyphicon-earphone"></span> Toll Free---{{site_address.alt_toll_free_no}}</p>
+						{% endif %}
+					</div>
+				</div><!-- END COL -->
+				<div class="col-xs-12 col-sm-6 col-md-3">
+					<div class="single_footer">
+						<h4>Information</h4>
+						<ul class="link_mright">
+							<li><a href="#">services</a></li>
+							<li><a href="#">class info</a></li>
+							<li><a href="#">teacher info</a></li>
+							<li><a href="#">Contact info</a></li>
+							<li><a href="{% url 'home:admin_login' %}">Admin Login</a></li>
+						</ul>
+					</div>
+				</div><!-- END COL -->
+				<div class="col-xs-12 col-sm-6 col-md-3">
+					<div class="single_footer">
+						<h4>Pages</h4>
+						<ul>
+							<li><a href="#">services</a></li>
+							<li><a href="#">Coming Soon</a></li>
+							<li><a href="#">Faq</a></li>
+							<li><a href="#">Contact</a></li>
+							<li><a href="#">404 page</a></li>
+						</ul>
+					</div>
+				</div><!-- END COL -->
+				<div class="col-xs-12 col-sm-6 col-md-3">
+					<div class="single_footer">
+						<h4>Latest news</h4>
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elitsed eiusmod tempor enim minim</p>
+						<form action="#" class="subscribe">
+							<input type="text" class="subscribe__input" placeholder="Enter your Email Address">
+							<button type="button" class="subscribe__btn"><i class="fa fa-paper-plane-o"></i></button>
+						</form>
+					</div>
+				</div><!-- END COL -->
+			</div><!-- END ROW -->
+			
+
+			<div class="row footer_bottom_mtop">
+				<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+					{% if site_title %}
+					
+					<p class="footer_copyright">{{site_title.site_title}} &copy; {% now "Y" %} | All Rights Reserved.</p>
+			
+					{% else %}
+					<p class="footer_copyright">ChildCare-Kindergarten & School &copy; {% now "Y" %} | All Rights Reserved.</p>
+					{% endif %}
+				</div>
+				<!--- END COL -->
+			</div>
+			<!--- END ROW -->
+		</div>
+		<!--- END CONTAINER -->
+	</section>
+	<!-- END FOOTER -->
+	<!-- Latest jQuery -->
+	<script src="{% static '/user_static/js/jquery-1.12.4.min.js' %}"></script>
+	<!-- Latest compiled and minified Bootstrap -->
+	<script src="{% static '/user_static/bootstrap/js/bootstrap.min.js' %}"></script>
+	<!-- countTo js -->
+	<script src="{% static '/user_static/js/jquery.inview.min.js' %}"></script>
+	<!-- owl-carousel min js  -->
+	<script src="{% static '/user_static/owlcarousel/js/owl.carousel.min.js' %}"></script>
+	<!-- magnific-popup js -->
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<!-- jquery mixitup js -->
+	<script src="{% static '/user_static/js/jquery.mixitup.min.js' %}"></script>
+	<!-- paradise_slider_min js -->
+	<script src="{% static '/user_static/js/paradise_slider_min.js' %}"></script>
+	<!-- scrolltopcontrol js -->
+	<script src="{% static '/user_static/js/scrolltopcontrol.js' %}"></script>
+	<script src="{% static '/user_static/js/scripts.js' %}"></script>
+	<script src="{% static '/user_static/js/sweetalert2.js' %}"></script>
+
+
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.1/dist/sweetalert2.all.min.js"></script>
+
+
+
+	{% if messages %}
+	{% for msg in messages %}
+	<script>
+		swal.fire({
+			title: "Success!!",
+			text: "{{ msg }}",
+			icon: "success",
+			button: "OK!",
+
+
+		});
+	</script>
+	{% endfor %}
+	{% endif %}
+
+</body>
+
+</html>

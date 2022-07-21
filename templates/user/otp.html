@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Otp-Verification</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+
+
+</head>
+
+<body>
+
+  {% block alert %}
+  <div class="alert alert-{{msg_data.type}} alert-dismissible fade {{msg_data.display}}" role="alert"
+    style="width:max-content;position: fixed;z-index: 1111;bottom: 1em;right:1em;">
+    <strong>{{msg_data.name}}!</strong>
+    <m>{{msg_data.msg}}</m> {% if msg_data.help_link %} <a class='alert-link' target="_blank"
+      href='{{msg_data.help_link}}'>Get help.</a> {% endif %}
+    <div type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </div>
+  </div>
+  {% endblock %}
+
+
+  <style>
+    body {
+      background-image: url('https://mdbootstrap.com/img/Photos/Others/images/76.jpg');
+      font-family: Arial, Helvetica, sans-serif;
+      /* background: #a569bd; */
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+    .text-color {
+      color: #145a32;
+    }
+
+    .card {
+      width: 350px;
+      padding: 10px;
+      border-radius: 20px;
+      background: #d4efdf;
+      border: none;
+      position: relative;
+    }
+
+    .container {
+      height: 100vh;
+    }
+
+    .mobile-text {
+      color: #cd5c5c;
+      font-size: 15px;
+    }
+
+    .form-control {
+
+      margin-right: 12px;
+    }
+
+    .form-control:focus {
+      color: #495057;
+      background-color: #d4efdf;
+      border-color: #c0392b;
+      outline: 0;
+      box-shadow: none;
+    }
+
+    .cursor {
+      cursor: pointer;
+    }
+  </style>
+
+
+
+
+  <br>
+  <br>
+  <div class="d-flex justify-content-center align-items-center continer">
+    <div class="card py-5 px-3">
+      <h5 class="m-0">Email Otp verification</h5>
+      <span class="mobile-text"><b>Enter the code we just sent on your Email</b>
+        <b class="text-color">{{user.student.email}}</b>
+      </span>
+      <form class="needs-validation ml-auto mr-auto mt-4 mb-4" novalidate="false" action="/verify_otp/{{verify_for}}/"
+        method="post" role="form">
+        {% csrf_token %}
+        <div id="otp" class="d-flex flex-row mt-5">
+          <input type="password" name="otp" id="otp" class="form-control input-lg" maxlength="4" placeholder="Enter OTP"
+            required>
+          <div class="invalid-feedback">
+            Please enter OTP.
+          </div>
+          <!-- <input  type="password" name="otp" id="otp" class="form-control input-lg" maxlength="1" required>     
+          <input type="password" name="otp" id="otp" class="form-control input-lg" maxlength="1" required>
+          <input type="password" name="otp" id="otp" class="form-control input-lg" maxlength="1" required>
+          <input type="password" name="otp" id="otp" class="form-control input-lg" maxlength="1" required> -->
+        </div>
+        <div class="text-center mt-5">
+          <span class="d-block mobile-text" id="countdown"></span>
+          <a href="{% url 'resendOTP' %}"> Resend</a>
+        </div>
+
+        <div class="form-group text-center mt-3">
+          <input type="submit" class="btn btn-lg btn-success" value="SUBMIT">
+          <label class="ml-2 mr-2 p-2 rounded-circle" style="background-color: #000; color: #fff;">OR</label>
+          <a href="{% url 'login' %}" class="btn btn-lg btn-primary">LOGIN</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+  <script src="main.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+  {% if messages %}
+  {% for msg in messages %}
+  <script>
+    swal.fire({
+      title: "Success!!",
+      text: "{{ msg }}",
+      icon: "success",
+      button: "OK!",
+
+
+    });
+  </script>
+  {% endfor %}
+  {% endif %}
+
+  <!--   otp input box only one input
+  <script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+
+      function OTPInput() {
+        const inputs = document.querySelectorAll('#otp > *[id]');
+        for (let i = 0; i < inputs.length; i++) { inputs[i].addEventListener('keydown', function (event) { if (event.key === "Backspace") { inputs[i].value = ''; if (i !== 0) inputs[i - 1].focus(); } else { if (i === inputs.length - 1 && inputs[i].value !== '') { return true; } else if (event.keyCode > 47 && event.keyCode < 58) { inputs[i].value = event.key; if (i !== inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); } else if (event.keyCode > 64 && event.keyCode < 91) { inputs[i].value = String.fromCharCode(event.keyCode); if (i !== inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); } } }); }
+      } OTPInput();
+    });
+  </script> -->
+
+
+
+
+  <script>
+    let timerOn = true;
+    function timer(remaining) {
+      var m = Math.floor(remaining / 60);
+      var s = remaining % 60;
+      m = m < 10 ? "0" + m : m;
+      s = s < 10 ? "0" + s : s;
+      document.getElementById("countdown").innerHTML = `Time left: ${m} : ${s}`;
+      remaining -= 1;
+      if (remaining >= 0 && timerOn) {
+        setTimeout(function () {
+          timer(remaining);
+        }, 1000);
+        document.getElementById("resend").innerHTML = `
+    `;
+        return;
+      }
+      if (!timerOn) {
+        return;
+      }
+      document.getElementById("resend").innerHTML = `Don't receive the code? 
+  <span class="font-weight-bold text-color cursor" onclick="timer(60)">Resend
+  </span>`;
+    }
+    timer(60);
+
+  </script>
+
+  <script>
+    // JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+      'use strict';
+      window.addEventListener('load', function () {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+
+    $(document).ready(function () {
+
+
+    });
+  </script>
+
+  {% block scripts %}
+  {% endblock %}
+
+
+</body>
+
+</html>

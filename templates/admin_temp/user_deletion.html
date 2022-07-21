@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form class=" needs-validation setting-sec p-2" novalidate="false" action="{% url 'teachers:teaher_profile' %}" method="POST"
+    enctype="multipart/form-data">
+    {% csrf_token %}
+ 
+                {{ form.as_p}}
+                <button class="btn btn-primary" type="submit" name="action">confirm</button>
+           
+         
+        </div>
+    </div>
+</form>
+</body>
+</html>

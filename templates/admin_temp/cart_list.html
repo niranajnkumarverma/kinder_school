@@ -6,12 +6,12 @@
 <div class="dashboard-content-one">
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>Students</h3>
+        <h3>BOOK CARD</h3>
         <ul>
             <li>
                 <a href="{% url 'home:home' %}">Home</a>
             </li>
-            <li>All Cart List</li>
+            <li>All Card List</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
@@ -20,7 +20,7 @@
         <div class="card-body">
             <div class="heading-layout1">
                 <div class="item-title">
-                    <h3>All Cart Data</h3>
+                    <h3>All Card Data</h3>
                 </div>
             </div>
             <div class="table-responsive">
@@ -38,13 +38,13 @@
                                 Username
                             </th>
                             <th>
-                                Product.Image
+                                Book.Image
                             </th>
                             <th>
-                                Product.Name
+                                Book.Name
                             </th>
                             <th>
-                                Product.price
+                                Book.price
                             </th>
                             <th>
                                 Date
@@ -64,14 +64,14 @@
                                 {{Cart.user.username}}
                             </td>
                             <td class="py-1">
-                                <img src="{{Cart.product.product_image.url}}" height="25px" width="25px" alt="image" />
+                                <img src="{{Cart.book.book_image.url}}" height="15px" width="35px" alt="image" />
                             </td>
                             <td>
-                                {{Cart.product.product_name}}
+                                {{Cart.book.book_name}}
                             </td>
 
                             <td>
-                                {{Cart.product.product_price}}
+                                {{Cart.book.book_price}}
                             </td>
                             <td>
                                 {{Cart.date}}
@@ -82,7 +82,7 @@
                 </table>
                 {% else %}
                 <div>
-                    <h4 class="text-center">Your cart list data is empty </h4>
+                    <h4 class="text-center">Your card list data is empty </h4>
                 </div>
                 {% endif %}
             </div>

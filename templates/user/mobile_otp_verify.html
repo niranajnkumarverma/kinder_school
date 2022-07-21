@@ -1,0 +1,201 @@
+
+
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Otp-Verification</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+
+
+</head>
+
+<body>
+
+  {% block alert %}
+  <div class="alert alert-{{msg_data.type}} alert-dismissible fade {{msg_data.display}}" role="alert"
+    style="width:max-content;position: fixed;z-index: 1111;bottom: 1em;right:1em;">
+    <strong>{{msg_data.name}}!</strong>
+    <m>{{msg_data.msg}}</m> {% if msg_data.help_link %} <a class='alert-link' target="_blank"
+      href='{{msg_data.help_link}}'>Get help.</a> {% endif %}
+    <div type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </div>
+  </div>
+  {% endblock %}
+
+
+<!-- 
+<div class="row">
+    <div class="container">
+        <div class="col-4">
+            <form action="" method="POST" , autocomplete="off">
+                {% csrf_token %}
+                {{mobile_otp_form|crispy}}
+                <button type="submit" class="btn btn-primary">Verify</button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div> -->
+
+
+<style>
+
+
+body {
+      /* background-image: url('https://mdbootstrap.com/img/Photos/Others/images/76.jpg');
+      font-family: Arial, Helvetica, sans-serif; */
+      background: #ecf3eefb;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+  .height-100 {
+    height: 100vh
+}
+
+.card {
+    width: 400px;
+    border: none;
+    height: 300px;
+    box-shadow: 0px 5px 20px 0px #d2dae3;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.card h6 {
+    color: red;
+    font-size: 20px
+}
+
+.inputs input {
+    width: 40px;
+    height: 40px
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0
+}
+
+.card-2 {
+    background-color: #fff;
+    padding: 10px;
+    width: 350px;
+    height: 100px;
+    bottom: -50px;
+    left: 20px;
+    position: absolute;
+    border-radius: 5px
+}
+
+.card-2 .content {
+    margin-top: 50px
+}
+
+.card-2 .content a {
+    color: red
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border: 2px solid red
+}
+
+.validate {
+    border-radius: 20px;
+    height: 40px;
+    background-color: red;
+    border: 1px solid red;
+    width: 140px
+}
+</style>
+
+
+
+<div class="container height-100 d-flex justify-content-center align-items-center">
+  <div class="position-relative">
+      <div class="card p-2 text-center">
+          <h6>Please enter the one time password <br> to verify your account</h6>
+          <div> <span>A code has been sent to</span> your Mobile</div>
+          <form action="" method="POST" , autocomplete="off">
+            {% csrf_token %}
+            {{mobile_otp_form|crispy}}
+   
+
+      
+
+          <!-- <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+            <input class="m-2 text-center form-control rounded" type="text" id="first" maxlength="1" />
+            <input class="m-2 text-center form-control rounded" type="text" id="second" maxlength="1" />
+            <input class="m-2 text-center form-control rounded" type="text" id="third" maxlength="1" />
+            <input class="m-2 text-center form-control rounded" type="text" id="fourth" maxlength="1" />
+            <input class="m-2 text-center form-control rounded" type="text" id="fifth" maxlength="1" />
+    
+           </div> -->
+          <div class="mt-4"> <button type="submit" class="btn btn-danger px-4 validate">Validate</button> </div>
+        </form>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    // JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+      'use strict';
+      window.addEventListener('load', function () {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+
+    $(document).ready(function () {
+
+
+    });
+  </script>
+
+
+{% block scripts %}
+{% endblock %}
+
+  </body>
+  </html>

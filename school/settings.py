@@ -10,10 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from email.message import Message
+
 from pathlib import Path
 import os
-
+import smtplib
+from firebase_admin import initialize_app
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="school-management-system-220d4-89bc3b7ea0f7.json"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,49 +28,64 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-7rtz8#h!!#ef+zp6^z^2%a8g5%gh1l^tlegq%x0()kz-fvoda^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ '*']
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 # Application definition
 
 INSTALLED_APPS = [
+    # 'channels',
+    # 'chat',
+    # 'django.contrib.sites',
+    # 'cms',
+    # 'menus',
+    # 'treebeard',
+    # 'sekizai',
+    'newsApp.apps.NewsappConfig',
+    'django.contrib.humanize',  ##### This is used for (1 minutes ago time) display on screen
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'chat.apps.ChatConfig'
     'home',
     'student',
     'product',
     'order',
+    'principal',
+    'security',
+    'teacher',
+    'parent',
+    'superadmin',
     'admin_portal',
     'crispy_forms',
     'social_django',
     'chatbot',
-    'channels',
-    'chat.apps.ChatConfig',
+    'fcm_django',
+    'colorfield',
+    
+
+       
+    # 'usernotifier',
+   
+  
          
 ]
-
-
-
-
-CHANNEL_LAYERS = {
-    'default': {
-        # "BACKEND": "channels.layers.InMemoryChannelLayer",
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        'CONFIG': {
-            "hosts": [("127.0.0.1", 6379)],
-        },
-    },
-}
-
+SITE_ID = 1
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+MESSAGE_TAGS = {
+        10: 'alert-secondary',
+        20: 'alert-info',
+        25: 'alert-success',
+        30: 'alert-warning',
+        40: 'alert-danger',
+ }
+
 MIDDLEWARE = [
     'django_session_timeout.middleware.SessionTimeoutMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -80,11 +97,26 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     ## This middleware is used for user login with google account 
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    ## django session logout
+    'django_auto_logout.middleware.auto_logout',
+    # 'django.middleware.locale.LocaleMiddleware',
+    # 'cms.middleware.user.CurrentUserMiddleware',
+    # 'cms.middleware.page.CurrentPageMiddleware',
+    # 'cms.middleware.toolbar.ToolbarMiddleware',
+    # 'cms.middleware.language.LanguageCookieMiddleware',
+
+
 
    
 ]
-SESSION_EXPIRE_SECONDS = 30
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+AUTO_LOGOUT = {'SESSION_TIME': 15000}
+
+
+
+AUTO_LOGOUT = {
+    'SESSION_TIME': 15000,
+    'MESSAGE': 'The session has expired. Please login again to continue.',
+}
 
 ROOT_URLCONF = 'school.urls'
 
@@ -99,10 +131,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'sekizai.context_processors.sekizai',
+                # 'cms.context_processors.cms_settings',
+                # 'django.template.context_processors.i18n',
 
                 'social_django.context_processors.backends',   
                 'social_django.context_processors.login_redirect',
-             
+                'django_auto_logout.context_processors.auto_logout_client',
 
               
             ],
@@ -111,8 +146,18 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'school.wsgi.application'
-
 ASGI_APPLICATION = 'school.asgi.application'
+
+
+CHANNEL_LAYERS = {
+    'default': {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        'CONFIG': {
+            "hosts": [("localhost", 6379)],
+        },
+    },
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -160,7 +205,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
+# LANGUAGES = [
+#     ('en', 'English'),
+#     ('de', 'German'),
+# ]
 TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
@@ -169,7 +217,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+DATE_INPUT_FORMATS = ['%d-%m-%Y', '%Y-%m-%d']
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -179,6 +227,8 @@ USE_TZ = True
 #     'django.contrib.auth.backends.RemoteUserBackend',
 # )
 ################ end @#######################
+
+ACCOUNT_LOGOUT_ON_GET = True
 
 
 STATIC_URL = '/static/'
@@ -218,8 +268,8 @@ PAYTM_INDUSTRY_TYPE_ID = 'Retail'
 
 
 ######## GOOGLE RECAPTCHA ###############
-GOOGLE_RECAPTCHA_SECRET_KEY = '6LdwBYUfAAAAAEaq-UYQSumqsWpEKy0p5wA32tLp'
-RECAPTCHA_PRIVATE_KEY = '6LdwBYUfAAAAAG7M5PkjrVmUG70bcZ6oBS6DJBxh'
+# GOOGLE_RECAPTCHA_SECRET_KEY = '6LdwBYUfAAAAAEaq-UYQSumqsWpEKy0p5wA32tLp'
+# RECAPTCHA_PRIVATE_KEY = '6LdwBYUfAAAAAG7M5PkjrVmUG70bcZ6oBS6DJBxh'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -229,8 +279,8 @@ AUTHENTICATION_BACKENDS = (
      
 )
 ########## GOOGLE  ######################
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '679759899689-dbnqgfo5srstp4eev2rj0pfc8j9b4kkm.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '642158897272-0q044986uai7qjjrbu04fde53cfagimc.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 ########### FACEBOOK #######################
 SOCIAL_AUTH_FACEBOOK_KEY = '985292215170699'
 SOCIAL_AUTH_FACEBOOK_SECRET = '7b8483ff422109a7c17b3f7a03966bbf'
@@ -238,3 +288,37 @@ SOCIAL_AUTH_FACEBOOK_SECRET = '7b8483ff422109a7c17b3f7a03966bbf'
 SOCIAL_AUTH_TWITTER_KEY = '9TD8f5fhasdsbf4w61GSM9' 
 SOCIAL_AUTH_TWITTER_SECRET = 'mwtdcUe4uOvvjDk2Ausb45gsasdasdasashw65454TNSx'
 
+#########################################################
+# email configtaions
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_AUTH_ERROR = smtplib.SMTPAuthenticationError
+EMAIL_HOST_USER = 'niranjankumar8578@gmail.com'
+EMAIL_HOST_PASSWORD = 'ndkppqswvxnvvrrk'
+EMAIL_PORT = 587
+
+
+# Optional ONLY IF you have initialized a firebase app already:
+# Visit https://firebase.google.com/docs/admin/setup/#python
+# for more options for the following:
+# Store an environment variable called GOOGLE_APPLICATION_CREDENTIALS
+# which is a path that point to a json file with your credentials.
+# Additional arguments are available: credentials, options, name
+FIREBASE_APP = initialize_app()
+# To learn more, visit the docs here:
+# https://cloud.google.com/docs/authentication/getting-started>
+
+FCM_DJANGO_SETTINGS = {
+     # default: _('FCM Django')
+    # "APP_VERBOSE_NAME": "[string for AppConfig's verbose_name]",
+     # true if you want to have only one active device per registered user at a time
+     # default: False
+    "FCM_SERVER_KEY": "[AAAAZ2Md1PI:APA91bHK1w388Eu2uV0P7vriPCONcAmTAw-Set84YFDn7gUPCvEInWXGJuxCKTSOMGL_aA20wxyScd7x7L8WxteEqQPeV98mWHRdCg2LQjMFrCfpusGUwSuv8GqkpRCkfQ6KgqTMP4Hd]",
+    "ONE_DEVICE_PER_USER": False,
+     # devices to which notifications cannot be sent,
+     # are deleted upon receiving error response from FCM
+     # default: False
+    "DELETE_INACTIVE_DEVICES": False,
+}

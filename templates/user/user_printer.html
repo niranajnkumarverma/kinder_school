@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body class="back">
+    <style>
+        .back{
+            background-color: aquamarine;
+        }
+    </style>
+    <div class="container bootstrap snippet">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="text-center">
+
+                    <img src="static/user_static/logo.png" width="400px" height="100px">
+                    <hr>
+                    <h2>Enrolment ID: {{student.role}}</h2>
+                    {% if student.prof_image %}
+                    <img
+                    src="{{ student.prof_image.path }}"
+                    class="rounded-circle img-fluid" style="width: 150px;">
+                    {% else %} 
+                    <img
+                    src="static/user_static/default.png"
+                    class="rounded-circle img-fluid" style="width: 150px;">
+
+                    {% endif %}
+                    <h2>{{student.user.username}} </h2>
+
+                </div>
+            </div>
+            <hr>
+            <div class="col-sm-9">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="tab-content">
+                    <div class="table-responsive">
+                        <h2>Student General Information:</h2>
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        S.No
+                                    </th>
+
+                                    <th>
+                                        Email
+                                    </th>
+                                    <th>
+                                        Father Name
+                                    </th>
+                                    <th>
+                                        Mother Name
+                                    </th>
+
+                                    <th>
+                                        Father.occupation
+                                    </th>
+                                    <th>
+                                        Blood Group
+                                    </th>
+
+                                    <th>
+                                        Religion
+                                    </th>
+                                    <th>
+                                        class
+                                    </th>
+                                    <th>
+                                        Section
+                                    </th>
+                                    <th>
+                                        DOB
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        {{student.user.id}}
+                                    </td>
+                                    <td>
+                                        {{student.user.email}}
+                                    </td>
+                                    <td>
+                                        {{student.father_name}}
+                                    </td>
+                                    <td>
+                                        {{student.mother_name}}
+                                    </td>
+
+                                    <td>
+                                        {{student.father_occupation}}
+                                    </td>
+                                    <td>
+                                        {{student.blood_group}}
+                                    </td>
+                                    <td>
+                                        {{student.religion}}
+                                    </td>
+                                    <td>
+                                        {{student.classe}}
+                                    </td>
+                                    <td>
+                                        {{student.section}}
+                                    </td>
+                                    <td>
+                                        {{student.dob}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h2> Student Contact Details:</h2>
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Mobile
+                                    </th>
+                                    <th>
+                                        Gender
+                                    </th>
+                                    <th>
+                                        Address
+                                    </th>
+                                    <th>
+                                        Country
+                                    </th>
+                                    <th>
+                                        State
+                                    </th>
+                                    <th>
+                                        City
+                                    </th>
+                                    <th>
+                                        Pincode
+                                    </th>
+                                    <th>
+                                        Created
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                   <td>
+                                        {{student.mobile}}
+                                    </td>
+                                    <td>
+                                        {{student.gender}}
+                                    </td>
+                                    <td>
+                                        {{student.address}}
+                                    </td>
+                                    <td>
+                                        {{student.country}}
+                                    </td>
+                                    <td>
+                                        {{student.state}}
+                                    </td>
+                                    <td>
+                                        {{student.city}}
+                                    </td>
+                                    <td>
+                                        {{student.pincode}}
+                                    </td>
+                                    <td>
+                                        {{student.created_at}}
+                                    </td>
+                               </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

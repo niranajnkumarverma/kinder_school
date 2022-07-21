@@ -1,0 +1,272 @@
+{% extends 'admin_temp/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal List</title>
+</head>
+
+<body>
+    <div class="dashboard-content-one">
+        <!-- Breadcubs Area Start Here -->
+        <div class="breadcrumbs-area">
+            <h3>PRINCIPLAS</h3>
+            <ul>
+                <li>
+                    <a href="{% url 'home:home' %}">Home</a>
+                </li>
+                <li>All Principals List</li>
+            </ul>
+        </div>
+        <!-- Breadcubs Area End Here -->
+        <!-- Student Table Area Start Here -->
+        <div class="card height-auto">
+            <div class="card-body">
+                <div class="heading-layout1">
+                    <div class="item-title">
+                        <h3>All Principal Data</h3>
+
+
+
+                    </div>
+
+                </div>
+                <div class="table-responsive">
+
+                    <table class="table table-striped" id="myStaticDatatable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    S.No
+                                </th>
+                                <th>
+                                    Image
+                                </th>
+                                <th>
+                                    Username
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Father.Name
+                                </th>
+                                <th>
+                                    Mother.Name
+                                </th>
+
+                                <th>
+                                    Father.occupation
+                                </th>
+                                <th>
+                                    Blood.Group
+                                </th>
+
+                                <th>
+                                    Religion
+                                </th>
+
+                                <th>
+                                    DOB
+                                </th>
+                                <th>
+                                    Mobile
+                                </th>
+                                <th>
+                                    Gender
+                                </th>
+                                <th>
+                                    Country
+                                </th>
+                                <th>
+                                    State
+                                </th>
+                                <th>
+                                    City
+                                </th>
+                                <th>
+                                    Address
+                                </th>
+                                <th>
+                                    Pincode
+                                </th>
+                                <th>
+                                    Last.Login
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for principal in principals %}
+                            <tr>
+                                <td>
+                                    {{principal.user_id}}
+                                </td>
+                                <td>
+                                    <img src="{% if principal.prof_image %}{{ principal.prof_image.url }}{% else %}{% static 'user_static/default.png' %} {% endif %}"
+                                        class="avatar img-circle img-thumbnail" alt="avatar">
+                                </td>
+                                <td>
+                                    {{principal.user.username}}
+                                </td>
+
+                                <td>
+                                    {{principal.user.email}}
+                                </td>
+                                <td>
+                                    {{principal.father_name}}
+                                </td>
+                                <td>
+                                    {{principal.mother_name}}
+                                </td>
+
+                                <td>
+                                    {{principal.father_occupation}}
+                                </td>
+                                <td>
+                                    {{principal.blood_group}}
+                                </td>
+                                <td>
+                                    {{principal.religion}}
+                                </td>
+
+                                <td>
+                                    {{principal.dob}}
+                                </td>
+                                <td>
+                                    {{principal.mobile}}
+                                </td>
+                                <td>
+                                    {{principal.gender}}
+                                </td>
+                                <td>
+                                    {{principal.country}}
+                                </td>
+                                <td>
+                                    {{principal.state}}
+                                </td>
+                                <td>
+                                    {{principal.city}}
+                                </td>
+                                <td>
+                                    {{principal.address}}
+                                </td>
+                                <td>
+                                    {{principal.pincode}}
+                                </td>
+                                <td>
+                                    {{principal.user.last_login}}
+                                </td>
+                                <td>
+                                    {{principal.user.is_active}}
+                                </td>
+                                <td>
+
+                                    <div>
+                                        <a href="{% url 'principals:principal_profile' %}" class="fa fa-eye"
+                                            style="font-size:20px"></i> </a>
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                        <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal"
+                            data-target="#principalModal" data-whatever="@mdo">Add principal <span
+                                class="glyphicon glyphicon-plus"></span></button>
+                        <br><br>
+                        <div class="modal fade" id="principalModal" tabindex="-1" role="dialog"
+                            aria-labelledby="imageModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="principalModalLabel">Add New principal</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form enctype="multipart/form-data" method="POST" class="new-added-form">
+                                            {% if principal_form.errors %}
+                                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div id="principal_form_errors">
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    {% for key, value in principal_form.errors.items %}
+                                                    <strong>{{ value }}</strong>
+                                                    {% endfor %}
+
+                                                </div>
+                                            </div>
+                                            {% endif %}
+
+                                            <div class="register">
+                                                <div class="form-group">
+                                                    {% csrf_token %}
+                                                    <h4>{{principal_form.username.label}}</h4>
+                                                    <div class="field">
+                                                        <span class="fa fa-user"></span>
+                                                        {{ principal_form.username }}
+                                                    </div>
+                                                    <h4>{{principal_form.email.label}}</h4>
+                                                    <div class="field">
+                                                        <span class="fa fa-envelope"></span>
+                                                        {{ principal_form.email }}
+                                                    </div>
+                                                    <h4>{{principal_form.password1.label}}</h4>
+                                                    <div class="field space">
+                                                        <span class="fa fa-lock"></span>
+                                                        {{ principal_form.password1 }}
+                                                    </div>
+                                                    <h4>{{principal_form.password2.label}}</h4>
+                                                    <div class="field space">
+                                                        <span class="fa fa-lock"></span>
+                                                        {{ principal_form.password2 }}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                    data-dismiss="modal">Close</button>
+
+                                                <button type="submit" class="btn btn-primary">Add Principal</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+
+
+
+{% endblock %}

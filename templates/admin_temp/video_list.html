@@ -1,12 +1,12 @@
 {% extends 'admin_temp/base.html' %}
-<!-- {% load crispy_forms_tags %} -->
+{% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
 
 <div class="dashboard-content-one">
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>Students</h3>
+        <h3>VIDEO</h3>
         <ul>
             <li>
                 <a href="{% url 'home:home' %}">Home</a>
@@ -14,7 +14,7 @@
             <li>All Video List</li>
         </ul>
     </div>
-    <a href="{% url 'home:video_add' %}" class="btn-fill-lg bg-blue-dark text-center">Add Video</a>
+    <!-- <a href="{% url 'home:video_add' %}" class="btn-fill-lg bg-blue-dark text-center">Add Video</a> -->
     <div class="card height-auto">
         <div class="card-body">
             <div class="heading-layout1">
@@ -28,11 +28,9 @@
                     <thead>
                         <tr>
                             <th>
-                                Video.ID
+                                S.No
                             </th>
-                            <th>
-                                User.ID
-                            </th>
+
                             <th>
                                 Username
                             </th>
@@ -54,14 +52,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for video in object_list %}
+                        {% for video in videos %}
                         <tr>
                             <td>
                                 {{video.id}}
                             </td>
-                            <td>
-                                {{video.user.id}}
-                            </td>
+
                             <td>
                                 {{video.user.username}}
                             </td>
@@ -75,10 +71,10 @@
                                         autoplay>
                                     Your browser does not support the video tag.
                                 </video>
-                                <!-- <img src="{{video.videofile.url}}" height="45px" width="45px" alt="video"/> -->
+                              
                             </td>
                             <td>
-                                {{video.date}}
+                                {{video.created_at}}
                             </td>
                             <td>
                                 <a href="{% url 'home:video_update' video.id %}">
@@ -94,6 +90,36 @@
                         </tr>
                         {% endfor %}
                     </tbody>
+                    <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal" data-target="#videoModal"
+                        data-whatever="@mdo">Add Video <span class="glyphicon glyphicon-plus"></span></button>
+                    <br><br>
+                    <div class="modal fade" id="videoModal" tabindex="-1" role="dialog"
+                        aria-labelledby="videoModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="videoModalLabel">Add New Video</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form enctype="multipart/form-data" method="POST" class="new-added-form">
+                                        <div class="form-group">
+                                            {% csrf_token %}
+                                            {{ form|crispy }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger"
+                                                data-dismiss="modal">Close</button>
+
+                                            <button type="submit" class="btn btn-primary">Add Video</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </table>
             </div>
         </div>

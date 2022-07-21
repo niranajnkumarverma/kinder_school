@@ -1,0 +1,260 @@
+{% extends 'admin_temp/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security List</title>
+</head>
+
+<body>
+    <div class="dashboard-content-one">
+        <div class="breadcrumbs-area">
+            <h3>SECURITY</h3>
+            <ul>
+                <li>
+                    <a href="{% url 'home:home' %}">Home</a>
+                </li>
+                <li>All Security</li>
+            </ul>
+        </div>
+
+        <div class="card height-auto">
+            <div class="card-body">
+                <div class="heading-layout1">
+                    <div class="item-title">
+                        <h3>All Security List</h3>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="myStaticDatatable" width="100%" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    S.No
+                                </th>
+                                <th>
+                                    Image
+                                </th>
+                                <th>
+                                    Username
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Father.Name
+                                </th>
+                                <th>
+                                    Mother.Name
+                                </th>
+
+                                <th>
+                                    Father.occupation
+                                </th>
+                                <th>
+                                    Blood.Group
+                                </th>
+
+                                <th>
+                                    Religion
+                                </th>
+
+                                <th>
+                                    DOB
+                                </th>
+                                <th>
+                                    Mobile
+                                </th>
+                                <th>
+                                    Gender
+                                </th>
+                                <th>
+                                    Country
+                                </th>
+                                <th>
+                                    State
+                                </th>
+                                <th>
+                                    City
+                                </th>
+                                <th>
+                                    Address
+                                </th>
+                                <th>
+                                    Pincode
+                                </th>
+                                <th>
+                                    Last.Login
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            {% for security in securities %}
+                            <tr>
+                                <td>
+                                    {{security.user_id}}
+                                </td>
+                                <td>
+                                    <img src="{% if security.prof_image %}{{ security.prof_image.url }}{% else %}{% static 'user_static/default.png' %} {% endif %}"
+                                        class="avatar img-circle img-thumbnail" alt="avatar">
+                                </td>
+                                <td>
+                                    {{security.user.username}}
+                                </td>
+
+                                <td>
+                                    {{security.user.email}}
+                                </td>
+                                <td>
+                                    {{security.father_name}}
+                                </td>
+                                <td>
+                                    {{security.mother_name}}
+                                </td>
+
+                                <td>
+                                    {{security.father_occupation}}
+                                </td>
+                                <td>
+                                    {{security.blood_group}}
+                                </td>
+                                <td>
+                                    {{security.religion}}
+                                </td>
+                                <td>
+                                    {{security.dob}}
+                                </td>
+
+
+                                <td>
+                                    {{security.mobile}}
+                                </td>
+                                <td>
+                                    {{security.gender}}
+                                </td>
+                                <td>
+                                    {{security.country}}
+                                </td>
+                                <td>
+                                    {{security.state}}
+                                </td>
+                                <td>
+                                    {{security.city}}
+                                </td>
+                                <td>
+                                    {{security.address}}
+                                </td>
+                                <td>
+                                    {{security.pincode}}
+                                </td>
+                                <td>
+                                    {{security.user.last_login}}
+                                </td>
+                                <td>
+                                    {{security.user.is_active}}
+                                </td>
+                                <td>
+                                    <div>
+                                        <a href="#" class="fa fa-eye" style="font-size:20px"></i> </a>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal"
+                            data-target="#staffModal" data-whatever="@mdo">Add Security <span
+                                class="glyphicon glyphicon-plus"></span></button>
+                        <br><br>
+                        <div class="modal fade" id="staffModal" tabindex="-1" role="dialog"
+                            aria-labelledby="staffModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staffModalLabel">Add New Security</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form enctype="multipart/form-data" method="POST" class="new-added-form">
+                                            {% if security_form.errors %}
+                                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div id="security_form_errors">
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    {% for key, value in security_form.errors.items %}
+                                                    <strong>{{ value }}</strong>
+                                                    {% endfor %}
+
+                                                </div>
+                                            </div>
+                                            {% endif %}
+
+                                            <div class="register">
+                                                <div class="form-group">
+                                                    {% csrf_token %}
+                                                    <h4>{{security_form.username.label}}</h4>
+                                                    <div class="field">
+                                                        <span class="fa fa-user"></span>
+                                                        {{ security_form.username }}
+                                                    </div>
+                                                    <h4>{{security_form.email.label}}</h4>
+                                                    <div class="field">
+                                                        <span class="fa fa-envelope"></span>
+                                                        {{ security_form.email }}
+                                                    </div>
+                                                    <h4>{{security_form.password1.label}}</h4>
+                                                    <div class="field space">
+                                                        <span class="fa fa-lock"></span>
+                                                        {{ security_form.password1 }}
+                                                    </div>
+                                                    <h4>{{security_form.password2.label}}</h4>
+                                                    <div class="field space">
+                                                        <span class="fa fa-lock"></span>
+                                                        {{ security_form.password2 }}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                    data-dismiss="modal">Close</button>
+
+                                                <button type="submit" class="btn btn-primary">Add Security</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+
+
+{% endblock %}

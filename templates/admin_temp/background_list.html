@@ -1,0 +1,208 @@
+{% extends 'admin_temp/base.html' %}
+{% block content %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+</head>
+
+<body>
+    <div class="dashboard-content-one">
+        <!-- Breadcubs Area Start Here -->
+        <div class="breadcrumbs-area">
+            <h3>CMS</h3>
+            <ul>
+                <li>
+                    <a href="{% url 'home:home' %}">Home</a>
+                </li>
+                <li>All Color List</li>
+            </ul>
+        </div>
+        <!-- Breadcubs Area End Here -->
+        <!-- Student Table Area Start Here -->
+        <div class="card height-auto">
+            <div class="card-body">
+                <div class="heading-layout1">
+                    <div class="item-title">
+                        <h3>All color Data</h3>
+                    </div>
+                </div>
+                <hr>
+
+                <div class="table-responsive">
+                    <table width="100%" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    S.No
+                                </th>
+                                <th>
+                                    Header
+                                </th>
+                                <th>
+                                    Update
+                                </th>
+                                <th>
+                                    Delete
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for head in header %}
+                            <tr>
+                                <td>
+                                    {{head.id}}
+                                </td>
+                                <td>
+                                    {{head.color}}
+                                </td>
+
+                                <td>
+                                    <a href="{% url 'home:header_color_update' head.pk %}">
+                                        <span class="fas fa-edit mr-2"></span>Edit
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="dropdown-item text-danger delete_item" href="#"
+                                        onclick="header_delete({{ head.id }})">
+                                        <span class="fas fa-trash-alt mr-2"></span>Remove
+                                    </a>
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+
+                            <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal"
+                                data-target="#headerModal" data-whatever="@mdo">Add Header Color <span
+                                    class="glyphicon glyphicon-plus"></span></button>
+
+                            <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal"
+                                data-target="#footerModal" data-whatever="@mdo">Add Footer Color <span
+                                    class="glyphicon glyphicon-plus"></span></button>
+
+
+                            <br><br>
+                            <h4>Header color List</h4>
+
+                            <div class="modal fade" id="headerModal" tabindex="-1" role="dialog"
+                                aria-labelledby="headerModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="headerModalLabel">Add Header Color </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{% url 'home:headerview' %}" method="POST">
+                                                {% csrf_token %}
+                                                <label>Background color</label>
+                                                <label for="color">Select your favorite color:</label>
+                                                <input type="color" id="color" name="color" value="#ff0000"><br><br>
+                                                <button type="submit" name="btn"
+                                                    class="btn btn-outline-dark">Apply</button>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </tbody>
+
+
+                    </table>
+
+                </div>
+
+
+                <table width="100%" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                S.No
+                            </th>
+                            <th>
+                                Footer
+                            </th>
+                            <th>
+                                Update
+                            </th>
+                            <th>
+                                Delete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for foot in footer %}
+                        <tr>
+                            <td>
+                                {{foot.id}}
+                            </td>
+                            <td>
+                                {{foot.color}}
+                            </td>
+
+                            <td>
+                                <a href="{% url 'home:footer_color_update' foot.pk %}">
+                                    <span class="fas fa-edit mr-2"></span>Edit
+                                </a>
+                            </td>
+                            <td>
+                                <a class="dropdown-item text-danger delete_item" href="#"
+                                    onclick="footer_delete({{ foot.id }})">
+                                    <span class="fas fa-trash-alt mr-2"></span>Remove
+                                </a>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+
+                    <br><br>
+
+                    <h4> Footer Color List</h4>
+                    <div class="modal fade" id="footerModal" tabindex="-1" role="dialog"
+                        aria-labelledby="footerModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="footerModalLabel">Add Footer color </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{% url 'home:footerview' %}" method="POST">
+                                        {% csrf_token %}
+                                        <label>Background color</label>
+                                        <label for="color">Select your favorite color:</label>
+                                        <input type="color" id="color" name="color" value="#ff0000"><br><br>
+                                        <button type="submit" name="btn" class="btn btn-outline-dark">Apply</button>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+{% endblock %}

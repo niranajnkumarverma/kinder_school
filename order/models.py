@@ -1,8 +1,7 @@
 from django.db import models
-from student.models import Profile
-from django.db import models
 from home.models import User
 from product.models import Book
+from student.models import Student
 
 # Create your models here.
 
@@ -14,6 +13,7 @@ class Cart(models.Model):
     quantity=models.CharField(max_length=10, default="1")
     price = models.CharField(max_length=10, default="0")
     total = models.CharField(max_length=10, default="0")
+    
 
     def save(self, *args, **kwargs):
         if self.price and self.quantity:
@@ -32,7 +32,7 @@ orderstatus = (
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True)
+    profile = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, blank=True)
     total_price = models.FloatField(null=True)
     transaction_id = models.CharField(max_length=100, null=True)
     status = models.CharField(max_length=150, choices=orderstatus, default='pending' )

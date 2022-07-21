@@ -1,5 +1,5 @@
 {% extends 'admin_temp/base.html' %}
-<!-- {% load crispy_forms_tags %} -->
+{% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
 
@@ -14,7 +14,7 @@
 <div class="dashboard-content-one">
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>Students</h3>
+        <h3>STUDENTS</h3>
         <ul>
             <li>
                 <a href="{% url 'home:home' %}">Home</a>
@@ -40,7 +40,7 @@
                     <thead>
                         <tr>
                             <th>
-                                User.ID
+                              S.No
                             </th>
                             <th>
                                 Image
@@ -50,6 +50,32 @@
                             </th>
                             <th>
                                 Email
+                            </th>
+                            <th>
+                                Father.Name
+                            </th>
+                            <th>
+                                Mother.Name
+                            </th>
+
+                            <th>
+                                Father.occupation
+                            </th>
+                            <th>
+                                Blood.Group
+                            </th>
+
+                            <th>
+                                Religion
+                            </th>
+                            <th>
+                                class
+                            </th>
+                            <th>
+                                Section
+                            </th>
+                            <th>
+                                DOB
                             </th>
                             <th>
                                 Mobile
@@ -84,54 +110,89 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for use in object_list %}
+                        {% for student in object_list %}
                         <tr>
                             <td>
-                                {{use.user_id}}
+                                {{student.user_id}}
                             </td>
                             <td>
-                                <img src="{{use.image.url}}" height="25px" width="35px">
+                                <img src="{% if student.prof_image %}{{ student.prof_image.url }}{% else %}{% static 'user_static/default.png' %} {% endif %}"
+                                class="avatar img-circle img-thumbnail"  alt="avatar">
+                              
+            
+                                
                             </td>
                             <td>
-                                {{use.user.username}}
+                                {{student.user.username}}
                             </td>
 
                             <td>
-                                {{use.user.email}}
+                                {{student.user.email}}
                             </td>
                             <td>
-                                {{use.mobile}}
+                                {{student.father_name}}
                             </td>
                             <td>
-                                {{use.gender}}
+                                {{student.mother_name}}
+                            </td>
+
+                            <td>
+                                {{student.father_occupation}}
                             </td>
                             <td>
-                                {{use.country}}
+                                {{student.blood_group}}
                             </td>
                             <td>
-                                {{use.state}}
+                                {{student.religion}}
                             </td>
                             <td>
-                                {{use.city}}
+                                {{student.classe}}
                             </td>
                             <td>
-                                {{use.address}}
+                                {{student.section}}
                             </td>
                             <td>
-                                {{use.pincode}}
+                                {{student.dob}}
                             </td>
                             <td>
-                                {{use.user.last_login}}
+                                {{student.mobile}}
                             </td>
                             <td>
-                                {{use.user.is_active}}
+                                {{student.gender}}
                             </td>
                             <td>
+                                {{student.country}}
+                            </td>
+                            <td>
+                                {{student.state}}
+                            </td>
+                            <td>
+                                {{student.city}}
+                            </td>
+                            <td>
+                                {{student.address}}
+                            </td>
+                            <td>
+                                {{student.pincode}}
+                            </td>
+                            <td>
+                                {{student.user.last_login}}
+                            </td>
+                            <td>
+                                {{student.user.is_active}}
+                            </td>
+                            <td>
+                                <div>
+                                    <a href="" class="fa fa-eye"
+                                        style="font-size:20px"></i> </a>
+                                </div>
+                            </td>
+                            <!-- <td>
                                 <a class="dropdown-item text-danger delete_item"
-                                    href="{% url 'students:user_delete' pk=use.id %}">
+                                    href="">
                                     <span class="fas fa-trash-alt mr-2"></span>Remove
                                 </a>
-                            </td>
+                            </td> -->
                         </tr>
                         {% endfor %}
 
@@ -139,7 +200,7 @@
                 </table>
                 {% else %}
                 <div>
-                    <h4 class="text-center">Your User list data  is empty </h4>
+                    <h4 class="text-center">Your Student list data  is empty </h4>
                 </div>
             
             {% endif %}

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <style>
+        body {
+            color: #000;
+            overflow-x: hidden;
+            height: 100%;
+            background: linear-gradient(180deg, #2196F3 250px, #FFF 250px);
+            background-repeat: no-repeat;
+        }
+
+        .card.show {
+            display: block !important;
+        }
+
+        .card {
+            display: none;
+            background-color: #E0F7FA;
+            border: 1px solid #E0F7FA;
+            box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .step-container {
+            border-top: 1px solid lightgrey;
+            border-bottom: 1px solid lightgrey;
+            width: 99.85%;
+            margin-top: 70px;
+            margin-bottom: 50px;
+        }
+
+        .fa-circle {
+            background-color: lightgrey;
+            color: #fff;
+            padding: 2px 3.1555px;
+            border-radius: 50%;
+        }
+
+        .step-box {
+            padding: 10px;
+            border-left: 1px solid lightgrey;
+            border-right: 1px solid lightgrey;
+            background-color: #fff;
+        }
+
+        .active {
+            background-color: #2196F3;
+            color: #fff !important;
+            border-left: 1px solid #2196F3;
+            border-right: 1px solid #2196F3;
+        }
+
+        .active .fa-circle {
+            background-color: #fff !important;
+            color: #2196F3;
+        }
+
+        .fa-check {
+            border-radius: 50%;
+            background-color: #00C853;
+            color: #fff;
+            padding: 3px;
+        }
+
+        .step-title-0 {
+            margin-bottom: 0px;
+        }
+
+        .step-title {
+            font-size: 13px;
+            position: relative;
+            margin-left: 4px;
+        }
+
+        .heading {
+            margin-bottom: 40px;
+        }
+
+        input,
+        textarea,
+        button {
+            padding: 8px 15px 8px 15px;
+            border-radius: 0px;
+            margin-bottom: 25px;
+            margin-top: 2px;
+            width: 100%;
+            box-sizing: border-box;
+            color: #2C3E50;
+            background-color: #ECEFF1;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        input:focus,
+        textarea:focus {
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            border: 1px solid skyblue !important;
+            outline-width: 0;
+        }
+
+        button:focus {
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            border: 1px solid green !important;
+            outline-width: 0;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        button {
+            width: 120px;
+            letter-spacing: 2px;
+        }
+
+        .fit-image {
+            width: 100%;
+            object-fit: cover;
+        }
+
+        @media screen and (max-width: 768px) {
+            .break-line {
+                display: block;
+                float: none;
+            }
+        }
+    </style>
+    <div class="container-fluid px-1 py-5 mx-auto">
+        <div class="row d-flex justify-content-center text-center">
+            <div class="col-lg-9 col-md-10">
+                <div class="card b-0 rounded-0 show">
+                    <div class="row justify-content-center mx-auto step-container">
+                        <div class="col-md-3 col-4 step-box active">
+                            <h6 class="step-title-0">
+                                <span class="fa fa-circle"></span>
+                                <span class="break-line"></span>
+                                <span class="step-title">TERMS AND CONDITIONS</span>
+                            </h6>
+                        </div>
+                        <div class="col-md-3 col-4 step-box">
+                            <h6 class="step-title-0">
+                                <span class="fa fa-circle"></span>
+                                <span class="break-line"></span>
+                                <span class="step-title">FEEDBACK</span>
+                            </h6>
+                        </div>
+                        <div class="col-md-3 col-4 step-box">
+                            <h6 class="step-title-0">
+                                <span class="fa fa-circle"></span>
+                                <span class="break-line"></span>
+                                <span class="step-title">CONFIRMATION</span>
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="p-3 justify-content-center text-center">
+                        <h4 class="heading">Terms and Conditions</h4>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-3 col-md-1 col-0"></div>
+                            <div class="col-lg-9 col-md-11 col-12 list text-left">
+                                <div class="custom-control custom-checkbox mb-4">
+                                    <input id="customCheck1" type="checkbox" class="custom-control-input" checked="1">
+                                    <label for="customCheck1" class="custom-control-label">I have read and agree to the
+                                        following Terms and Conditions</label>
+                                </div>
+                                <ol type="1" class="pl-3 text-muted mb-5">
+                                    <li>Lorem ipsum dolor sit amet</li>
+                                    <li>Consectuer adipiscing eut, sed diamnanummy</li>
+                                    <li>Lorem ipsum dolor sit amet</li>
+                                    <li>Consectuer adipiscing eut, sed diamnanummy</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <button name="next" id="next1" class="btn btn-success rounded-0 mb-5 next">START</button>
+                    </div>
+                </div>
+
+                <div class="card b-0 rounded-0">
+                    <div class="row justify-content-center mx-auto step-container">
+                        <div class="col-md-3 col-4 step-box">
+                            <h6 class="step-title-0">
+                                <span class="fa fa-check"></span>
+                                <span class="break-line"></span>
+                                <span class="step-title">TERMS AND CONDITIONS</span>
+                            </h6>
+                        </div>
+                        <div class="col-md-3 col-4 step-box active">
+                            <h6 class="step-title-0">
+                                <span class="fa fa-circle"></span>
+                                <span class="break-line"></span>
+                                <span class="step-title">FEEDBACK</span>
+                            </h6>
+                        </div>
+                        <div class="col-md-3 col-4 step-box">
+                            <h6 class="step-title-0">
+                                <span class="fa fa-circle"></span>
+                                <span class="break-line"></span>
+                                <span class="step-title">CONFIRMATION</span>
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="p-3 justify-content-center text-center">
+                        <h4 class="heading">Feedback</h4>
+                        <div class="row justify-content-center mb-4">
+                            <div class="col-xl-7 col-lg-8 col-10 list text-left">
+                                <label class="text-danger mb-3">* Required</label>
+                                <div class="form-group">
+                                    <label class="form-control-label">Subject * :</label>
+                                    <input type="text" id="sub" name="subject" placeholder="Subject"
+                                        class="form-control" onblur="validate(1)">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">Message * :</label>
+                                    <textarea type="textarea" id="msg" name="message" placeholder="Message"
+                                        class="form-control" onblur="validate(2)"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-success rounded-0 mb-5 prev">Back</button>
+                        <button id="next2" class="btn btn-success rounded-0 mb-5 next"
+                            onclick="validate(0)">Submit</button>
+                    </div>
+                </div>
+
+                <div class="card b-0 rounded-0">
+                    <div class="row justify-content-center mx-auto step-container">
+                        <div class="col-md-3 col-4 step-box">
+                            <h6 class="step-title-0">
+                                <span class="fa fa-check"></span>
+                                <span class="break-line"></span>
+                                <span class="step-title">TERMS AND CONDITIONS</span>
+                            </h6>
+                        </div>
+                        <div class="col-md-3 col-4 step-box">
+                            <h6 class="step-title-0">
+                                <span class="fa fa-check"></span>
+                                <span class="break-line"></span>
+                                <span class="step-title">FEEDBACK</span>
+                            </h6>
+                        </div>
+                        <div class="col-md-3 col-4 step-box active">
+                            <h6 class="step-title-0">
+                                <span class="fa fa-circle"></span>
+                                <span class="break-line"></span>
+                                <span class="step-title">CONFIRMATION</span>
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="p-3 justify-content-center text-center">
+                        <h4 class="heading">Confirmation</h4>
+                        <div class="row d-flex justify-content-center">
+                            <div class="mb-4">
+                                <h6 class="confirm">Verify all entered details and press confirm</h6>
+                            </div>
+                        </div>
+                        <button class="btn btn-success rounded-0 mb-5 prev">Back</button>
+                        <button id="next3" class="btn btn-success rounded-0 mb-5 next">Confirm</button>
+                    </div>
+                </div>
+
+                <div class="card b-0 rounded-0">
+                    <div class="row justify-content-center mx-auto step-container">
+                        <div class="col-md-3 col-4 step-box">
+                            <h6 class="step-title-0">
+                                <span class="fa fa-check"></span>
+                                <span class="break-line"></span>
+                                <span class="step-title">TERMS AND CONDITIONS</span>
+                            </h6>
+                        </div>
+                        <div class="col-md-3 col-4 step-box">
+                            <h6 class="step-title-0">
+                                <span class="fa fa-check"></span>
+                                <span class="break-line"></span>
+                                <span class="step-title">FEEDBACK</span>
+                            </h6>
+                        </div>
+                        <div class="col-md-3 col-4 step-box">
+                            <h6 class="step-title-0">
+                                <span class="fa fa-check"></span>
+                                <span class="break-line"></span>
+                                <span class="step-title">CONFIRMATION</span>
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="p-3 justify-content-center text-center">
+                        <h3 class="heading">Thank You for your Feedback!</h3>
+                        <div class="row justify-content-center">
+                            <div class="">
+                                <img src="https://i.imgur.com/4Y9xMCF.gif" class="fit-image mb-5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script>
+        function validate(val) {
+            v1 = document.getElementById("sub");
+            v2 = document.getElementById("msg");
+
+            flag = true;
+
+            if (val >= 1 || val == 0) {
+                if (v1.value == "") {
+                    v1.style.borderColor = "red";
+                    flag = false;
+                }
+                else {
+                    v1.style.borderColor = "green";
+                    flag = true;
+                }
+            }
+
+            if (val >= 2 || val == 0) {
+                if (v2.value == "") {
+                    v2.style.borderColor = "red";
+                    flag = false;
+                }
+                else {
+                    v2.style.borderColor = "green";
+                    flag = true;
+                }
+            }
+
+            return flag;
+        }
+
+        $(document).ready(function () {
+
+            var current_fs, next_fs, previous_fs;
+
+            $(".next").click(function () {
+
+                str1 = "next1";
+                str2 = "next2";
+                str3 = "next3";
+
+                if (!str1.localeCompare($(this).attr('id')) && document.getElementById("customCheck1").checked == 1) {
+                    val1 = true;
+                }
+                else {
+                    val1 = false;
+                }
+
+                if (!str2.localeCompare($(this).attr('id')) && document.getElementById("sub").value != "") {
+                    val21 = true;
+                }
+                else {
+                    val21 = false;
+                }
+
+                if (!str2.localeCompare($(this).attr('id')) && document.getElementById("msg").value != "") {
+                    val22 = true;
+                }
+                else {
+                    val22 = false;
+                }
+
+                if ((!str1.localeCompare($(this).attr('id')) && val1 == true) || (!str2.localeCompare($(this).attr('id')) && val21 == true && val22 == true) || !str3.localeCompare($(this).attr('id'))) {
+                    current_fs = $(this).parent().parent();
+                    next_fs = $(this).parent().parent().next();
+
+                    $(current_fs).removeClass("show");
+                    $(next_fs).addClass("show");
+
+                    current_fs.animate({}, {
+                        step: function () {
+
+                            current_fs.css({
+                                'display': 'none',
+                                'position': 'relative'
+                            });
+
+                            next_fs.css({
+                                'display': 'block'
+                            });
+                        }
+                    });
+                }
+            });
+
+            $(".prev").click(function () {
+
+                current_fs = $(this).parent().parent();
+                previous_fs = $(this).parent().parent().prev();
+
+                $(current_fs).removeClass("show");
+                $(previous_fs).addClass("show");
+
+                current_fs.animate({}, {
+                    step: function () {
+
+                        current_fs.css({
+                            'display': 'none',
+                            'position': 'relative'
+                        });
+
+                        previous_fs.css({
+                            'display': 'block'
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

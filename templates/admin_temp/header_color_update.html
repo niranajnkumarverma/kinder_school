@@ -1,0 +1,43 @@
+{% extends 'admin_temp/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!-- Sidebar Area End Here -->
+<div class="dashboard-content-one">
+    <!-- Breadcubs Area Start Here -->
+    <div class="breadcrumbs-area">
+        <h3>Header</h3>
+        <ul>
+            <li>
+                <a href="{% url 'home:home' %}">Home</a>
+            </li>
+            <li>Header</li>
+        </ul>
+    </div>
+    <!-- Breadcubs Area End Here -->
+    <!-- Admit Form Area Start Here -->
+    <div class="card height-auto">
+        <div class="card-body">
+            <div class="heading-layout1">
+                <div class="item-title">
+                    
+                </div>
+              
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <label>Background color</label>
+                    <label for="color">Select your favorite color:</label>
+                    <input type="color" id="color" name="color" value="{{color}}"><br><br>
+                    <div class="col-12 form-group mg-t-8">
+                        <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Update</button>
+                        <a href="{% url 'home:change_color' %}" type="reset"
+                        class="btn-fill-lg bg-blue-dark btn-hover-yellow">Back</a>
+                    </div>
+                  
+                  </form>
+            </div>
+        </div>
+    </div>
+    {% endblock %}

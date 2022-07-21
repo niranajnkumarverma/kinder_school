@@ -1,5 +1,3 @@
-
-from django.shortcuts import render
 from datetime import date, datetime
 from django.views.generic import ListView, CreateView
 from django.shortcuts import render, redirect, reverse
@@ -8,9 +6,9 @@ from django import views
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
+from student.models import Student
 from order.models import Cart, Order, OrderItem, Transaction
 from product.models import Publisher,Book
-from student.models import Profile
 from django.views.generic.base import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -38,15 +36,12 @@ class AddToCartView(LoginRequiredMixin, View):
         user = request.user
         # profile = Profile.objects.get(user=self.request.user)
         book = Book.objects.get(pk=self.kwargs['pk'])
-        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,", book)
         cart = Cart.objects.filter(book=book, user=user).first()
         quantity = 1
         if cart:
             messages.warning(request, 'already exists in the cart')
         else:
-            cart = Cart(book=book, quantity=quantity,
-                        price=book.book_price, total=book.book_price, user=user)
-            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>,", cart)
+            cart = Cart(book=book, quantity=quantity,price=book.book_price, total=book.book_price, user=user)
             cart.save()
             messages.success(request, 'Product has been added to your cart!')
         return redirect('product:shopview')
@@ -67,20 +62,10 @@ class CartView(LoginRequiredMixin, TemplateView):
                 total_cart_amount), (total_cart_amount / 100) * 18)
             tax = (total_cart_amount / 100) * 18
             final_amount = total_cart_amount + tax
-            context['cart_data'] = {'cart': cart, 'tax': tax, 'final_amount': final_amount,
-                                    'total_cart_amount': total_cart_amount, 'total_cart': len(cart)}
+            context['cart_data'] = {'cart': cart, 'tax': tax, 'final_amount': final_amount,'total_cart_amount': total_cart_amount, 'total_cart': len(cart)}
         return context
 
 
-# def charge(request):
-#     if request.method == 'POST':
-#         charge = stripe.Charge.create(
-#             amount=500,
-#             currency='usd',
-#             description='book charge',
-#             source=request.POST['stripeToken']
-#         )
-#         return render(request, 'user/charge.html')
 
 
 class CartUpdate(LoginRequiredMixin, TemplateView):
@@ -89,7 +74,6 @@ class CartUpdate(LoginRequiredMixin, TemplateView):
         cart.quantity = int(request.POST['qty'])
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
               type(cart.quantity), cart.quantity)
-        print(">>>>>>>>>>>>>>>>>>>>>", cart.book.book_price)
         cart.total = cart.quantity * cart.book.book_price
         cart.save()
         messages.success(request, 'Your Quanity has been Updated!')
@@ -112,11 +96,8 @@ class OrderView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         user = request.user
         neworder = Order()
-        profile = Profile.objects.filter(user=self.request.user).first()
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Profile", profile)
-        neworder = Order.objects.create(
-            user=self.request.user, profile=profile)
-        print("<<<<<<<<<<<<<<<<< order <<<<<<<<<<<<<<<<<<<<<<<,,", neworder)
+        profile = Student.objects.filter(user=self.request.user).first()
+        neworder = Order.objects.create(user=self.request.user, profile=profile)
         cart = Cart.objects.filter(user=self.request.user)
         for car in cart:
             item = OrderItem.objects.create(
@@ -126,8 +107,7 @@ class OrderView(LoginRequiredMixin, CreateView):
                 quantity=car.quantity,
                 total=car.total)
             car.delete()
-            messages.success(
-                request, 'Your order has been placed Succesfully!')
+            messages.success(request, 'Your order has been placed Succesfully!')
         total_cart_amount = 0
 
         for c in cart:
@@ -137,7 +117,7 @@ class OrderView(LoginRequiredMixin, CreateView):
             total_cart_amount), (total_cart_amount / 100) * 18)
         tax = (total_cart_amount / 100) * 18
         neworder.total_price = total_cart_amount+tax
-        print(">>>>>>>>>>>>>>>>>>price total>", neworder.total_price)
+        # print(">>>>>>>>>>>>>>>>>>price total>", neworder.total_price)
         trackno = 'verma'+str(random.randint(1111111, 9999999))
         while Order.objects.filter(tracking_no=trackno) is None:
             trackno = 'verma'+str(random.randint(1111111, 9999999))
@@ -222,7 +202,7 @@ class CreateCheckoutSessionView(LoginRequiredMixin, View):
         host = self.request.get_host()
         user = request.user
         neworder = Order()
-        profile = Profile.objects.filter(user=self.request.user).first()
+        profile = Student.objects.filter(user=self.request.user).first()
         neworder = Order.objects.create(
             user=self.request.user, profile=profile)
         cart = Cart.objects.filter(user=self.request.user)

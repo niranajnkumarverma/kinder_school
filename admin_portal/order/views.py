@@ -4,11 +4,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import TemplateView
+from student.models import Student
 import order
-from student.forms import ProfileForm
 
 
-from student.models import Profile
+
 from .forms import AddProductForm, OrderstatusForm
 from order.models import Cart, Order, OrderItem, Transaction
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
@@ -18,12 +18,12 @@ from django import forms
 from django.contrib import messages
 
 
-class CartListView(ListView):
+class CartListView(LoginRequiredMixin,ListView):
     model = Cart
     template_name = "admin_temp/cart_list.html"
 
 
-class OrderListView(ListView):
+class OrderListView(LoginRequiredMixin,ListView):
     model = Order
     template_name = "admin_temp/order_list.html"
 
@@ -34,7 +34,7 @@ class OrderListView(ListView):
         return context
 
 
-class OrderUpdateView(UpdateView):
+class OrderUpdateView(LoginRequiredMixin,UpdateView):
     from_class = OrderstatusForm
     fields = ['status', ]
     model = Order
@@ -47,12 +47,12 @@ class OrderUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class OrderDetailView(View):
+class OrderDetailView(LoginRequiredMixin,View):
     def get(self, request):
         user = request.user
         orderitem = OrderItem.objects.all()
         order_amount = Order.objects.filter(user=user.pk)
-        order_address = Profile.objects.filter(user=user.pk)
+        order_address = Student.objects.filter(user=user.pk)
         context = {'orderitem': orderitem,
                    'order_address': order_address, 'order_amount': order_amount}
 

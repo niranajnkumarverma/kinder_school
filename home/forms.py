@@ -1,87 +1,45 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import  Student,User
+from .models import Contact, User
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login
 from django.db import transaction
+from django.contrib.auth.forms import PasswordResetForm
 
 
-class StudentSignUpForm(UserCreationForm):
-    username = forms.CharField(label='Username*', required=True, widget=forms.TextInput(
-
+class ContactForm(forms.ModelForm):
+    fullname = forms.CharField(label='Fullname', widget=forms.TextInput(
         attrs={
             'class': 'form-control',
-            'placeholder': 'Enter Your Username',
-            'pattern': "[a-z]{1,15}",
-            'title': "Username should only contain lowercase letters. e.g. niranjan"
-        }
-
-    ))
-    email = forms.EmailField(label='Email*', required=True, widget=forms.EmailInput(
-        attrs={
-            'class': 'form-control',
-            'placeholder': 'example@gmail.com',
+            'placeholder': 'Enter Your fullname',
 
         }
     ))
-    password1 = forms.CharField(label='Password*', required=True, widget=forms.PasswordInput(
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(
         attrs={
             'class': 'form-control',
-            'placeholder': 'Enter Password'
+            'placeholder': 'Enter Your email address',
 
         }
     ))
-    password2 = forms.CharField(label='Confirm Password*', required=True, widget=forms.PasswordInput(
+    subject = forms.CharField(label='Subject', widget=forms.TextInput(
         attrs={
             'class': 'form-control',
-            'placeholder': 'Enter Confirm password',
-          
+            'placeholder': 'Enter Your Subject',
+
+        }
+    ))
+    message = forms.CharField(label='Message', widget=forms.TextInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter Your message',
+
         }
     ))
 
-    def clean_username(self):
-        username = self.cleaned_data['username'].lower()
-        new = User.objects.filter(username=username)
-        if new.count():
-            raise ValidationError("Username Already Exist")
-        return username
-
-    def clean(self):
-       email = self.cleaned_data.get('email')
-       if User.objects.filter(email=email).exists():
-           raise ValidationError("This email address is already in use.")
-       return self.cleaned_data
-
-    def clean_password2(self):
-        password1 = self.cleaned_data['password1']
-        password2 = self.cleaned_data['password2']
-
-        if password1 and password2 and password1 != password2:
-            raise ValidationError("Password don't match")
-        return password2
-
-    def save(self, commit=True):
-        user = User.objects.create_user(
-            self.cleaned_data['username'],
-            self.cleaned_data['email'],
-            self.cleaned_data['password1']
-        )
-        return user
-
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields = ['username', 'email', 'password1', 'password2']
-
-
-    @transaction.atomic
-    def save(self):
-        user = super().save(commit=False)
-        user.email=self.cleaned_data.get('email')
-        user.is_student = True
-        user.save()
-        student = Student.objects.create(user=user)
-        return user
-
+    class Meta:
+        model = Contact
+        fields = ['fullname', 'email', 'subject', 'message', ]
 
 
 class LoginForm(forms.ModelForm):
@@ -116,10 +74,3 @@ class LoginForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'password']
-
-     
-
-
-     
-
-

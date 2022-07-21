@@ -1,26 +1,39 @@
 from django.core.exceptions import ValidationError
-from django.contrib.auth import authenticate, login
 from django.db import transaction
-from home.models import Student, User,Teacher
+from home.models import User
 from django.contrib.auth.forms import UserCreationForm
+from teacher.models import Teacher
+from random import choices
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from student.models import  Student, User,State,City,Country
+from django.contrib.auth.forms import PasswordResetForm
+from PIL import Image
 
 
-blood_group_choice = (
-    ('a+', 'A+'),
-    ('a-', 'A-'),
-    ('b+', 'B+'),
-    ('b-', 'B-'),
-    ('b+', 'B+'),
-    ('o+', 'O+'),
-    ('o-', 'O-'),
-    ('ab+', 'AB+'),
-    ('ab-', 'AB-')
+gender_choice = (
+
+    ('Male', 'Male'),
+    ('Female', 'Female')
 )
 
 
+blood_group_choice = (
+    ('None', 'Select Blood Group'),
+    ('A+', 'A+'),
+    ('A-', 'A-'),
+    ('B+', 'B+'),
+    ('B-', 'B-'),
+
+    ('O+', 'O+'),
+    ('O-', 'O-'),
+    ('AB+', 'AB+'),
+    ('AB-', 'AB-')
+)
+
 
 religion_categories = {
+    'Select Religion': [],
     'Hindu': [],
     'Islam': [],
     'Christian': [],
@@ -29,11 +42,12 @@ religion_categories = {
 }
 religion_categories_choices = []
 for r in religion_categories.keys():
-    religion_categories_choices.append( (r, r.capitalize()) )
+    religion_categories_choices.append((r, r.capitalize()))
 Product_categories_choices = tuple(religion_categories_choices)
 
 
 class_categories = {
+    'Select Class': [],
     'Play': [],
     'Nursery': [],
     'One': [],
@@ -46,36 +60,49 @@ class_categories = {
     'Eight': [],
     'Nine': [],
     'Tenth': [],
-    'Eleven':[]
+    'Eleven': []
 }
 
 class_categories_choices = []
 for c in class_categories.keys():
-    class_categories_choices.append( (c, c.capitalize()) )
+    class_categories_choices.append((c, c.capitalize()))
 class_categories_choices = tuple(class_categories_choices)
 
 
-section_categories = {
-    'A': [],
-    'B': [],
-    'C': [],
-    'D': [],
-    'E': [],
-    'F': []
-   
-}
-section_categories_choices = []
-for s in section_categories.keys():
-    section_categories_choices.append( (s, s.capitalize()) )
+section_categories = (
+    ('None', 'Select Section'),
+    ('A', 'A'),
+    ('B', 'B'),
+    ('C', 'C'),
+    ('D', 'D'),
+    ('E', 'E'),
+    ('F', 'F')
 
-section_categories_choices = tuple(section_categories_choices)
-
-
-    
-gender_choice = (
-    ('m', 'Male'),
-    ('f', 'Female')
 )
+
+
+class UserDeactivateForm(forms.Form):
+    deactivate = forms.BooleanField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(UserDeactivateForm, self).__init__(*args, **kwargs)
+        self.fields['deactivate'].help_text = "Check this box if you are sure you want to delete account."
+
+    def clean_is_active(self):
+
+        is_active = not(self.cleaned_data["deactivate"])
+        return is_active
+
+
+class UserDeleteForm(forms.Form):
+    """
+    Simple form that provides a checkbox that signals deletion.
+    """
+    delete = forms.BooleanField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(UserDeleteForm, self).__init__(*args, **kwargs)
+        self.fields['delete'].help_text = "Check this box if you are sure you want to delete this account."
 
 
 class TeacherSignUpForm(UserCreationForm):
@@ -84,7 +111,7 @@ class TeacherSignUpForm(UserCreationForm):
         attrs={
             'class': 'form-control',
             'placeholder': 'Enter Your Username',
-          
+
         }
 
     ))
@@ -145,43 +172,47 @@ class TeacherSignUpForm(UserCreationForm):
     @transaction.atomic
     def save(self):
         user = super().save(commit=False)
-        user.email=self.cleaned_data.get('email')
+        user.email = self.cleaned_data.get('email')
         user.is_teacher = True
         user.save()
         teacher = Teacher.objects.create(user=user)
         return user
 
 
-
 class TeacherProfile(forms.ModelForm):
-    first_name = forms.CharField(label='First Name', required=True, widget=forms.TextInput(
+    prof_image = forms.FileField(label='Profile Image', required=True, widget=forms.FileInput(
 
         attrs={
             'class': 'form-control',
-            'placeholder': 'Enter First Name',
-        }
-    ))
-    last_name = forms.CharField(label='Last Name', required=True, widget=forms.TextInput(
 
+        }
+
+    ))
+
+    father_name = forms.CharField(label='Father Name', required=True, widget=forms.TextInput(
         attrs={
             'class': 'form-control',
-            'placeholder': 'Enter Last Name',
+            'placeholder': 'Enter your Father name',
+
         }
     ))
+    mother_name = forms.CharField(label='Mother Name', required=True, widget=forms.TextInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your Mother Name',
 
+        }
+    ))
     classe = forms.ChoiceField(label='Class', choices=class_categories_choices)
 
-    section = forms.ChoiceField(label='Section', choices=section_categories_choices)
+    section = forms.ChoiceField(label='Section', choices=section_categories)
 
+    blood_group = forms.ChoiceField(
+        label='Blood Group', choices=blood_group_choice)
 
-    dob = forms.DateField(label='Date of Birth',widget=forms.DateInput(format='%d/%m/%Y'))
+    religion = forms.ChoiceField(
+        label='Religion', choices=religion_categories_choices)
 
-    blood_group = forms.ChoiceField(label='Blood Group', choices=blood_group_choice)
-
-      
-    religion = forms.ChoiceField(label='Religion', choices=religion_categories_choices)
-
-      
     mobile = forms.CharField(label='Mobile Number', required=True, widget=forms.TextInput(
 
         attrs={
@@ -189,9 +220,8 @@ class TeacherProfile(forms.ModelForm):
             'placeholder': 'Enter Your phone number',
         }
     ))
-    gender = forms.ChoiceField(label='Gender',choices=gender_choice)
+    gender = forms.ChoiceField(label='Gender', choices=gender_choice)
 
-      
     address = forms.CharField(label='Address', required=True, widget=forms.TextInput(
 
         attrs={
@@ -199,27 +229,7 @@ class TeacherProfile(forms.ModelForm):
             'placeholder': 'Enter Your Address',
         }
     ))
-    country = forms.CharField(label='Country', required=True, widget=forms.TextInput(
 
-        attrs={
-            'class': 'form-control',
-            'placeholder': 'Enter Your country',
-        }
-    ))
-    state = forms.CharField(label='State', required=True, widget=forms.TextInput(
-
-        attrs={
-            'class': 'form-control',
-            'placeholder': 'Enter Your State',
-        }
-    ))
-    city = forms.CharField(label='City', required=True, widget=forms.TextInput(
-
-        attrs={
-            'class': 'form-control',
-            'placeholder': 'Enter Your city',
-        }
-    ))
     pincode = forms.CharField(label='Pincode', required=True, widget=forms.TextInput(
 
         attrs={
@@ -227,14 +237,42 @@ class TeacherProfile(forms.ModelForm):
             'placeholder': 'Enter Your Pincode',
         }
     ))
-    image = forms.FileField(label='Image', required=True)
-
 
     class Meta():
-        model = Student
-        fields = ['first_name', 'last_name', 'classe', 'section','dob', 'blood_group','religion','mobile','gender', 'address', 'country','state', 'city','pincode','image']
-        # widgets = {
-        #     'dob': forms.DateInput(attrs={'type':'date'}),
-        #     'address':forms.Textarea(attrs={'cols':10,'rows':3})
-        # }
+        model = Teacher
+        fields = ['prof_image', 'father_name', 'mother_name', 'classe', 'section', 'dob', 'blood_group',
+                  'religion', 'mobile', 'gender', 'address', 'country', 'state', 'city', 'pincode', ]
+        widgets = {
+            'dob': forms.DateInput(format=('%m/%d/%Y'), attrs={'class': 'form-control', 'placeholder': 'Select a date', 'type': 'date'}),
+        }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['state'].queryset = State.objects.none()
+
+        if 'country' in self.data:
+            try:
+                country_id = int(self.data.get('country'))
+                self.fields['state'].queryset = State.objects.filter(
+                    country_id=country_id).order_by('name')
+
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk and self.instance.country:
+            self.fields['state'].queryset = self.instance.country.state_set.order_by(
+                'name')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['city'].queryset = City.objects.none()
+
+        if 'state' in self.data:
+            try:
+                state_id = int(self.data.get('state'))
+                self.fields['city'].queryset = City.objects.filter(
+                    state_id=state_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty District queryset
+        elif self.instance.pk and self.instance.state:
+            self.fields['city'].queryset = self.instance.state.city_set.order_by(
+                'name')

@@ -1,0 +1,543 @@
+{% extends 'admin_temp/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cms List</title>
+</head>
+
+<body>
+    <style>
+        .modal-dialog {
+
+            max-width: 555px;
+            margin: 1.75rem auto;
+        }
+    </style>
+    <div class="dashboard-content-one">
+        <!-- Breadcubs Area Start Here -->
+        <div class="breadcrumbs-area">
+            <h3>CMS</h3>
+            <ul>
+                <li>
+                    <a href="{% url 'home:home' %}">Home</a>
+                </li>
+                <li>All Cms List</li>
+            </ul>
+        </div>
+        <!-- Breadcubs Area End Here -->
+        <!-- Student Table Area Start Here -->
+        <div class="card height-auto">
+            <div class="card-body">
+                <div class="heading-layout1">
+                    <div class="item-title">
+                        <h3>All Cms Data</h3>
+                    </div>
+                </div>
+                <hr>
+
+                <div class="table-responsive">
+
+                    <table width="100%" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    S.No
+                                </th>
+                                <th>
+                                    Logo
+                                </th>
+                                <th>
+                                    Update
+                                </th>
+                                <th>
+                                    Delete
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for logo in site_logos %}
+                            <tr>
+                                <td>
+                                    {{logo.id}}
+                                </td>
+                                <td>
+                                    <img src="{% if logo.site_logo %}{{ logo.site_logo.url }}{% else %}{% static '/user_static/logo.png' %} {% endif %}"
+                                        alt="avatar">
+                                </td>
+
+                                <td>
+                                    <a href="{% url 'home:logo_update' logo.id %}">
+                                        <span class="fas fa-edit mr-2"></span>Edit
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="dropdown-item text-danger delete_item" href="#"
+                                        onclick="logo_delete({{ logo.id }})">
+                                        <span class="fas fa-trash-alt mr-2"></span>Remove
+                                    </a>
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                        <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal"
+                            data-target="#parentModal" data-whatever="@mdo">Add logo <span
+                                class="glyphicon glyphicon-plus"></span></button>
+
+                        <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal"
+                            data-target="#titleModal" data-whatever="@mdo">Add Title <span
+                                class="glyphicon glyphicon-plus"></span></button>
+                        <button type="button" class="btn-fill-lg bg-blue-dark" data-toggle="modal"
+                            data-target="#addressModal" data-whatever="@mdo">Add Address <span
+                                class="glyphicon glyphicon-plus"></span></button>
+
+                        <br><br>
+                        <h3>Site Logo</h3>
+                        <div class="modal fade" id="parentModal" tabindex="-1" role="dialog"
+                            aria-labelledby="parentModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="parentModalLabel">Add logo </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="" method="POST" enctype="multipart/form-data"
+                                            class="new-added-form">
+                                            {% if logo_form.errors %}
+                                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div id="logo_form_errors">
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    {% for key, value in logo_form.errors.items %}
+                                                    <strong>{{ value }}</strong>
+                                                    {% endfor %}
+
+                                                </div>
+                                            </div>
+                                            {% endif %}
+
+                                            <div class="register">
+                                                <div class="form-group">
+                                                    {% csrf_token %}
+                                                    <h4>{{logo_form.site_logo.label}}</h4>
+                                                    <div class="field">
+                                                        <span  class='fas fa-image'></span>
+                                                        {{ logo_form.site_logo }}
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                    data-dismiss="modal">Close</button>
+
+                                                <button type="submit" class="btn btn-primary">Add Logo</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="titleModal" tabindex="-1" role="dialog"
+                            aria-labelledby="titleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="titleModalLabel">Add Title </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'home:title_view' %}" method="POST"
+                                            enctype="multipart/form-data" class="new-added-form">
+                                            {% if title_form.errors %}
+                                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <div id="title_form_errors">
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    {% for key, value in title_form.errors.items %}
+                                                    <strong>{{ value }}</strong>
+                                                    {% endfor %}
+
+                                                </div>
+                                            </div>
+                                            {% endif %}
+
+                                            <div class="register">
+                                                <div class="form-group">
+                                                    {% csrf_token %}
+                                                    <h4>{{title_form.site_title.label}}</h4>
+                                                    <div class="field">
+                                                        <span class="fas fa-heading"></span>
+                                                        {{ title_form.site_title }}
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                    data-dismiss="modal">Close</button>
+
+                                                <button type="submit" class="btn btn-primary">Add Title</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="addressModal" tabindex="-1" role="dialog"
+                            aria-labelledby="addressModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addressModalLabel">Add Address </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <form action="{% url 'home:address_view' %}" method="POST"
+                                                    enctype="multipart/form-data" class="new-added-form">
+                                                    {% csrf_token %}
+                                                    {% if address_form.errors %}
+                                                    <div class="alert alert-danger alert-dismissible" role="alert">
+                                                        <div id="address_form_errors">
+                                                            <button type="button" class="close" data-dismiss="alert"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            {% for key, value in address_form.errors.items %}
+                                                            <strong>{{ value }}</strong>
+                                                            {% endfor %}
+
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+
+                                                    <div class="col-md-5-form-group">
+                                                        <div class="field">
+                                                            <span class='far fa-building'></span>
+                                                            {{ address_form.apartment_name }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5-form-group ml-auto">
+                                                        <div class="field">
+                                                            <span class='far fa-building'></span>
+                                                            {{ address_form.floor_no }}
+                                                        </div>
+                                                    </div>
+                                                    <br><br>
+                                                    <div class="col-md-5-form-group">
+                                                        <div class="field">
+                                                            <span class='far fa-address-card'></span>
+                                                            {{ address_form.site_address }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5-form-group ml-auto">
+                                                        <div class="field">
+                                                            <span class='fas fa-phone-square'></span>
+                                                            {{ address_form.toll_free_no }}
+                                                        </div>
+                                                    </div>
+                                                    <br><br>
+                                                    <div class="col-md-5-form-group">
+                                                        <div class="field">
+                                                            <span class='fas fa-phone-square'></span>
+                                                            {{ address_form.alt_toll_free_no }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5-form-group ml-auto">
+                                                        <div class="field">
+                                                            <span class="fa fa-user"></span>
+                                                            {{ address_form.pincode }}
+                                                        </div>
+                                                    </div>
+                                                    <br><br>
+                                                    <div class="col-md-5-form-group">
+                                                        <div class="field">
+                                                            <span class="fa fa-envelope" aria-hidden="true"></span>
+                                                            {{ address_form.site_email }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3-form-group ml-auto">
+                                                        <div class="field">
+                                                            <!-- <span class="fa fa-calendar"></span> -->
+                                                            {{ address_form.weekday }}
+                                                            {{ address_form.from_hour }}
+                                                            {{ address_form.to_hour }}
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="col-5-form-group ml-auto">
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger"
+                                                                data-dismiss="modal">Close</button>
+
+                                                            <button type="submit" class="btn btn-primary">Add
+                                                                Address</button>
+                                                        </div>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </table>
+                </div>
+                <hr>
+                <h3> Site Title </h3>
+                <div class="table-responsive">
+                    <table width="100%" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    S.No
+                                </th>
+                                <th>
+                                    Title
+                                </th>
+
+
+
+                                <th>
+                                    Update
+                                </th>
+                                <th>
+                                    Delete
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for title in site_title %}
+                            <tr>
+                                <td>
+                                    {{title.id}}
+                                </td>
+                                <td>
+                                    {{title.site_title}}
+                                </td>
+
+
+                                <td>
+                                    <a href="{% url 'home:title_update' title.id %}">
+                                        <span class="fas fa-edit mr-2"></span>Edit
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="dropdown-item text-danger delete_item" href="#"
+                                        onclick="title_delete({{ title.id }})">
+                                        <span class="fas fa-trash-alt mr-2"></span>Remove
+                                    </a>
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                </div>
+                <hr>
+                <h3> Site Address </h3>
+                <div class="table-responsive">
+                    <table width="100%" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    S.No
+                                </th>
+
+
+                                <th>
+                                    Appartment.Name
+                                </th>
+                                <th>
+                                    Floor.No
+                                </th>
+
+                                <th>
+                                    Site.Address
+                                </th>
+                                <th>
+                                    Toll.Free.No
+                                </th>
+                                <th>
+                                    Alt.Toll.Free.No
+                                </th>
+                                <th>
+                                    Pincode
+                                </th>
+                                <th>
+                                    Site.Email
+                                </th>
+                                <th>
+                                    Weekday
+                                </th>
+                                <th>
+                                    Open.Time
+                                </th>
+                                <th>
+                                    Close.Time
+                                </th>
+
+
+                                <th>
+                                    Update
+                                </th>
+                                <th>
+                                    Delete
+                                </th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+                            {% for address in site_address %}
+                            <tr>
+                                <td>
+                                    {{address.id}}
+                                </td>
+
+                                <td>
+                                    {{address.apartment_name}}
+                                </td>
+                                <td>
+                                    {{address.floor_no}}
+                                </td>
+                                <td>
+                                    {{address.site_address}}
+                                </td>
+                                <td>
+                                    {{address.toll_free_no}}
+                                </td>
+                                <td>
+                                    {{address.alt_toll_free_no}}
+                                </td>
+                                <td>
+                                    {{address.pincode}}
+                                </td>
+                                <td>
+                                    {{address.site_email}}
+                                </td>
+                                <td>
+                                    {{address.weekday}}
+                                </td>
+                                <td>
+                                    {{address.from_hour}}
+                                </td>
+                                <td>
+                                    {{address.to_hour}}
+                                </td>
+
+
+
+                                <td>
+                                    <a href="{% url 'home:address_update' address.id %}">
+                                        <span class="fas fa-edit mr-2"></span>Edit
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="dropdown-item text-danger delete_item" href="#"
+                                        onclick="address_delete({{ address.id }})">
+                                        <span class="fas fa-trash-alt mr-2"></span>Remove
+                                    </a>
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+
+</body>
+<!-- 
+<div class="container-fluid mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+            <div class="card card-default rounded-0 shadow">
+                <div class="card-header">
+                    <h4 class="card-title"><b>change Header Logo</b></h4>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <form id="update-user" method="POST" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mdc-layout-grid">
+                                <div class="mdc-layout-grid__inner">
+                                    <div class="form-group mb-3">
+                                       {{ form.as_p }}
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="last_name" class="control-label">Last Name</label>
+                                        <input type="text" class="form-control rounded-0" name="last_name" id="last_name" value="{% if form.data.last_name %}{{ form.data.last_name }}{% else %}{{ user.last_name }}{% endif %}" required="required">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="username" class="control-label">Username</label>
+                                        <input type="text" class="form-control rounded-0" name="username" id="username" value="{% if form.data.username %}{{ form.data.username }}{% else %}{{ user.username }}{% endif %}" required="required">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="email" class="control-label">Email</label>
+                                        <input type="email" class="form-control rounded-0" name="email" id="email" value="{% if form.data.email %}{{ form.data.email }}{% else %}{{ user.email }}{% endif %}" required="required">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="current_password" class="control-label">Enter Password</label>
+                                        <input type="password" class="form-control rounded-0" name="current_password" id="current_password" required="required">
+                                    </div>
+                                    {% for field in form %} {% for error in field.errors %}
+                                    <div class="alert alert-danger my-2">
+                                        <p>{{ error }}</p>
+                                    </div>
+                                    {% endfor %} {% endfor %}
+                                    <div class="form-group mb-3">
+                                        <div class="d-flex w-100 justify-content-end">
+                                            <button class="btn btn-sm rounded-0 btn-primary col-4">
+                                                    Save
+                                                </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+{% endblock content %}

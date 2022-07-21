@@ -9,7 +9,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>ChildCare</title>
+    {% if site_title %}
+
+	<title>{{site_title.site_title}}</title>
+	
+	{% else %}
+	<title>ChildCare-Kindergarten & School </title>
+	{% endif %}
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -30,18 +36,11 @@
     <link rel="stylesheet" href="{% static '/admin_static/css/animate.min.css' %}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static '/admin_static/css/style.css' %}">
-
-
+    <link rel="stylesheet" href="{% static '/admin_static/css/all_user_fields_input.css' %}">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-
-
-
     <!-- Modernize js -->
     <script src="{% static '/admin_static/js/modernizr-3.6.0.min.js' %}"></script>
-
-
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
 
@@ -49,7 +48,6 @@
 </head>
 
 <body>
-
     <!-- Preloader Start Here -->
     <div id="preloader"></div>
     <!-- Preloader End Here -->
@@ -94,8 +92,7 @@
                         </div>
                     </li>
                 </ul>
-                <ul class="navbar-nav">
-                 
+                <ul class="navbar-nav">                 
                     <li class="navbar-item dropdown header-message">
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                             aria-expanded="false">
@@ -103,7 +100,6 @@
                             <div class="item-title d-md-none text-16 mg-l-10">Message</div>
                             <span>5</span>
                         </a>
-
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="item-header">
                                 <h6 class="item-title">05 Message</h6>
@@ -214,9 +210,7 @@
                                 </div>
                             </div>
                         </div>
-                    </li>
-                
-                
+                    </li>                
                     <!-- <li class="navbar-item dropdown header-language">
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                             aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
@@ -237,14 +231,28 @@
                             <div class="admin-img">
                                 <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static '/admin_static/img/figure/admin.jpg' %} {% endif %}"
                                 class="rounded-circle" height="50px" width="50px" alt="Admin">
-                                <!-- <img src="{% static '/admin_static/img/figure/admin.jpg' %}" alt="Admin"> -->
+                              
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             
                             <div class="item-content">
                                 <ul class="settings-list">
-                                    <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
+                                    {% if user.is_teacher %}
+                                    <li><a href="{% url 'teachers:teacher_profile' %}"><i class="flaticon-user"></i>My Profile</a></li>
+                                    {% endif %}
+                                    {% if user.is_principal %}
+                                    <li><a href="{% url 'principals:principal_profile' %}"><i class="flaticon-user"></i>My Profile</a></li>
+                                    {% endif %}
+                                    {% if user.is_security %}
+                                    <li><a href="{% url 'securities:security_profile' %}"><i class="flaticon-user"></i>My Profile</a></li>
+                                    {% endif %}
+                                    {% if user.is_parent %}
+                                    <li><a href="{% url 'parents:parent_profile' %}"><i class="flaticon-user"></i>My Profile</a></li>
+                                    {% endif %}
+                                    {% if user.is_superuser %}
+                                    <li><a href="{% url 'home:admin_profile' %}"><i class="flaticon-user"></i>My Profile</a></li>
+                                    {% endif %}
                                     <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
                                     <li><a href="#"><i
                                                 class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
@@ -277,69 +285,58 @@
                                     Dashboard</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="{% url 'home:video_list' %}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Cultural Video</a>
+                                    <a href="{% url 'home:video_add' %}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Event Video</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{% url 'home:image_add' %}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Event Images</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="index3.html" class="nav-link"><i
+                                    <a href="{% url 'newsapp:home-page' %}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>News Box</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'principals:principals_list' %}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Principals</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'teachers:teachers_list' %}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Teachers</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'home:country_upload_csv' %}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Students Profile form CSV</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'students:students' %}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Students</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="index4.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
+                                    <a href="{% url 'parents:parents_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="index5.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Teachers</a>
+                                    <a href="{% url 'securities:security_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>Security</a>
                                 </li>
+                               
                             </ul>
                         </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                        Students</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="student-details.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Student Details</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="admit-form.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Admission Form</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="student-promotion.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Student Promotion</a>
-                                </li>
-                            </ul>
-                        </li>
+                      
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Shopping
                                     Books</span></a>
                             <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="{% url 'students:students' %}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>All
-                                        Users List</a>
-                                </li>
+                               
                                 <li class="nav-item">
                                     <a href="{% url 'products:publisher_list' %}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Publisher List</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{% url 'products:add_author_ajax' %}" class="nav-link"><i
+                                    <a href="{% url 'products:author_list' %}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Author List</a>
                                 </li>
-
-
-
                                 <li class="nav-item">
-                                    <a href="{% url 'products:add_product_ajax' %}" class="nav-link"><i
+                                    <a href="{% url 'products:add_book_ajax' %}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Books List</a>
                                 </li>
                                 <li class="nav-item">
@@ -355,23 +352,46 @@
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i
+                                    class="flaticon-multiple-users-silhouette"></i><span>Principal</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="{% url 'principals:principals_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Principal</a>
+                                </li>                               
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Payment</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i
                                     class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="{% url 'teachers:teachers_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Teachers</a>
-                                </li>
+                                </li>                              
                                 <li class="nav-item">
-                                    <a href="teacher-details.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Teacher Details</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'teachers:add_teachers' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add
-                                        Teacher</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="teacher-payment.html" class="nav-link"><i
+                                    <a href="#" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Payment</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="{% url 'students:students' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Students</a>
+                                </li>                              
+                                <li class="nav-item">
+                                    <a href="admit-form.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Admission Form</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="student-promotion.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Student Promotion</a>
                                 </li>
                             </ul>
                         </li>
@@ -379,16 +399,22 @@
                             <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="{% url 'parents:parents_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Parents</a>
-                                </li>
+                                </li>                             
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i
+                                    class="flaticon-multiple-users-silhouette"></i><span>Security</span></a>
+                            <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="parents-details.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Parents Details</a>
-                                </li>
+                                    <a href="{% url 'securities:security_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Security</a>
+                                </li>                             
                                 <li class="nav-item">
-                                    <a href="" class="nav-link"><i class="fas fa-angle-right"></i>Add
-                                        Parent</a>
+                                    <a href="#" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Payment</a>
                                 </li>
                             </ul>
                         </li>
@@ -469,7 +495,7 @@
                             <a href="hostel.html" class="nav-link"><i class="flaticon-bed"></i><span>Hostel</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="notice-board.html" class="nav-link"><i
+                            <a href="{% url 'notifications:user_notify' %}" class="nav-link"><i
                                     class="flaticon-script"></i><span>Notice</span></a>
                         </li>
                         <li class="nav-item">
@@ -509,13 +535,26 @@
                             <a href="map.html" class="nav-link"><i
                                     class="flaticon-planet-earth"></i><span>Map</span></a>
                         </li>
-                        <li class="nav-item">
-                            <a href="account-settings.html" class="nav-link"><i
-                                    class="flaticon-settings"></i><span>Account</span></a>
-                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i  class="flaticon-settings"></i><span>CMS Account Settings</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="{% url 'home:change_color' %}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Background Management</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'home:cms_view' %}" class="nav-link"><i class="fas fa-angle-right"></i>Menu Management</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="grid.html" class="nav-link"><i class="fas fa-angle-right"></i>Custome Page</a>
+                                </li>
+                              
+                            </ul>
+                        </li>                       
                     </ul>
-                </div>
+                </div>                
             </div>
+            
 
             {% block content %}
             {% endblock %}
@@ -545,6 +584,8 @@
             <!-- Custom Js -->
             <script src="{% static '/admin_static/js/main.js' %}"></script>
 
+            <script src="{% static '/admin_static/js/load_state_city.js' %}"></script>
+
             <!-- ### SweetAlert2 CDN -------------#### -->
             <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.1/dist/sweetalert2.all.min.js"></script>
@@ -566,7 +607,7 @@
             <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
 
 
-           
+         
             {% if messages %}
             {% for msg in messages %}
             <script>
@@ -587,7 +628,10 @@
             {% block js %}
             {% endblock %}
         </div>
-
+        <!-- <footer class="text-center">
+            <div class="copyright">© Copyrights <a href="#">Kinder Garden School</a> {% now "Y" %}. All rights reserved. Designed by
+                <a href="#">Niranjan kumar</a></div>
+        </footer> -->
         
 </body>
 

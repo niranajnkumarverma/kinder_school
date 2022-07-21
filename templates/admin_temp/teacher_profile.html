@@ -1,0 +1,344 @@
+{% extends 'admin_temp/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Profile</title>
+
+
+</head>
+
+<body>
+
+  <section class="shop-page">
+    <div class="step-content">
+      <div class="container">
+        <div class="step-tab-panel active" id="steppanel1">
+          <ul class="nav nav-tabs">
+            <li class="nav-item"> <a class="nav-link fw-600 active" data-toggle="tab" href="#general_info">General
+                Information</a></li>
+
+            <li class="nav-item"> <a class="nav-link fw-600" data-toggle="tab" href="#security_info">Change
+                password</a>
+            </li>
+            <li class="nav-item"> <a class="nav-link fw-600" data-toggle="tab" href="#settings_info">Settings</a>
+            </li>
+
+            <li class="nav navbar-nav navbar-right"><a href="#" onclick="window.print();"><i
+                  class="fas fa-print"></i></a></li>
+            {% for teach in profile %}
+            <li class="nav navbar-nav navbar-right"><a href="{% url 'teachers:teacher-pdf-view' teach.pk %}"><i
+                  class="fas fa-download"></i></a></li>
+            {% endfor %}
+            <li class="nav navbar-nav navbar-right"><a href="{% url 'teachers:profile_update' %}"><i
+                  class="far fa-edit"></i></a></li>
+
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="general_info">
+
+              <form class="needs-validation general-sec p-2 " novalidate="false" action="" method=""
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <h3 class="text-light-black ">General Information </h3>
+
+                <hr>
+                <section style="background-color: #eee;">
+                  <div class="container py-5">
+                    <div class="row">
+                      <div class="col">
+                        <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-12">
+                          <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
+
+                            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                          </ol>
+                        </nav>
+                      </div>
+                    </div>
+                    {% for teacher in profile %}
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div class="card mb-4">
+                          <div class="card-body text-center">
+                            <img
+                              src="{% if user.teacher.prof_image %}{{ user.teacher.prof_image.url }}{% else %}{% static 'user_static/default.png' %} {% endif %}"
+                              class="rounded-circle img-fluid" style="width: 150px;">
+
+                            <h5 class="my-3">{{user.username}}</h5>
+                            <p class="text-muted mb-1">Full Stack Developer</p>
+                            <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                            <div class="d-flex justify-content-center mb-2">
+                              <button type="button" class="btn btn-primary">Follow</button>
+                              <button type="button" class="btn btn-outline-primary ms-1">Message</button>
+                            </div>
+
+                          </div>
+                          <ul class="list-group">
+                            <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
+                            <li class="list-group-item text-right"><span
+                                class="pull-left"><strong>Shares</strong></span> 125</li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span>
+                              13</li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span>
+                              37</li>
+                            <li class="list-group-item text-right"><span
+                                class="pull-left"><strong>Followers</strong></span> 78</li>
+                          </ul>
+                        </div>
+
+
+                      </div>
+                      <div class="col-lg-8">
+                        <div class="card mb-4">
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{user.email}}</p>
+                              </div>
+
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">Father Name</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{teacher.father_name}}</p>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">Mother Name</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{teacher.mother_name}}</p>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">Blood Group</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{teacher.blood_group}}</p>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">Religion</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{teacher.religion}}</p>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">Section</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{teacher.section}}</p>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">DOB</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{teacher.dob}}</p>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">Mobile</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{teacher.mobile}}</p>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">Gender</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{teacher.gender}}</p>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">Address</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{teacher.address}}</p>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">Country</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{teacher.country}}</p>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">State</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{teacher.state}}</p>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">City</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{teacher.city}}</p>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0">Pincode</p>
+                              </div>
+                              <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{teacher.pincode}}</p>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </div>
+                      {% endfor %}
+                    </div>
+
+                </section>
+              </form>
+            </div>
+
+            <div class="tab-pane" id="security_info">
+              <form class=" needs-validation contact-sec p-2" novalidate="false"
+                action="{% url 'teachers:password_change' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if form.errors %}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                  <div id="form_errors">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    {% for key, value in form.errors.items %}
+                    <strong>{{ value }}</strong>
+                    {% endfor %}
+
+                  </div>
+                </div>
+                {% endif %}
+                <h3 class="text-light-black fw-700">Change password</h3>
+                <div class="col-md-6">
+                  <div class="form-group ">
+                    <label for="id_old_password">Old Password</label>
+                    <input type="password" name="old_password" autocomplete="new-password" class="form-control" required
+                      id="id_old_password" placeholder="Enter Old Password" />
+                    <span>
+                    </span>
+                  </div>
+                  <div class="form-group">
+                    <label for="id_new_password1">New Password</label>
+                    <input type="password" name="new_password1" autocomplete="new-password" class="form-control"
+                      required id="id_new_password1" placeholder="Enter New Password" />
+                    <span>
+                    </span>
+                  </div>
+                  <div class="form-group ">
+                    <label for="id_new_password2">New Password Confirmation</label>
+                    <input type="password" name="new_password2" autocomplete="new-password" required
+                      id="id_new_password2" class="form-control" placeholder="Confirm New Password" />
+                  </div>
+                  <div class="form-group ">
+                    <button class="btn btn-primary" type="submit" name="submit">Change</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="tab-pane" id="settings_info">
+              <div class="col-mb-6">
+                <form class=" needs-validation setting-sec p-2" novalidate="false"
+                  action="{% url 'teachers:user_account' %}" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {% if deactivate_form.errors %}
+                  <div class="alert alert-danger alert-dismissible" role="alert">
+                    <div id="deactivate_form_errors">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      {% for key, value in deactivate_form.errors.items %}
+                      <strong>{{ value }}</strong>
+                      {% endfor %}
+
+                    </div>
+                  </div>
+                  {% endif %}
+                  <h3 class="text-light-black fw-700">Account Deactivate</h3>
+                  {{ deactivate_form.as_p}}
+                  <button class="btn btn-primary" type="submit" name="action">confirm</button>
+
+                </form>
+              </div>
+              <div class="col-mb-6">
+                <form class=" needs-validation setting-sec p-2" novalidate="false"
+                  action="{% url 'teachers:user_delete' %}" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {% if account_delete_form.errors %}
+                  <div class="alert alert-danger alert-dismissible" role="alert">
+                    <div id="account_delete_form_errors">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      {% for key, value in account_delete_form.errors.items %}
+                      <strong>{{ value }}</strong>
+                      {% endfor %}
+
+                    </div>
+                  </div>
+                  {% endif %}
+                  <h3 class="text-light-black fw-700">Account Delete</h3>
+                  {{ account_delete_form.as_p}}
+                  <button class="btn btn-primary" type="submit" name="action">Delete</button>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+</body>
+
+</html>
+
+{% endblock %}

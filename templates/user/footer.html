@@ -1,0 +1,132 @@
+{% extends 'admin_temp/base.html' %}
+
+{% block content %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+  <!-- Meta -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+</head>
+
+<body>
+  <!-- <style>
+      
+
+        @import 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.0/yeti/bootstrap.min.css';
+
+        form label {
+            cursor: pointer;
+        } -->
+
+  <!-- /* 
+        .footer_area {
+            background: #5555df;
+            padding-bottom: 30px;
+        } */
+    </style> -->
+
+
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card my-5 shadow">
+          <h4 class="card-header">Settings</h4>
+          <div class="card-body">
+            <form action="{% url 'home:footerview' %}" method="POST">
+              {% csrf_token %}
+              <label>Background color</label>
+              <label for="color">Select your favorite color:</label>
+              <input type="color" id="color" name="color" value="#ff0000"><br><br>
+              <button type="submit" name="btn" class="btn btn-outline-dark">Apply</button>
+              <!-- <div class="custom-control custom-radio mb-2">
+                    <input type="radio" id="radioOne" name="radioItems" class="custom-control-input" value="light" checked>
+                    <label class="custom-control-label" for="radioOne">Light</label>
+                  </div>
+                  <div class="custom-control custom-radio mb-2">
+                    <input type="radio" id="radioTwo" name="radioItems" class="custom-control-input" value="dark">
+                    <label class="custom-control-label" for="radioTwo">Dark</label>
+                  </div>
+                  <div class="custom-control custom-radio mb-2">
+                    <input type="radio" id="radioThree" name="radioItems" class="custom-control-input" value="primary">
+                    <label class="custom-control-label" for="radioThree">Primary</label>
+                  </div>
+                  <div class="custom-control custom-radio mb-2">
+                    <input type="radio" id="radioFour" name="radioItems" class="custom-control-input" value="danger">
+                    <label class="custom-control-label" for="radioFour">Danger</label>
+                  </div>
+                  <div class="custom-control custom-radio mb-2">
+                    <input type="radio" id="radioFive" name="radioItems" class="custom-control-input" value="warning">
+                    <label class="custom-control-label" for="radioFive">Warning</label>
+                  </div>
+                  <div class="custom-control custom-radio mb-2">
+                    <input type="radio" id="radioSix" name="radioItems" class="custom-control-input" value="info">
+                    <label class="custom-control-label" for="radioSix">Info</label>
+                  </div>
+                  <div class="custom-control custom-radio mb-3">
+                    <input type="radio" id="radioSeven" name="radioItems" class="custom-control-input" value="success">
+                    <label class="custom-control-label" for="radioSeven">Success</label>
+                  </div> -->
+              <!-- <button type="submit" name="btn" class="btn btn-outline-dark">Apply</button> -->
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+
+
+
+  <!-- 
+<script>
+    const [form] = document.forms;
+
+const changeBackgroundColor = elements => {
+  elements.forEach(element => {
+    element.addEventListener('change', e => {
+      document.body.className = `bg-${e.target.value}`;
+    });
+  });
+}
+
+changeBackgroundColor(form.radioItems);
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  // Do something...
+});
+</script>
+
+
+
+
+<script>
+    function changeColor() {
+        var radio = document.documentElement["sp"];
+        for (var i = 0; i < radio.length; i++) {
+            if (radio[i].checked == true) {
+
+                var newColor = radio[i].value;
+                document.getElementById("changeColor").style.backgroundColor = newColor;
+                return false;
+            }
+        }
+    }
+</script> -->
+
+</body>
+
+</html>
+{% endblock %}
